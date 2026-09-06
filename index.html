@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuest - Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h1 class="logo">Edu<span>Quest</span></h1>
+
+        <nav>
+            <a href="index.html" class="nav-item active">🏠 Dashboard</a>
+            <a href="profile.html" class="nav-item">🧙 Profile</a>
+            <a href="quests.html" class="nav-item">🗺️ Quests</a>
+            <a href="#" class="nav-item">🏆 Rewards</a>
+            <a href="#" class="nav-item">📊 Progress</a>
+            <a href="#" class="nav-item">⚙️ Settings</a>
+        </nav>
+
+        <!-- Mini player widget (uses the shared player data) -->
+        <div class="sidebar-player">
+            <span class="mini-avatar" data-avatar>👤</span>
+            <div>
+                <div class="mini-name" data-display="name">Player</div>
+                <div class="mini-level">Lv <span data-display="level">1</span></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Welcome back to your adventure!</p>
+            </div>
+
+            <a href="profile.html" class="profile-chip">
+                <span class="chip-avatar" data-avatar>👤</span>
+                <span data-display="name">Player</span>
+            </a>
+        </header>
+
+        <!-- Welcome Section -->
+        <section class="card welcome-card">
+            <h2>Welcome, <span data-display="name">Player</span>! 👋</h2>
+            <p>Ready for your next educational adventure?</p>
+        </section>
+
+        <!-- Adventure Status Panel (player data from js/app.js) -->
+        <section class="adventure-panel">
+            <div class="hero-row">
+                <div class="hero-avatar" data-avatar>👤</div>
+                <div>
+                    <h2 data-display="name">Player</h2>
+                    <div class="hero-title" data-display="title">EduQuest Adventurer</div>
+                    <span class="level-badge" data-levelbadge>Lv 1</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="xp-bar-track light">
+                    <div class="xp-bar-fill" data-progressbar></div>
+                </div>
+                <div class="xp-label light-label" data-xptext>0 / 100 XP</div>
+                <div class="xp-to-next" data-xptonext>100 XP to Level 2</div>
+            </div>
+
+            <div class="totals">
+                <strong data-display="xp">0</strong> XP Total
+                &nbsp;·&nbsp;
+                <strong data-display="points">0</strong> Points
+                &nbsp;·&nbsp;
+                <strong data-display="quests">0</strong> Quests Completed
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats">
+            <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <div>
+                    <p>Points</p>
+                    <h3 data-display="points">0</h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">🎮</span>
+                <div>
+                    <p>Level</p>
+                    <h3 data-display="level">1</h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">🏆</span>
+                <div>
+                    <p>Quests Completed</p>
+                    <h3 data-display="quests">0</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Today's Quest -->
+        <section class="quest-card">
+            <div>
+                <p class="small-title">TODAY'S QUEST</p>
+                <h2>Your First Adventure</h2>
+                <p>
+                    Complete your first educational challenge
+                    and start earning XP and points!
+                </p>
+                <a href="quests.html" class="btn btn-primary">🚀 Start Quest</a>
+            </div>
+
+            <div class="quest-icon">
+                🗺️
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript (shared player data first) -->
+    <script src="js/app.js"></script>
+
+</body>
+</html>

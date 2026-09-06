@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduQuest - Quest Game</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.game-page{max-width:850px;margin:0 auto}.game-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:var(--shadow)}
+.game-top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px;flex-wrap:wrap}.quest-label{color:var(--purple);font-weight:800}.progress-wrap{background:#eeeaf8;border-radius:99px;height:10px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--blue));transition:width .25s}.question-icon{font-size:54px;margin-bottom:10px}.question-text{font-size:24px;line-height:1.4;margin:10px 0 22px}.answers{display:grid;gap:12px}.answer-btn{width:100%;text-align:left;padding:15px 18px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-size:16px;cursor:pointer;transition:.2s}.answer-btn:hover{border-color:var(--purple);transform:translateY(-1px)}.answer-btn.correct{border-color:var(--green);background:#eaf8eb}.answer-btn.wrong{border-color:#e05252;background:#fff0f0}.feedback{margin-top:18px;padding:14px;border-radius:12px;display:none;font-weight:700}.feedback.show{display:block}.feedback.correct{background:#eaf8eb;color:var(--green-dark)}.feedback.wrong{background:#fff0f0;color:#b52e38}.next-btn{margin-top:20px;border:0;border-radius:30px;padding:13px 24px;background:var(--purple);color:#fff;font-weight:800;cursor:pointer;display:none}.next-btn.show{display:inline-block}.result{text-align:center}.result .score{font-size:42px;font-weight:900;color:var(--purple)}.back-link{display:inline-block;margin-bottom:18px;color:var(--purple);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<h1 class="logo">Edu<span>Quest</span></h1>
+<nav>
+<a href="index.html" class="nav-item">🏠 Dashboard</a>
+<a href="profile.html" class="nav-item">🧙 Profile</a>
+<a href="quests.html" class="nav-item active">🗺️ Quests</a>
+<a href="#" class="nav-item">🏆 Rewards</a>
+<a href="#" class="nav-item">📊 Progress</a>
+<a href="#" class="nav-item">⚙️ Settings</a>
+</nav>
+<div class="sidebar-player"><span class="mini-avatar" data-avatar>👤</span><div><div class="mini-name" data-display="name">Player</div><div class="mini-level">Lv <span data-display="level">1</span></div></div></div>
+</aside>
+<main class="main-content">
+<header class="topbar"><div><h2 id="questTitle">Quest</h2><p>Complete the challenge and earn rewards.</p></div><a href="profile.html" class="profile-chip"><span class="chip-avatar" data-avatar>👤</span><span data-display="name">Player</span></a></header>
+<section class="game-page">
+<a href="quests.html" class="back-link">← Back to Quests</a>
+<div class="game-card" id="gameCard">
+<div class="game-top"><strong>Question <span id="questionNumber">1</span> of <span id="totalQuestions">10</span></strong><strong id="rewardText">⭐ 20 XP · 🎯 10 Points</strong></div>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div id="questionIcon" class="question-icon">🧮</div>
+<h1 id="questionText" class="question-text">Loading question...</h1>
+<div id="answers" class="answers"></div>
+<div id="feedback" class="feedback"></div>
+<button id="nextBtn" class="next-btn" type="button">Next Question →</button>
+</div>
+</section>
+</main>
+<script src="js/app.js"></script>
+<script src="js/quest-game.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduQuest - Profile</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <h1 class="logo">Edu<span>Quest</span></h1>
+
+        <nav>
+            <a href="index.html" class="nav-item">🏠 Dashboard</a>
+            <a href="profile.html" class="nav-item active">🧙 Profile</a>
+            <a href="quests.html" class="nav-item">🗺️ Quests</a>
+            <a href="#" class="nav-item">🏆 Rewards</a>
+            <a href="#" class="nav-item">📊 Progress</a>
+            <a href="#" class="nav-item">⚙️ Settings</a>
+        </nav>
+
+        <!-- Mini player widget (uses the shared player data) -->
+        <div class="sidebar-player">
+            <span class="mini-avatar" data-avatar>👤</span>
+            <div>
+                <div class="mini-name" data-display="name">Player</div>
+                <div class="mini-level">Lv <span data-display="level">1</span></div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div>
+                <h2>Profile</h2>
+                <p>Your EduQuest adventurer profile.</p>
+            </div>
+
+            <a href="profile.html" class="profile-chip">
+                <span class="chip-avatar" data-avatar>👤</span>
+                <span data-display="name">Player</span>
+            </a>
+        </header>
+
+        <!-- Profile / RPG Character Sheet -->
+        <section class="profile-page">
+
+            <div class="character-sheet">
+
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="avatar" data-avatar>👤</div>
+
+                    <div>
+                        <h1 data-display="name">Player</h1>
+                        <div class="profile-title" data-display="title">EduQuest Adventurer</div>
+                        <span class="level-badge" data-levelbadge>Lv 1</span>
+                        <span class="grade-badge">🎓 <span data-display="gradeLevel">College</span></span>
+                    </div>
+                </div>
+
+                <!-- Level & XP Progress -->
+                <div class="profile-level-block">
+                    <h3>🛡️ Adventure XP</h3>
+                    <div class="xp-bar-track">
+                        <div class="xp-bar-fill" data-progressbar></div>
+                    </div>
+                    <div class="xp-label" data-xptext>0 / 100 XP</div>
+                    <div class="xp-to-next" data-xptonext>100 XP to Level 2</div>
+                </div>
+
+                <!-- Player Statistics -->
+                <div class="profile-stats">
+
+                    <div class="profile-stat">
+                        <span class="stat-icon">⭐</span>
+                        <div>
+                            <p>Points</p>
+                            <h3 data-display="points">0</h3>
+                        </div>
+                    </div>
+
+                    <div class="profile-stat">
+                        <span class="stat-icon">🎮</span>
+                        <div>
+                            <p>Level</p>
+                            <h3 data-display="level">1</h3>
+                        </div>
+                    </div>
+
+                    <div class="profile-stat">
+                        <span class="stat-icon">🏆</span>
+                        <div>
+                            <p>Quests Completed</p>
+                            <h3 data-display="quests">0</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Achievements -->
+                <div class="achievement-section">
+                    <h2>🎖️ Achievements</h2>
+                    <p class="achievement-count">
+                        <strong data-display="achievements">0</strong> unlocked
+                        so far
+                    </p>
+
+                    <div class="achievement-list" id="profile-achievements">
+                        <!-- Filled by js/profile.js -->
+                    </div>
+                </div>
+
+                <!-- Edit Profile Button -->
+                <button class="edit-profile-btn" id="edit-profile-btn">
+                    ✏️ Edit Profile
+                </button>
+
+                <!-- Edit Profile Form -->
+                <div class="edit-profile-form" id="edit-profile-form">
+
+                    <h2>Edit Profile</h2>
+
+                    <label for="name-input">Player Name</label>
+                    <input
+                        type="text"
+                        id="name-input"
+                        placeholder="Enter your name"
+                    >
+
+                    <label for="title-input">Profile Title</label>
+                    <input
+                        type="text"
+                        id="title-input"
+                        placeholder="Enter your profile title"
+                    >
+
+                    <label for="avatar-input">Avatar</label>
+
+                    <select id="avatar-input">
+                        <option value="👤">👤 Player</option>
+                        <option value="🧙">🧙 Wizard</option>
+                        <option value="🧑‍🚀">🧑‍🚀 Explorer</option>
+                        <option value="🦸">🦸 Hero</option>
+                        <option value="🧑‍🎓">🧑‍🎓 Scholar</option>
+                        <option value="🧚">🧚 Fairy</option>
+                    </select>
+
+                    <label for="grade-input">Grade Level</label>
+
+                    <select id="grade-input">
+                        <option value="Elementary">Elementary</option>
+                        <option value="Junior High School">Junior High School</option>
+                        <option value="Senior High School">Senior High School</option>
+                        <option value="College">College</option>
+                    </select>
+
+                    <div class="edit-buttons">
+
+                        <button
+                            type="button"
+                            class="save-profile-btn"
+                            id="save-profile-btn">
+                            💾 Save Changes
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancel-profile-btn"
+                            id="cancel-profile-btn">
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- JavaScript (shared player data first) -->
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+
+</body>
+
+</html>
