@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuest - Badges & XP</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🏆 Badges & XP</h1>
+        <p>Earn XP and unlock badges by completing quests!</p>
+
+        <!-- XP Section -->
+        <div class="xp-card">
+            <h2>Your XP</h2>
+
+            <div class="xp-number">
+                <span id="xp">0</span> XP
+            </div>
+
+            <p>Level <span id="level">1</span></p>
+
+            <div class="progress-container">
+                <div id="xpProgress" class="progress-bar"></div>
+            </div>
+
+            <p id="xpMessage">Keep completing quests to earn XP!</p>
+        </div>
+
+        <!-- Add XP Button -->
+        <button onclick="earnXP(50)" class="xp-button">
+            Complete Quest +50 XP
+        </button>
+
+        <!-- Badges -->
+        <h2 class="badge-title">Your Badges</h2>
+
+        <div class="badges">
+
+            <div class="badge unlocked">
+                <div class="badge-icon">🌟</div>
+                <h3>First Quest</h3>
+                <p>Complete your first quest.</p>
+            </div>
+
+            <div class="badge locked" id="badge100">
+                <div class="badge-icon">⚡</div>
+                <h3>XP Beginner</h3>
+                <p>Reach 100 XP.</p>
+            </div>
+
+            <div class="badge locked" id="badge250">
+                <div class="badge-icon">🔥</div>
+                <h3>Quest Master</h3>
+                <p>Reach 250 XP.</p>
+            </div>
+
+            <div class="badge locked" id="badge500">
+                <div class="badge-icon">👑</div>
+                <h3>EduQuest Champion</h3>
+                <p>Reach 500 XP.</p>
+            </div>
+
+        </div>
+
+        <br>
+
+        <a href="index.html">← Back to Home</a>
+
+    </div>
+
+    <script src="js/badges.js"></script>
+
+</body>
+</html>

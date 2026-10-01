@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuest - Rewards</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Rewards Page */
+        .rewards-container {
+            padding: 30px 40px;
+        }
+
+        .rewards-header {
+            margin-bottom: 25px;
+        }
+
+        .rewards-header h1 {
+            font-size: 32px;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .rewards-header p {
+            color: #aaa8bd;
+            font-size: 16px;
+        }
+
+        /* Points Display */
+        .points-card {
+            background: linear-gradient(135deg, #6c45ff, #5135d8);
+            border-radius: 18px;
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .points-info h2 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
+
+        .points-number {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .points-icon {
+            font-size: 55px;
+        }
+
+        /* Rewards Grid */
+        .reward-title {
+            color: white;
+            margin-bottom: 18px;
+            font-size: 24px;
+        }
+
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .reward-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .reward-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .reward-icon {
+            width: 80px;
+            height: 80px;
+            background: #fff2bd;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            font-size: 42px;
+        }
+
+        .reward-card h3 {
+            color: #292348;
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .reward-card p {
+            color: #6d6984;
+            font-size: 14px;
+            min-height: 40px;
+        }
+
+        .reward-cost {
+            display: inline-block;
+            background: #f4efff;
+            color: #5639dc;
+            border: 1px solid #ddd3ff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .claim-btn {
+            display: block;
+            width: 100%;
+            border: none;
+            background: #6846ff;
+            color: white;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .claim-btn:hover {
+            background: #5534df;
+        }
+
+        .claim-btn:disabled {
+            background: #aaa7b8;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .rewards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .rewards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rewards-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h1>EduQuest</h1>
+
+        <a href="index.html">🏠 Dashboard</a>
+        <a href="quests.html">🎯 Quests</a>
+        <a href="rewards.html" class="active">🏆 Rewards</a>
+        <a href="profile.html">📊 Progress</a>
+        <a href="#">⚙️ Settings</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="rewards-container">
+
+            <div class="rewards-header">
+                <h1>Rewards</h1>
+                <p>Use your earned points to unlock exciting rewards!</p>
+            </div>
+
+            <!-- Points -->
+            <div class="points-card">
+                <div class="points-info">
+                    <h2>Your Available Points</h2>
+                    <div class="points-number">
+                        ⭐ <span id="points">100</span> Points
+                    </div>
+                </div>
+
+                <div class="points-icon">
+                    🏆
+                </div>
+            </div>
+
+            <h2 class="reward-title">Available Rewards</h2>
+
+            <div class="rewards-grid">
+
+                <!-- Reward 1 -->
+                <div class="reward-card">
+                    <div class="reward-icon">🎨</div>
+
+                    <h3>Custom Profile Badge</h3>
+
+                    <p>
+                        Unlock a special badge for your profile.
+                    </p>
+
+                    <div class="reward-cost">
+                        ⭐ 20 Points
+                    </div>
+
+                    <button
+                        class="claim-btn"
+                        onclick="claimReward(20, 'Custom Profile Badge')">
+                        Claim Reward
+                    </button>
+                </div>
+
+                <!-- Reward 2 -->
+                <div class="reward-card">
+                    <div class="reward-icon">👑</div>
+
+                    <h3>Quest Champion</h3>
+
+                    <p>
+                        Show everyone that you are a Quest Champion.
+                    </p>
+
+                    <div class="reward-cost">
+                        ⭐ 30 Points
+                    </div>
+
+                    <button
+                        class="claim-btn"
+                        onclick="claimReward(30, 'Quest Champion')">
+                        Claim Reward
+                    </button>
+                </div>
+
+                <!-- Reward 3 -->
+                <div class="reward-card">
+                    <div class="reward-icon">🔥</div>
+
+                    <h3>XP Booster</h3>
+
+                    <p>
+                        Receive an extra XP bonus for your next quest.
+                    </p>
+
+                    <div class="reward-cost">
+                        ⭐ 40 Points
+                    </div>
+
+                    <button
+                        class="claim-btn"
+                        onclick="claimReward(40, 'XP Booster')">
+                        Claim Reward
+                    </button>
+                </div>
+
+                <!-- Reward 4 -->
+                <div class="reward-card">
+                    <div class="reward-icon">🏅</div>
+
+                    <h3>Master Badge</h3>
+
+                    <p>
+                        Unlock an exclusive Master achievement badge.
+                    </p>
+
+                    <div class="reward-cost">
+                        ⭐ 50 Points
+                    </div>
+
+                    <button
+                        class="claim-btn"
+                        onclick="claimReward(50, 'Master Badge')">
+                        Claim Reward
+                    </button>
+                </div>
+
+                <!-- Reward 5 -->
+                <div class="reward-card">
+                    <div class="reward-icon">💎</div>
+
+                    <h3>Diamond Status</h3>
+
+                    <p>
+                        Unlock the special Diamond status.
+                    </p>
+
+                    <div class="reward-cost">
+                        ⭐ 70 Points
+                    </div>
+
+                    <button
+                        class="claim-btn"
+                        onclick="claimReward(70, 'Diamond Status')">
+                        Claim Reward
+                    </button>
+                </div>
+
+                <!-- Reward 6 -->
+                <div class="reward-card">
+                    <div class="reward-icon">🚀</div>
+
+                    <h3>Ultimate Learner</h3>
+
+                    <p>
+                        Become an Ultimate Learner and earn recognition.
+                    </p>
+
+                    <div class="reward-cost">
+                        ⭐ 100 Points
+                    </div>
+
+                    <button
+                        class="claim-btn"
+                        onclick="claimReward(100, 'Ultimate Learner')">
+                        Claim Reward
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/rewards.js"></script>
+
+</body>
+</html>
