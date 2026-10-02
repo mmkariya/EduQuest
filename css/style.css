@@ -1,18 +1,3 @@
-/* =====================================================
-   EDUQUEST - GLOBAL STYLESHEET
-   =====================================================
-   Modern Educational RPG + Medieval Fantasy Adventure.
-
-   Canva color identity (PRESERVED):
-     Purple  #6C4DFF
-     Blue    #4D8BFF
-     Yellow  #FFD93D
-     White   #F9F7FF
-     Green   #4CAF50
-   ===================================================== */
-
-/* ---------- COLOR VARIABLES ---------- */
-
 :root {
     --purple: #6c4dff;
     --purple-dark: #5438d6;
@@ -24,17 +9,12 @@
     --white: #f9f7ff;
     --green: #4caf50;
     --green-dark: #3d8b40;
-
     --ink: #241b3f;
     --muted: #6b6a80;
     --line: #e2ddf0;
-
     --shadow: 0 8px 24px rgba(108, 77, 255, 0.12);
     --shadow-sm: 0 4px 14px rgba(108, 77, 255, 0.1);
 }
-
-
-/* ---------- RESET / BASE ---------- */
 
 * {
     margin: 0;
@@ -55,7 +35,6 @@ body {
     line-height: 1.5;
 }
 
-/* Subtle fantasy backdrop behind everything */
 body::before {
     content: "";
     position: fixed;
@@ -87,11 +66,6 @@ button {
     background: var(--purple-light);
     border-radius: 10px;
 }
-
-
-/* =====================================================
-   SIDEBAR
-   ===================================================== */
 
 .sidebar {
     width: 250px;
@@ -151,7 +125,6 @@ button {
     box-shadow: var(--shadow-sm);
 }
 
-/* Small player widget at the bottom of the sidebar */
 .sidebar-player {
     margin-top: auto;
     background: rgba(255, 255, 255, 0.12);
@@ -179,11 +152,6 @@ button {
     opacity: 0.85;
 }
 
-
-/* =====================================================
-   MAIN CONTENT
-   ===================================================== */
-
 .main-content {
     margin-left: 250px;
     width: calc(100% - 250px);
@@ -191,11 +159,6 @@ button {
     position: relative;
     z-index: 1;
 }
-
-
-/* =====================================================
-   TOP BAR
-   ===================================================== */
 
 .topbar {
     display: flex;
@@ -237,7 +200,6 @@ button {
     font-size: 22px;
 }
 
-/* Legacy topbar profile chip (used by quests.html) */
 .profile {
     background: white;
     padding: 12px 18px;
@@ -250,11 +212,6 @@ button {
     font-weight: 600;
     border: 2px solid var(--line);
 }
-
-
-/* =====================================================
-   GENERIC ELEMENTS
-   ===================================================== */
 
 .page-heading {
     margin-bottom: 25px;
@@ -269,7 +226,6 @@ button {
     color: var(--muted);
 }
 
-/* Parchment-like card panel */
 .card {
     background: white;
     border-radius: 20px;
@@ -279,8 +235,6 @@ button {
     position: relative;
 }
 
-
-/* Buttons */
 .btn {
     display: inline-block;
     border: none;
@@ -314,11 +268,6 @@ button {
     transform: translateY(-2px);
 }
 
-
-/* =====================================================
-   LEVEL BADGE (shield-style emblem)
-   ===================================================== */
-
 .level-badge {
     display: inline-flex;
     align-items: center;
@@ -332,7 +281,6 @@ button {
     font-size: 14px;
 }
 
-/* Grade level chip beside the level badge */
 .grade-badge {
     display: inline-flex;
     align-items: center;
@@ -346,11 +294,6 @@ button {
     font-size: 14px;
     margin-left: 8px;
 }
-
-
-/* =====================================================
-   XP BAR
-   ===================================================== */
 
 .xp-bar-track {
     height: 16px;
@@ -381,10 +324,13 @@ button {
     margin-top: 2px;
 }
 
+.adventure-panel .xp-label {
+    color: white !important;
+}
 
-/* =====================================================
-   STATS CARDS
-   ===================================================== */
+.adventure-panel .xp-to-next {
+    color: white !important;
+}
 
 .stats {
     display: grid;
@@ -432,11 +378,6 @@ button {
     font-size: 26px;
 }
 
-
-/* =====================================================
-   DASHBOARD
-   ===================================================== */
-
 .welcome-card h2 {
     font-size: 25px;
     margin-bottom: 8px;
@@ -446,7 +387,6 @@ button {
     color: var(--muted);
 }
 
-/* Purple/blue adventure status panel */
 .adventure-panel {
     background: linear-gradient(135deg, var(--purple), var(--blue));
     border-radius: 22px;
@@ -502,7 +442,6 @@ button {
     font-size: 15px;
 }
 
-/* Featured quest banner */
 .quest-card {
     background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
     color: white;
@@ -544,11 +483,6 @@ button {
     margin-right: 10px;
 }
 
-
-/* =====================================================
-   QUESTS PAGE (quard card list - team owned page)
-   ===================================================== */
-
 .quests-page {
     max-width: 1000px;
     margin: 0 auto;
@@ -560,7 +494,6 @@ button {
     gap: 22px;
 }
 
-/* White adventure cards for the quest board */
 .quests-page .quest-card {
     background: white;
     color: var(--ink);
@@ -668,11 +601,6 @@ button {
     transform: translateY(-2px);
 }
 
-
-/* =====================================================
-   PROFILE PAGE (RPG character sheet)
-   ===================================================== */
-
 .profile-page {
     max-width: 860px;
     margin: 0 auto;
@@ -688,7 +616,6 @@ button {
     overflow: hidden;
 }
 
-/* Decorative top strip with the Canva colors */
 .character-sheet::before {
     content: "";
     position: absolute;
@@ -731,7 +658,6 @@ button {
     margin-bottom: 12px;
 }
 
-/* Level + XP block */
 .profile-level-block {
     margin: 24px 0 22px;
     padding: 22px;
@@ -748,7 +674,6 @@ button {
     gap: 10px;
 }
 
-/* Player statistics */
 .profile-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -788,7 +713,6 @@ button {
     font-size: 23px;
 }
 
-/* Achievement slots */
 .achievement-section {
     margin-top: 8px;
 }
@@ -842,11 +766,6 @@ button {
     opacity: 0.6;
     filter: grayscale(0.7);
 }
-
-
-/* =====================================================
-   EDIT PROFILE FORM
-   ===================================================== */
 
 .edit-profile-btn {
     margin-top: 28px;
@@ -941,11 +860,6 @@ button {
     opacity: 0.85;
 }
 
-
-/* =====================================================
-   TOAST NOTIFICATION (level-up / achievement)
-   ===================================================== */
-
 .toast-notification {
     position: fixed;
     top: 22px;
@@ -976,11 +890,6 @@ button {
     font-size: 30px;
 }
 
-
-/* =====================================================
-   RESPONSIVE
-   ===================================================== */
-
 @media (max-width: 900px) {
     .main-content {
         margin-left: 220px;
@@ -1006,7 +915,6 @@ button {
         display: block;
     }
 
-    /* Sidebar becomes a bottom navigation bar */
     .sidebar {
         position: fixed;
         left: 0;
@@ -1088,4 +996,16 @@ button {
     .profile-stats {
         grid-template-columns: 1fr;
     }
+}
+
+.xp-to-next {
+    color: #ffffff !important;
+}
+
+.adventure-panel .xp-to-next {
+    color: #ffffff !important;
+}
+
+.welcome-card {
+    margin-bottom: 20px !important;
 }
