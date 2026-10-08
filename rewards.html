@@ -4,153 +4,345 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduQuest - Rewards</title>
-    <link rel="stylesheet" href="css/style.css">
+
     <style>
-        /* Rewards Page */
-        .rewards-container {
-            padding: 30px 40px;
+        :root {
+            --purple: #6c4dff;
+            --purple-dark: #5438d6;
+            --blue: #4d8bff;
+            --yellow: #ffd93d;
+            --white: #ffffff;
+            --bg: #f5f3ff;
+            --text: #25213b;
+            --muted: #77738b;
+            --green: #4caf50;
+            --border: #e6e2f5;
         }
 
-        .rewards-header {
-            margin-bottom: 25px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .rewards-header h1 {
-            font-size: 32px;
-            color: white;
-            margin-bottom: 8px;
+        body {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
         }
 
-        .rewards-header p {
-            color: #aaa8bd;
-            font-size: 16px;
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid var(--border);
+            padding: 25px 15px;
+            z-index: 100;
         }
 
-        /* Points Display */
-        .points-card {
-            background: linear-gradient(135deg, #6c45ff, #5135d8);
-            border-radius: 18px;
-            padding: 25px;
-            color: white;
+        .logo {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            gap: 10px;
+            padding: 0 15px 30px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--purple);
         }
 
-        .points-info h2 {
-            margin: 0 0 8px;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--purple);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-size: 20px;
         }
 
-        .points-number {
-            font-size: 36px;
-            font-weight: bold;
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
 
-        .points-icon {
-            font-size: 55px;
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: #68647a;
+            padding: 13px 15px;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.2s;
+            cursor: pointer;
         }
 
-        /* Rewards Grid */
-        .reward-title {
+        .nav a:hover {
+            background: #f0edff;
+            color: var(--purple);
+        }
+
+        .nav a.active {
+            background: var(--purple);
             color: white;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 35px 45px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .page-title h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+        }
+
+        /* XP CARD */
+
+        .xp-card {
+            background: linear-gradient(
+                135deg,
+                var(--purple),
+                var(--blue)
+            );
+            color: white;
+            padding: 20px 25px;
+            border-radius: 18px;
+            min-width: 190px;
+            box-shadow: 0 8px 25px rgba(108, 77, 255, 0.2);
+        }
+
+        .xp-label {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        .xp-number {
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* ================= REWARDS ================= */
+
+        .section-title {
             margin-bottom: 18px;
-            font-size: 24px;
+            font-size: 21px;
         }
 
         .rewards-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(230px, 1fr)
+            );
+            gap: 20px;
         }
 
         .reward-card {
             background: white;
             border-radius: 18px;
             padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            transition: transform 0.2s ease;
+            border: 1px solid var(--border);
+            transition: 0.25s;
+            position: relative;
         }
 
         .reward-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(50, 40, 100, 0.1);
         }
 
         .reward-icon {
-            width: 80px;
-            height: 80px;
-            background: #fff2bd;
-            border-radius: 20px;
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            background: #f0edff;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 auto 15px;
-            font-size: 42px;
+            font-size: 36px;
+            margin-bottom: 18px;
         }
 
         .reward-card h3 {
-            color: #292348;
-            margin: 10px 0;
-            font-size: 20px;
+            font-size: 19px;
+            margin-bottom: 8px;
         }
 
         .reward-card p {
-            color: #6d6984;
+            color: var(--muted);
             font-size: 14px;
-            min-height: 40px;
+            line-height: 1.5;
+            min-height: 42px;
         }
 
         .reward-cost {
-            display: inline-block;
-            background: #f4efff;
-            color: #5639dc;
-            border: 1px solid #ddd3ff;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: bold;
-            margin: 12px 0;
+            margin-top: 18px;
+            font-weight: 700;
+            color: var(--purple);
+            font-size: 15px;
         }
 
-        .claim-btn {
-            display: block;
+        .redeem-btn {
             width: 100%;
             border: none;
-            background: #6846ff;
-            color: white;
             padding: 12px;
-            border-radius: 25px;
-            font-size: 15px;
-            font-weight: bold;
+            margin-top: 15px;
+            border-radius: 10px;
+            background: var(--purple);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: 0.2s;
         }
 
-        .claim-btn:hover {
-            background: #5534df;
+        .redeem-btn:hover {
+            background: var(--purple-dark);
         }
 
-        .claim-btn:disabled {
-            background: #aaa7b8;
+        .redeem-btn:disabled {
+            background: #d8d5e4;
+            color: #858194;
             cursor: not-allowed;
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .rewards-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* ================= HISTORY ================= */
+
+        .history-section {
+            margin-top: 40px;
         }
 
-        @media (max-width: 600px) {
-            .rewards-grid {
-                grid-template-columns: 1fr;
+        .history {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-name {
+            font-weight: 600;
+        }
+
+        .history-date {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .history-xp {
+            color: #e04b4b;
+            font-weight: 700;
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        /* ================= NOTIFICATION ================= */
+
+        .notification {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #25213b;
+            color: white;
+            padding: 15px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 999;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 75px;
+                padding: 20px 10px;
             }
 
-            .rewards-container {
-                padding: 20px;
+            .logo span,
+            .nav a span:not(.nav-icon) {
+                display: none;
+            }
+
+            .logo {
+                justify-content: center;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .nav a {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 75px;
+                padding: 25px 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .xp-card {
+                width: 100%;
             }
         }
     </style>
@@ -158,175 +350,106 @@
 
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h1>EduQuest</h1>
+    <!-- ================= SIDEBAR ================= -->
 
-        <a href="index.html">🏠 Dashboard</a>
-        <a href="quests.html">🎯 Quests</a>
-        <a href="rewards.html" class="active">🏆 Rewards</a>
-        <a href="profile.html">📊 Progress</a>
-        <a href="#">⚙️ Settings</a>
-    </div>
+    <aside class="sidebar">
 
-    <!-- Main Content -->
-    <div class="main-content">
+        <div class="logo">
+            <div class="logo-icon">E</div>
+            <span>EduQuest</span>
+        </div>
 
-        <div class="rewards-container">
+        <nav class="nav">
 
-            <div class="rewards-header">
+            <a href="index.html">
+                <span class="nav-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="profile.html">
+                <span class="nav-icon">👤</span>
+                <span>Profile</span>
+            </a>
+
+            <a href="quests.html">
+                <span class="nav-icon">🎯</span>
+                <span>Quests</span>
+            </a>
+
+            <!-- REWARDS -->
+            <a href="rewards.html" class="active">
+                <span class="nav-icon">🎁</span>
+                <span>Rewards</span>
+            </a>
+
+            <a href="badges.html">
+                <span class="nav-icon">🏅</span>
+                <span>Badges</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="page-title">
                 <h1>Rewards</h1>
-                <p>Use your earned points to unlock exciting rewards!</p>
+                <p>Use your earned XP to redeem exciting rewards.</p>
             </div>
 
-            <!-- Points -->
-            <div class="points-card">
-                <div class="points-info">
-                    <h2>Your Available Points</h2>
-                    <div class="points-number">
-                        ⭐ <span id="points">100</span> Points
-                    </div>
+            <div class="xp-card">
+                <div class="xp-label">Your XP</div>
+                <div class="xp-number">
+                    ⭐ <span id="xp-value">0</span> XP
                 </div>
-
-                <div class="points-icon">
-                    🏆
-                </div>
-            </div>
-
-            <h2 class="reward-title">Available Rewards</h2>
-
-            <div class="rewards-grid">
-
-                <!-- Reward 1 -->
-                <div class="reward-card">
-                    <div class="reward-icon">🎨</div>
-
-                    <h3>Custom Profile Badge</h3>
-
-                    <p>
-                        Unlock a special badge for your profile.
-                    </p>
-
-                    <div class="reward-cost">
-                        ⭐ 20 Points
-                    </div>
-
-                    <button
-                        class="claim-btn"
-                        onclick="claimReward(20, 'Custom Profile Badge')">
-                        Claim Reward
-                    </button>
-                </div>
-
-                <!-- Reward 2 -->
-                <div class="reward-card">
-                    <div class="reward-icon">👑</div>
-
-                    <h3>Quest Champion</h3>
-
-                    <p>
-                        Show everyone that you are a Quest Champion.
-                    </p>
-
-                    <div class="reward-cost">
-                        ⭐ 30 Points
-                    </div>
-
-                    <button
-                        class="claim-btn"
-                        onclick="claimReward(30, 'Quest Champion')">
-                        Claim Reward
-                    </button>
-                </div>
-
-                <!-- Reward 3 -->
-                <div class="reward-card">
-                    <div class="reward-icon">🔥</div>
-
-                    <h3>XP Booster</h3>
-
-                    <p>
-                        Receive an extra XP bonus for your next quest.
-                    </p>
-
-                    <div class="reward-cost">
-                        ⭐ 40 Points
-                    </div>
-
-                    <button
-                        class="claim-btn"
-                        onclick="claimReward(40, 'XP Booster')">
-                        Claim Reward
-                    </button>
-                </div>
-
-                <!-- Reward 4 -->
-                <div class="reward-card">
-                    <div class="reward-icon">🏅</div>
-
-                    <h3>Master Badge</h3>
-
-                    <p>
-                        Unlock an exclusive Master achievement badge.
-                    </p>
-
-                    <div class="reward-cost">
-                        ⭐ 50 Points
-                    </div>
-
-                    <button
-                        class="claim-btn"
-                        onclick="claimReward(50, 'Master Badge')">
-                        Claim Reward
-                    </button>
-                </div>
-
-                <!-- Reward 5 -->
-                <div class="reward-card">
-                    <div class="reward-icon">💎</div>
-
-                    <h3>Diamond Status</h3>
-
-                    <p>
-                        Unlock the special Diamond status.
-                    </p>
-
-                    <div class="reward-cost">
-                        ⭐ 70 Points
-                    </div>
-
-                    <button
-                        class="claim-btn"
-                        onclick="claimReward(70, 'Diamond Status')">
-                        Claim Reward
-                    </button>
-                </div>
-
-                <!-- Reward 6 -->
-                <div class="reward-card">
-                    <div class="reward-icon">🚀</div>
-
-                    <h3>Ultimate Learner</h3>
-
-                    <p>
-                        Become an Ultimate Learner and earn recognition.
-                    </p>
-
-                    <div class="reward-cost">
-                        ⭐ 100 Points
-                    </div>
-
-                    <button
-                        class="claim-btn"
-                        onclick="claimReward(100, 'Ultimate Learner')">
-                        Claim Reward
-                    </button>
-                </div>
-
             </div>
 
         </div>
+
+
+        <!-- REWARDS -->
+
+        <h2 class="section-title">Available Rewards</h2>
+
+        <div
+            id="rewards-container"
+            class="rewards-grid">
+        </div>
+
+
+        <!-- HISTORY -->
+
+        <section class="history-section">
+
+            <h2 class="section-title">
+                Redemption History
+            </h2>
+
+            <div
+                id="reward-history"
+                class="history">
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- NOTIFICATION -->
+
+    <div
+        id="notification"
+        class="notification">
     </div>
+
+
+    <!-- JAVASCRIPT -->
 
     <script src="js/rewards.js"></script>
 
