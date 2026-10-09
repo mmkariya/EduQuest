@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuest - Badges & Rewards</title>
+
+    <style>
+        /* Base Page Setup */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Floating XP Tracker */
+        .xp-display {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+            z-index: 1002;
+        }
+
+        /* Sidebar */
+        .sidebar-navigation {
+            width: 260px;
+            min-height: 100vh;
+            background: #ffffff;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 1px solid #eef2f5;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.02);
+            box-sizing: border-box;
+        }
+
+        /* Back to Dashboard */
+        .back-dashboard {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 600;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .back-dashboard:hover {
+            color: #3498db;
+        }
+
+        /* Navigation Buttons */
+        .tab-button {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            color: #64748b;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-align: left;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .tab-button:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .tab-button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Main Workspace */
+        .content-area {
+            flex: 1;
+            padding: 40px 50px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .content-area h1 {
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #94a3b8;
+            margin-top: 0;
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+
+        /* Grid */
+        .badges-container,
+        .rewards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        /* Sections */
+        .badges-section,
+        .rewards-section {
+            display: none;
+        }
+
+        .section-active {
+            display: block;
+        }
+
+        /* Cards */
+        .badge-card,
+        .reward-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f0f4f8;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .badge-card:hover,
+        .reward-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
+        }
+
+        /* Icons */
+        .badge-icon,
+        .reward-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: #f8fafc;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+        }
+
+        /* Titles */
+        .badge-card h3,
+        .reward-card h3 {
+            font-size: 18px;
+            color: #1e293b;
+            margin: 10px 0 5px 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .badge-card h3:hover {
+            color: #3498db;
+        }
+
+        /* Badge Details */
+        .badge-details {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e2e8f0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .badge-details.show {
+            display: block;
+        }
+
+        /* Status */
+        .badge-status,
+        .reward-status {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 13px;
+            padding: 5px 12px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* Claim Button */
+        .reward-card button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .reward-card button:hover {
+            background-color: #2980b9;
+        }
+
+        .reward-card button:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        /* Unlocked Badge */
+        .unlocked {
+            border: 2px solid #3498db;
+        }
+
+        .unlocked .badge-icon,
+        .unlocked .reward-icon {
+            background-color: #e0f2fe;
+        }
+
+        /* Claimed Reward */
+        .claimed {
+            border: 2px solid #22c55e;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar-navigation {
+                width: 100%;
+                min-height: auto;
+                padding: 15px;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .back-dashboard {
+                width: 100%;
+            }
+
+            .tab-button {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .content-area {
+                padding: 30px 20px;
+            }
+
+            .xp-display {
+                position: static;
+                margin: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- XP DISPLAY -->
+    <div class="xp-display">
+        ⭐ XP: <span id="xp">0</span>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-navigation">
+
+        <a href="index.html" class="back-dashboard">
+            ← Back to Dashboard
+        </a>
+
+        <button
+            id="btn-badges"
+            class="tab-button active"
+            onclick="switchTab('badges')">
+            <span>🏅</span>
+            My Badges
+        </button>
+
+        <button
+            id="btn-rewards"
+            class="tab-button"
+            onclick="switchTab('rewards')">
+            <span>🎁</span>
+            Rewards
+        </button>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content-area">
+
+        <!-- BADGES -->
+        <section id="badges-tab" class="badges-section section-active">
+
+            <h1>🏅 My Badges</h1>
+
+            <p class="section-description">
+                Earn XP by completing quests and quizzes to unlock badges.
+                Click the badge title to see the requirements.
+            </p>
+
+            <div class="badges-container">
+
+                <!-- Beginner -->
+                <div class="badge-card" id="badge100">
+
+                    <div class="badge-icon">
+                        🌱
+                    </div>
+
+                    <h3 onclick="toggleBadge('details100')">
+                        Beginner
+                    </h3>
+
+                    <div id="details100" class="badge-details">
+                        <p>Earn 100 XP</p>
+                        <span class="badge-status">
+                            🔒 Locked
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Quick Learner -->
+                <div class="badge-card" id="badge250">
+
+                    <div class="badge-icon">
+                        📚
+                    </div>
+
+                    <h3 onclick="toggleBadge('details250')">
+                        Quick Learner
+                    </h3>
+
+                    <div id="details250" class="badge-details">
+                        <p>Earn 250 XP</p>
+                        <span class="badge-status">
+                            🔒 Locked
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Champion -->
+                <div class="badge-card" id="badge500">
+
+                    <div class="badge-icon">
+                        👑
+                    </div>
+
+                    <h3 onclick="toggleBadge('details500')">
+                        EduQuest Champion
+                    </h3>
+
+                    <div id="details500" class="badge-details">
+                        <p>Earn 500 XP</p>
+                        <span class="badge-status">
+                            🔒 Locked
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Legendary -->
+                <div class="badge-card" id="badge1000">
+
+                    <div class="badge-icon">
+                        💎
+                    </div>
+
+                    <h3 onclick="toggleBadge('details1000')">
+                        Legendary Learner
+                    </h3>
+
+                    <div id="details1000" class="badge-details">
+                        <p>Earn 1000 XP</p>
+                        <span class="badge-status">
+                            🔒 Locked
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- REWARDS -->
+        <section id="rewards-tab" class="rewards-section">
+
+            <h1>🎁 Rewards</h1>
+
+            <p class="section-description">
+                Reach XP milestones and claim your rewards instantly!
+            </p>
+
+            <div class="rewards-container">
+
+                <!-- Reward 100 -->
+                <div class="reward-card" id="reward100">
+
+                    <div class="reward-icon">
+                        🎁
+                    </div>
+
+                    <h3>
+                        Starter Reward
+                    </h3>
+
+                    <p>
+                        Reach 100 XP
+                    </p>
+
+                    <span class="reward-status">
+                        🔒 Locked
+                    </span>
+
+                    <button onclick="claimReward('reward100')">
+                        Claim Reward
+                    </button>
+
+                </div>
+
+
+                <!-- Reward 250 -->
+                <div class="reward-card" id="reward250">
+
+                    <div class="reward-icon">
+                        🏆
+                    </div>
+
+                    <h3>
+                        Quiz Master Reward
+                    </h3>
+
+                    <p>
+                        Reach 250 XP
+                    </p>
+
+                    <span class="reward-status">
+                        🔒 Locked
+                    </span>
+
+                    <button onclick="claimReward('reward250')">
+                        Claim Reward
+                    </button>
+
+                </div>
+
+
+                <!-- Reward 500 -->
+                <div class="reward-card" id="reward500">
+
+                    <div class="reward-icon">
+                        👑
+                    </div>
+
+                    <h3>
+                        Champion Reward
+                    </h3>
+
+                    <p>
+                        Reach 500 XP
+                    </p>
+
+                    <span class="reward-status">
+                        🔒 Locked
+                    </span>
+
+                    <button onclick="claimReward('reward500')">
+                        Claim Reward
+                    </button>
+
+                </div>
+
+
+                <!-- Reward 1000 -->
+                <div class="reward-card" id="reward1000">
+
+                    <div class="reward-icon">
+                        💎
+                    </div>
+
+                    <h3>
+                        Legendary Reward
+                    </h3>
+
+                    <p>
+                        Reach 1000 XP
+                    </p>
+
+                    <span class="reward-status">
+                        🔒 Locked
+                    </span>
+
+                    <button onclick="claimReward('reward1000')">
+                        Claim Reward
+                    </button>
+
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        /* =========================================
+           XP DATA
+        ========================================= */
+
+        let xp = parseInt(localStorage.getItem("eduquestXP")) || 0;
+
+        const badges = [
+            {
+                id: "badge100",
+                xp: 100
+            },
+            {
+                id: "badge250",
+                xp: 250
+            },
+            {
+                id: "badge500",
+                xp: 500
+            },
+            {
+                id: "badge1000",
+                xp: 1000
+            }
+        ];
+
+        const rewards = [
+            {
+                id: "reward100",
+                xp: 100
+            },
+            {
+                id: "reward250",
+                xp: 250
+            },
+            {
+                id: "reward500",
+                xp: 500
+            },
+            {
+                id: "reward1000",
+                xp: 1000
+            }
+        ];
+
+
+        /* =========================================
+           UPDATE XP DISPLAY
+        ========================================= */
+
+        function updateXPDisplay() {
+
+            document.getElementById("xp").textContent = xp;
+
+            updateBadges();
+            updateRewards();
+        }
+
+
+        /* =========================================
+           UPDATE BADGES
+        ========================================= */
+
+        function updateBadges() {
+
+            badges.forEach(function(badge) {
+
+                const card = document.getElementById(badge.id);
+
+                if (!card) return;
+
+                const status =
+                    card.querySelector(".badge-status");
+
+                if (xp >= badge.xp) {
+
+                    card.classList.add("unlocked");
+
+                    status.textContent = "🏅 Unlocked";
+
+                } else {
+
+                    card.classList.remove("unlocked");
+
+                    status.textContent = "🔒 Locked";
+                }
+            });
+        }
+
+
+        /* =========================================
+           UPDATE REWARDS
+        ========================================= */
+
+        function updateRewards() {
+
+            rewards.forEach(function(reward) {
+
+                const card = document.getElementById(reward.id);
+
+                if (!card) return;
+
+                const status =
+                    card.querySelector(".reward-status");
+
+                const button =
+                    card.querySelector("button");
+
+                const claimed =
+                    localStorage.getItem(
+                        "claimed_" + reward.id
+                    ) === "true";
+
+
+                if (claimed) {
+
+                    card.classList.add("claimed");
+
+                    status.textContent = "✅ Claimed";
+
+                    button.textContent = "Claimed";
+
+                    button.disabled = true;
+
+                } else if (xp >= reward.xp) {
+
+                    card.classList.remove("claimed");
+
+                    status.textContent = "🔓 Available";
+
+                    button.disabled = false;
+
+                    button.textContent = "Claim Reward";
+
+                } else {
+
+                    card.classList.remove("claimed");
+
+                    status.textContent = "🔒 Locked";
+
+                    button.disabled = true;
+
+                    button.textContent = "Claim Reward";
+                }
+            });
+        }
+
+
+        /* =========================================
+           SWITCH BADGES / REWARDS TAB
+        ========================================= */
+
+        function switchTab(tab) {
+
+            const badgesTab =
+                document.getElementById("badges-tab");
+
+            const rewardsTab =
+                document.getElementById("rewards-tab");
+
+            const badgesButton =
+                document.getElementById("btn-badges");
+
+            const rewardsButton =
+                document.getElementById("btn-rewards");
+
+
+            if (tab === "badges") {
+
+                badgesTab.classList.add("section-active");
+                rewardsTab.classList.remove("section-active");
+
+                badgesButton.classList.add("active");
+                rewardsButton.classList.remove("active");
+
+            }
+
+            else if (tab === "rewards") {
+
+                badgesTab.classList.remove("section-active");
+                rewardsTab.classList.add("section-active");
+
+                badgesButton.classList.remove("active");
+                rewardsButton.classList.add("active");
+            }
+        }
+
+
+        /* =========================================
+           SHOW BADGE DETAILS
+        ========================================= */
+
+        function toggleBadge(id) {
+
+            const details =
+                document.getElementById(id);
+
+            if (!details) return;
+
+            details.classList.toggle("show");
+        }
+
+
+        /* =========================================
+           CLAIM REWARD
+        ========================================= */
+
+        function claimReward(rewardId) {
+
+            const reward =
+                rewards.find(function(item) {
+                    return item.id === rewardId;
+                });
+
+            if (!reward) return;
+
+
+            if (xp < reward.xp) {
+
+                alert(
+                    "You need " +
+                    reward.xp +
+                    " XP to unlock this reward."
+                );
+
+                return;
+            }
+
+
+            const alreadyClaimed =
+                localStorage.getItem(
+                    "claimed_" + rewardId
+                ) === "true";
+
+
+            if (alreadyClaimed) {
+
+                alert("You already claimed this reward.");
+
+                return;
+            }
+
+
+            localStorage.setItem(
+                "claimed_" + rewardId,
+                "true"
+            );
+
+
+            alert("🎉 Reward claimed successfully!");
+
+            updateRewards();
+        }
+
+
+        /* =========================================
+           LOAD XP WHEN PAGE OPENS
+        ========================================= */
+
+        updateXPDisplay();
+
+    </script>
+
+</body>
+</html>
