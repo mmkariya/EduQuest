@@ -1,233 +1,562 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>EduQuest - Quests</title>
-
     <link rel="stylesheet" href="css/style.css">
-<style>.start-quest-btn{text-decoration:none;display:inline-block;position:relative;z-index:10;cursor:pointer;}</style>
+
+    <style>
+        [hidden] { display: none !important; }
+
+        .subject-selection { margin: 25px 0; }
+        .subject-selection select {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            min-width: 220px;
+        }
+
+        #topicsContainer {
+            display: grid;
+            gap: 18px;
+        }
+
+        .topic-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px #29204b12;
+        }
+
+        .topic-card h3 { margin: 0 0 8px; }
+        .topic-card p { margin: 8px 0 15px; }
+
+        .unlock-btn, .quiz-btn {
+            background: #6955ff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 22px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .unlock-btn:disabled {
+            background: #b9b4ca;
+            cursor: not-allowed;
+        }
+
+        .quiz-wrap {
+            max-width: 960px;
+            margin: 25px auto;
+        }
+
+        .back-btn {
+            color: #6955ff;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .quiz-card {
+            background: white;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 8px 35px #29204b15;
+        }
+
+        .quiz-top, .quiz-rewards {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: #eee9f8;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 25px 0;
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #7052ff, #5595ff);
+            transition: width .3s;
+        }
+
+        .quiz-icon { font-size: 48px; margin: 15px 0; }
+
+        .answer-option {
+            width: 100%;
+            display: block;
+            text-align: left;
+            padding: 17px;
+            margin: 14px 0;
+            background: white;
+            border: 2px solid #e2dcf5;
+            border-radius: 15px;
+            font-size: 16px;
+            color: #292044;
+            cursor: pointer;
+        }
+
+        .answer-option.selected {
+            border-color: #6955ff;
+            background: #f1eeff;
+        }
+
+        .answer-option:disabled { cursor: default; }
+        .feedback { margin: 18px 0; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .quiz-card { padding: 20px; }
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- Sidebar -->
     <aside class="sidebar">
-
         <h1 class="logo">EduQuest</h1>
-
         <nav>
-
-            <a href="index.html" class="nav-item">
-                🏠 Dashboard
-            </a>
-
-            <a href="quests.html" class="nav-item active">
-                🗺️ Quests
-            </a>
-
-            <a href="#" class="nav-item">
-                🏆 Rewards
-            </a>
-
-            <a href="#" class="nav-item">
-                📊 Progress
-            </a>
-
-            <a href="#" class="nav-item">
-                ⚙️ Settings
-            </a>
-
+            <a href="index.html" class="nav-item">🏠 Dashboard</a>
+            <a href="quests.html" class="nav-item active">🗺️ Quests</a>
+            <a href="#" class="nav-item">🏆 Rewards</a>
+            <a href="#" class="nav-item">📊 Progress</a>
+            <a href="#" class="nav-item">⚙️ Settings</a>
         </nav>
-
     </aside>
 
-
-    <!-- Main Content -->
     <main class="main-content">
-
-        <!-- Top Bar -->
         <header class="topbar">
-
             <div>
                 <h2>Quests</h2>
                 <p>Complete educational challenges and earn rewards.</p>
             </div>
-
-            <div class="profile">
-                👤 <span>Player</span>
-            </div>
-
+            <div class="profile">👤 <span>Player</span></div>
         </header>
 
-
-        <!-- Quest Page -->
-        <section class="quests-page">
-
+        <section class="quests-page" id="questsPage">
             <div class="page-heading">
-
                 <h1>Available Quests 🗺️</h1>
-
-                <p>
-                    Choose a quest, complete the challenge,
-                    and earn XP and points!
-                </p>
-
+                <p>Choose a quest, complete the challenge, and earn XP and points!</p>
             </div>
 
-
-            <!-- Quest Cards -->
-            <div class="quest-grid">
-
-
-                <!-- Quest 1 -->
-                <div class="quest-card">
-
-                    <div class="quest-icon">
-                        🧮
-                    </div>
-
-                    <div class="quest-content">
-
-                        <span class="quest-difficulty easy">
-                            Easy
-                        </span>
-
-                        <h2>Math Explorer</h2>
-
-                        <p>
-                            Test your knowledge of basic mathematics
-                            through a series of fun challenges.
-                        </p>
-
-                        <div class="quest-info">
-
-                            <span>⭐ 20 XP</span>
-
-                            <span>🎯 10 Points</span>
-
-                        </div>
-
-                        <a href="quest-game.html?quest=math-explorer" class="start-quest-btn">Start Quest</a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Quest 2 -->
-                <div class="quest-card">
-
-                    <div class="quest-icon">
-                        💻
-                    </div>
-
-                    <div class="quest-content">
-
-                        <span class="quest-difficulty medium">
-                            Medium
-                        </span>
-
-                        <h2>Code Apprentice</h2>
-
-                        <p>
-                            Solve beginner programming challenges
-                            and improve your coding skills.
-                        </p>
-
-                        <div class="quest-info">
-
-                            <span>⭐ 30 XP</span>
-
-                            <span>🎯 20 Points</span>
-
-                        </div>
-
-                        <a href="quest-game.html?quest=code-apprentice" class="start-quest-btn">Start Quest</a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Quest 3 -->
-                <div class="quest-card">
-
-                    <div class="quest-icon">
-                        🌎
-                    </div>
-
-                    <div class="quest-content">
-
-                        <span class="quest-difficulty medium">
-                            Medium
-                        </span>
-
-                        <h2>World Explorer</h2>
-
-                        <p>
-                            Explore geography and discover interesting
-                            facts about different places around the world.
-                        </p>
-
-                        <div class="quest-info">
-
-                            <span>⭐ 30 XP</span>
-
-                            <span>🎯 20 Points</span>
-
-                        </div>
-
-                        <a href="quest-game.html?quest=world-explorer" class="start-quest-btn">Start Quest</a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Quest 4 -->
-                <div class="quest-card">
-
-                    <div class="quest-icon">
-                        🔬
-                    </div>
-
-                    <div class="quest-content">
-
-                        <span class="quest-difficulty hard">
-                            Hard
-                        </span>
-
-                        <h2>Science Master</h2>
-
-                        <p>
-                            Challenge yourself with questions about
-                            science, nature, and the world around you.
-                        </p>
-
-                        <div class="quest-info">
-
-                            <span>⭐ 50 XP</span>
-
-                            <span>🎯 30 Points</span>
-
-                        </div>
-
-                        <a href="quest-game.html?quest=science-master" class="start-quest-btn">Start Quest</a>
-
-                    </div>
-
-                </div>
-
-
+            <div class="subject-selection">
+                <h2>Select a Subject</h2>
+                <select id="subjectSelect">
+                    <option value="">-- Choose Subject --</option>
+                    <option value="math">Math</option>
+                    <option value="english">English</option>
+                    <option value="science">Science</option>
+                    <option value="programming">Programming</option>
+                </select>
             </div>
 
+            <div id="topicsContainer"></div>
         </section>
 
+        <section id="quizPage" hidden>
+            <div class="quiz-wrap">
+                <button class="back-btn" id="backBtn">← Back to Quests</button>
+
+                <div class="quiz-card">
+                    <div class="quiz-top">
+                        <strong id="questionCount">Question 1 of 5</strong>
+                        <div class="quiz-rewards">
+                            <strong>⭐ <span id="xpDisplay">20</span> XP</strong>
+                            <strong>🎯 <span id="pointsDisplay">10</span> Points</strong>
+                        </div>
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+
+                    <div class="quiz-icon" id="quizIcon">📚</div>
+                    <h2 id="questionText"></h2>
+                    <div id="answerOptions"></div>
+                    <p class="feedback" id="feedback" aria-live="polite"></p>
+                    <button class="quiz-btn" id="actionBtn" disabled>
+                        Check Answer
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
 
-</body>
+    <script>
+        const topics = {
+            math: [
+                { name: "Addition", icon: "➕", unlocked: true },
+                { name: "Subtraction", icon: "➖", unlocked: false },
+                { name: "Multiplication", icon: "✖️", unlocked: false }
+            ],
+            english: [
+                { name: "Grammar", icon: "📚", unlocked: true },
+                { name: "Vocabulary", icon: "🔤", unlocked: false },
+                { name: "Reading", icon: "📖", unlocked: false }
+            ],
+            science: [
+                { name: "Animals", icon: "🐾", unlocked: true },
+                { name: "Plants", icon: "🌱", unlocked: false },
+                { name: "Earth", icon: "🌎", unlocked: false }
+            ],
+            programming: [
+                { name: "HTML", icon: "🌐", unlocked: true },
+                { name: "CSS", icon: "🎨", unlocked: false },
+                { name: "JavaScript", icon: "💻", unlocked: false }
+            ]
+        };
 
+        // Each question: question, answer choices, correct answer index.
+        const questionBank = {
+            "Addition": [
+                ["What is 5 + 3?", ["6", "8", "9", "10"], 1],
+                ["What is 7 + 4?", ["10", "11", "12", "13"], 1],
+                ["What is 9 + 6?", ["14", "15", "16", "17"], 1],
+                ["What is 12 + 8?", ["18", "20", "21", "22"], 1],
+                ["What is 6 + 6?", ["10", "11", "12", "13"], 2]
+            ],
+            "Subtraction": [
+                ["What is 9 - 4?", ["3", "4", "5", "6"], 2],
+                ["What is 12 - 5?", ["6", "7", "8", "9"], 1],
+                ["What is 15 - 7?", ["7", "8", "9", "10"], 1],
+                ["What is 20 - 8?", ["10", "11", "12", "13"], 2],
+                ["What is 18 - 9?", ["7", "8", "9", "10"], 2]
+            ],
+            "Multiplication": [
+                ["What is 9 × 3?", ["18", "21", "27", "30"], 2],
+                ["What is 4 × 5?", ["15", "20", "25", "30"], 1],
+                ["What is 6 × 6?", ["30", "32", "36", "42"], 2],
+                ["What is 7 × 3?", ["18", "20", "21", "24"], 2],
+                ["What is 8 × 4?", ["24", "28", "32", "36"], 2]
+            ],
+            "Grammar": [
+                ["Which word is a noun?", ["Run", "Beautiful", "Teacher", "Quickly"], 2],
+                ["Choose the correct sentence.", ["She go to school.", "She goes to school.", "She going school.", "She gone school."], 1],
+                ["What is the past tense of 'eat'?", ["Eated", "Eating", "Ate", "Eats"], 2],
+                ["Which word is an adjective?", ["Happiness", "Blue", "Run", "Slowly"], 1],
+                ["Choose the correct pronoun: Maria is kind. ___ helps others.", ["He", "They", "She", "It"], 2]
+            ],
+            "Vocabulary": [
+                ["What is a synonym for happy?", ["Sad", "Glad", "Angry", "Tired"], 1],
+                ["What is the opposite of ancient?", ["Old", "Historic", "Modern", "Past"], 2],
+                ["What does enormous mean?", ["Tiny", "Very large", "Quiet", "Fast"], 1],
+                ["Which word means to begin?", ["Finish", "Start", "Close", "Stop"], 1],
+                ["What is a synonym for quick?", ["Rapid", "Slow", "Late", "Weak"], 0]
+            ],
+            "Reading": [
+                ["What is the main idea?", ["A small detail", "The central point", "The title only", "The last word"], 1],
+                ["Who writes a book?", ["Reader", "Author", "Librarian", "Character"], 1],
+                ["What is a story's setting?", ["Where and when it happens", "Its price", "Its cover", "Its author"], 0],
+                ["What does predict mean?", ["Guess what may happen", "Copy every word", "Close the book", "Skip the title"], 0],
+                ["What is a fact?", ["Something verifiable", "A preference", "An imaginary event", "A guess only"], 0]
+            ],
+            "Animals": [
+                ["Which animal is a mammal?", ["Frog", "Dolphin", "Trout", "Lizard"], 1],
+                ["What do bees collect from flowers?", ["Sand", "Nectar", "Bark", "Seeds only"], 1],
+                ["Which animal lays eggs?", ["Cat", "Dog", "Chicken", "Cow"], 2],
+                ["What is a baby dog called?", ["Kitten", "Calf", "Puppy", "Cub"], 2],
+                ["Which animal has a long neck?", ["Giraffe", "Rabbit", "Fox", "Penguin"], 0]
+            ],
+            "Plants": [
+                ["Which plant part absorbs water?", ["Flower", "Root", "Fruit", "Seed"], 1],
+                ["What do plants need for photosynthesis?", ["Sunlight", "Plastic", "Metal", "Smoke"], 0],
+                ["Which part often produces seeds?", ["Flower", "Root", "Bark", "Thorn"], 0],
+                ["Which gas do plants take in for photosynthesis?", ["Oxygen", "Carbon dioxide", "Helium", "Hydrogen"], 1],
+                ["Which part supports the plant?", ["Stem", "Petal", "Seed", "Fruit"], 0]
+            ],
+            "Earth": [
+                ["Which planet do we live on?", ["Mars", "Earth", "Venus", "Jupiter"], 1],
+                ["What is Earth's natural satellite?", ["The Sun", "The Moon", "Mars", "Venus"], 1],
+                ["What causes day and night?", ["Earth's rotation", "Ocean tides", "Clouds", "Earth's color"], 0],
+                ["What is the layer of gases around Earth?", ["Atmosphere", "Core", "Crust", "Mantle"], 0],
+                ["What is frozen water called?", ["Steam", "Ice", "Rain", "Mist"], 1]
+            ],
+            "HTML": [
+                ["What does HTML stand for?", ["HyperText Markup Language", "HighText Machine Language", "Home Tool Markup Language", "Hyperlink Transfer Language"], 0],
+                ["Which tag creates a paragraph?", ["<h1>", "<p>", "<img>", "<br>"], 1],
+                ["Which tag creates a link?", ["<a>", "<p>", "<div>", "<ul>"], 0],
+                ["Which tag creates the largest standard heading?", ["<h6>", "<head>", "<h1>", "<title>"], 2],
+                ["Which attribute specifies an image source?", ["href", "src", "alt", "class"], 1]
+            ],
+            "CSS": [
+                ["What does CSS control?", ["Page styling", "Database storage", "Server hardware", "Internet speed"], 0],
+                ["Which property changes text color?", ["font-style", "color", "background", "margin"], 1],
+                ["Which selector targets a class?", ["#name", ".name", "name()", "*name"], 1],
+                ["Which property changes text size?", ["font-size", "text-weight", "size-text", "font-color"], 0],
+                ["Which property rounds corners?", ["corner", "border-radius", "round", "radius-style"], 1]
+            ],
+            "JavaScript": [
+                ["Which keyword declares a reassignable variable?", ["const", "let", "fixed", "define"], 1],
+                ["Which symbol is strict equality?", ["=", "==", "===", "!="], 2],
+                ["Which method writes to the console?", ["console.log()", "print.page()", "write.console()", "echo.html()"], 0],
+                ["Which type represents true or false?", ["String", "Number", "Boolean", "Array"], 2],
+                ["Which brackets create an array?", ["{}", "[]", "()", "<>"], 1]
+            ]
+        };
+
+        const $ = id => document.getElementById(id);
+        const subjectSelect = $("subjectSelect");
+        const topicsContainer = $("topicsContainer");
+
+        // Use a new storage key to avoid old test progress unlocking topics.
+        const STORAGE_KEY = "eduquestProgressV2";
+
+        let saved = {};
+        try {
+            saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        } catch (error) {
+            saved = {};
+        }
+
+        let completed = new Set(saved.completed || []);
+        let totalXP = saved.xp || 0;
+        let totalPoints = saved.points || 0;
+
+        // Restore saved progress only from this version of the quiz.
+        Object.keys(topics).forEach(subject => {
+            topics[subject].forEach((topic, index) => {
+                // A topic is available if it is first, or the previous topic is completed.
+                topic.unlocked = index === 0 || completed.has(subject + ":" + (index - 1));
+            });
+        });
+
+        let currentSubject = "";
+        let currentTopicIndex = 0;
+        let questions = [];
+        let questionIndex = 0;
+        let selectedAnswer = null;
+        let score = 0;
+        let answered = false;
+        let earnedThisAttempt = false;
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                completed: [...completed],
+                xp: totalXP,
+                points: totalPoints
+            }));
+        }
+
+        subjectSelect.addEventListener("change", renderTopics);
+        $("backBtn").addEventListener("click", backToQuests);
+
+        function renderTopics() {
+            const subject = subjectSelect.value;
+            topicsContainer.replaceChildren();
+
+            if (!subject) return;
+
+            topics[subject].forEach((topic, index) => {
+                const key = subject + ":" + index;
+                const isCompleted = completed.has(key);
+
+                const card = document.createElement("div");
+                card.className = "topic-card";
+
+                const title = document.createElement("h3");
+                title.textContent = topic.icon + " " + topic.name;
+
+                const status = document.createElement("p");
+                status.textContent = isCompleted ? "🏆 Completed" :
+                    topic.unlocked ? "✅ Available" : "🔒 Locked";
+
+                const button = document.createElement("button");
+                button.className = "unlock-btn";
+                button.textContent = !topic.unlocked ? "Locked" :
+                    isCompleted ? "Play Again" : "Complete Topic";
+                button.disabled = !topic.unlocked;
+
+                button.addEventListener("click", () => startQuiz(subject, index));
+
+                card.append(title, status, button);
+                topicsContainer.appendChild(card);
+            });
+        }
+
+        function startQuiz(subject, index) {
+            if (!topics[subject][index].unlocked) return;
+
+            currentSubject = subject;
+            currentTopicIndex = index;
+            questions = questionBank[topics[subject][index].name] || [];
+
+            if (!questions.length) {
+                alert("Wala pay quiz questions niini nga topic.");
+                return;
+            }
+
+            questionIndex = 0;
+            score = 0;
+            earnedThisAttempt = false;
+
+            $("questsPage").hidden = true;
+            $("quizPage").hidden = false;
+            $("quizIcon").textContent = topics[subject][index].icon;
+            $("xpDisplay").textContent = "20";
+            $("pointsDisplay").textContent = "10";
+
+            $("actionBtn").onclick = submitAnswer;
+            renderQuestion();
+            window.scrollTo(0, 0);
+        }
+
+        function renderQuestion() {
+            selectedAnswer = null;
+            answered = false;
+
+            const question = questions[questionIndex];
+            $("questionCount").textContent =
+                `Question ${questionIndex + 1} of ${questions.length}`;
+            $("progressFill").style.width =
+                `${questionIndex / questions.length * 100}%`;
+            $("questionText").textContent = question[0];
+            $("feedback").textContent = "";
+            $("answerOptions").replaceChildren();
+
+            question[1].forEach((answer, index) => {
+                const button = document.createElement("button");
+                button.className = "answer-option";
+                button.textContent = answer;
+
+                button.addEventListener("click", () => {
+                    if (answered) return;
+
+                    selectedAnswer = index;
+                    document.querySelectorAll(".answer-option")
+                        .forEach(item => item.classList.remove("selected"));
+
+                    button.classList.add("selected");
+                    $("actionBtn").disabled = false;
+                });
+
+                $("answerOptions").appendChild(button);
+            });
+
+            $("actionBtn").disabled = true;
+            $("actionBtn").textContent = "Check Answer";
+        }
+
+        function submitAnswer() {
+            if (answered) {
+                questionIndex++;
+
+                if (questionIndex >= questions.length) {
+                    finishQuiz();
+                } else {
+                    renderQuestion();
+                }
+                return;
+            }
+
+            if (selectedAnswer === null) return;
+
+            answered = true;
+            const correct = questions[questionIndex][2];
+
+            document.querySelectorAll(".answer-option").forEach((button, index) => {
+                button.disabled = true;
+
+                if (index === correct) {
+                    button.style.borderColor = "#22a06b";
+                    button.style.background = "#e6f8ef";
+                }
+            });
+
+            if (selectedAnswer === correct) {
+                score++;
+                $("feedback").textContent = "✅ Correct! Well done!";
+                $("feedback").style.color = "#168052";
+            } else {
+                $("feedback").textContent =
+                    "❌ Correct answer: " + questions[questionIndex][1][correct];
+                $("feedback").style.color = "#c0392b";
+            }
+
+            $("progressFill").style.width =
+                `${(questionIndex + 1) / questions.length * 100}%`;
+
+            $("actionBtn").disabled = false;
+            $("actionBtn").textContent =
+                questionIndex === questions.length - 1
+                    ? "Finish Quiz" : "Next Question";
+        }
+
+        function finishQuiz() {
+            const percentage = Math.round(score / questions.length * 100);
+            const passed = percentage >= 70;
+            const key = currentSubject + ":" + currentTopicIndex;
+            const firstCompletion = passed && !completed.has(key);
+
+            if (passed) {
+                // Mark this topic as completed and unlock the next topic immediately.
+                if (firstCompletion) {
+                    completed.add(key);
+                    totalXP += 20;
+                    totalPoints += 10;
+                }
+
+                const nextIndex = currentTopicIndex + 1;
+                if (nextIndex < topics[currentSubject].length) {
+                    topics[currentSubject][nextIndex].unlocked = true;
+                }
+
+                // Save progress whether this is the first pass or a replay.
+                saveProgress();
+            }
+
+            $("questionCount").textContent = "Quiz Complete!";
+            $("progressFill").style.width = "100%";
+            $("quizIcon").textContent = passed ? "🏆" : "📚";
+            $("questionText").textContent =
+                `Your Score: ${score}/${questions.length} (${percentage}%)`;
+            $("answerOptions").replaceChildren();
+
+            $("feedback").textContent = passed
+                ? firstCompletion
+                    ? "🎉 You passed! You earned 20 XP and 10 points. The next topic is now unlocked!"
+                    : "🎉 You passed! This topic was already completed, so no extra rewards were added."
+                : "Keep practicing! You need 70% to pass. Try again!";
+
+            $("feedback").style.color = passed ? "#168052" : "#c0392b";
+            $("xpDisplay").textContent = totalXP;
+            $("pointsDisplay").textContent = totalPoints;
+
+            $("actionBtn").disabled = false;
+            $("actionBtn").textContent = passed ? "Back to Quests" : "Try Again";
+
+            $("actionBtn").onclick = () => {
+                if (passed) {
+                    backToQuests();
+                } else {
+                    startQuiz(currentSubject, currentTopicIndex);
+                }
+            };
+        }
+
+        function backToQuests() {
+            $("quizPage").hidden = true;
+            $("questsPage").hidden = false;
+            $("actionBtn").onclick = submitAnswer;
+            $("actionBtn").disabled = true;
+            subjectSelect.value = currentSubject;
+            renderTopics();
+            window.scrollTo(0, 0);
+        }
+
+        renderTopics();
+    </script>
+</body>
 </html>
