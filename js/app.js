@@ -1,3 +1,5 @@
+javascript
+// EduQuest Shared Player Data and XP System
 
 const LEVELS = [
     { level: 1, xp: 0 },
@@ -71,11 +73,17 @@ function getPlayerData() {
             name: typeof data.name === "string" ? data.name : defaults.name,
             title: typeof data.title === "string" ? data.title : defaults.title,
             avatar: typeof data.avatar === "string" ? data.avatar : defaults.avatar,
-            gradeLevel: typeof data.gradeLevel === "string" ? data.gradeLevel : defaults.gradeLevel,
+            gradeLevel: typeof data.gradeLevel === "string"
+                ? data.gradeLevel
+                : defaults.gradeLevel,
             xp: Math.max(0, Number(data.xp) || 0),
             points: Math.max(0, Number(data.points) || 0),
-            completedQuests: Array.isArray(data.completedQuests) ? data.completedQuests : [],
-            achievements: Array.isArray(data.achievements) ? data.achievements : []
+            completedQuests: Array.isArray(data.completedQuests)
+                ? data.completedQuests
+                : [],
+            achievements: Array.isArray(data.achievements)
+                ? data.achievements
+                : []
         };
 
         player.level = calculateLevel(player.xp);
@@ -335,7 +343,8 @@ function updatePlayerDisplays() {
 
     document.querySelectorAll("[data-xptext]").forEach(function (element) {
         if (progress.required > 0) {
-            element.textContent = progress.current + " / " + progress.required + " XP";
+            element.textContent =
+                progress.current + " / " + progress.required + " XP";
         } else {
             element.textContent = player.xp + " XP (Max Level)";
         }
@@ -358,14 +367,18 @@ function updatePlayerDisplays() {
 }
 
 function updateTextByDisplay(key, value) {
-    document.querySelectorAll('[data-display="' + key + '"]').forEach(function (element) {
-        element.textContent = String(value);
-    });
+    document.querySelectorAll('[data-display="' + key + '"]').forEach(
+        function (element) {
+            element.textContent = String(value);
+        }
+    );
 }
 
 function notifyDataChanged() {
     if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("eduquest-data-changed"));
+        window.dispatchEvent(
+            new CustomEvent("eduquest-data-changed")
+        );
     }
 }
 
