@@ -1,0 +1,1064 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress | EduQuest</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .progress-page {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .progress-hero {
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            color: white;
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .hero-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            min-width: 0;
+        }
+
+        .progress-hero .hero-avatar {
+            width: 82px;
+            height: 82px;
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, .2);
+            font-size: 45px;
+            flex-shrink: 0;
+        }
+
+        .hero-label {
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: .85;
+            margin-bottom: 5px;
+        }
+
+        .progress-hero h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: white;
+            overflow-wrap: anywhere;
+        }
+
+        .progress-hero p {
+            color: white;
+            opacity: .9;
+        }
+
+        .hero-level {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .hero-level strong {
+            display: block;
+            font-size: 42px;
+            line-height: 1.2;
+            color: white;
+        }
+
+        .hero-level span {
+            font-size: 13px;
+            opacity: .9;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .progress-stat {
+            background: white;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            border-radius: 18px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-width: 0;
+            transition: transform 0.3s ease, box-shadow 0.2s;
+        }
+
+        .progress-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(108, 77, 255, 0.18);
+        }
+
+        @keyframes statEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-stat-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 15px;
+            background: var(--yellow-soft);
+            font-size: 25px;
+            transform: none;
+            transition: none;
+        }
+
+        .progress-stat:hover .progress-stat-icon {
+            transform: none;
+        }
+
+        .progress-stat p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .progress-stat h2 {
+            font-size: 25px;
+            overflow-wrap: anywhere;
+        }
+
+        .progress-columns {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .progress-column {
+            min-width: 0;
+        }
+
+        .progress-section {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+            min-width: 0;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 20px;
+        }
+
+        .section-heading > span {
+            color: var(--muted);
+            font-size: 13px;
+            text-align: right;
+        }
+
+        .level-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .level-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border-radius: 30px;
+            padding: 8px 13px;
+            color: white;
+            font-weight: 800;
+            font-size: 13px;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+        }
+
+        .level-xp {
+            text-align: right;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .level-progress-track {
+            width: 100%;
+            height: 16px;
+            background: #ece7ff;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .level-progress-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 30px;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+            transition: width .6s ease;
+        }
+
+        .level-progress-caption {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .level-progress-caption span {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .subject-list,
+        .achievement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .subject-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 9px;
+        }
+
+        .subject-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            min-width: 0;
+        }
+
+        .subject-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            font-size: 21px;
+            flex-shrink: 0;
+        }
+
+        .subject-count {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--purple-dark);
+            white-space: nowrap;
+        }
+
+        .subject-track {
+            height: 10px;
+            background: #ece7ff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .subject-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+            border-radius: 20px;
+            transition: width .6s ease;
+        }
+
+        .subject-note {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px;
+            border: 1px solid var(--line);
+            background: var(--white);
+            border-radius: 15px;
+        }
+
+        .achievement-item.locked {
+            opacity: .65;
+            filter: grayscale(.8);
+        }
+
+        .achievement-icon {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: var(--yellow-soft);
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+
+        .achievement-detail {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .achievement-detail h3 {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .achievement-detail p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .achievement-status {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--green-dark);
+            white-space: nowrap;
+        }
+
+        .achievement-item.locked .achievement-status {
+            color: var(--muted);
+        }
+
+        .progress-message {
+            padding: 18px;
+            background: #f3f0ff;
+            border: 1px solid #e4ddff;
+            border-radius: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .progress-message-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .progress-message h3 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .progress-message p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .progress-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .progress-actions a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            background: var(--purple);
+            color: white;
+            transition: background .2s, transform .2s;
+        }
+
+        .progress-actions a:hover {
+            background: var(--purple-dark);
+            transform: translateY(-2px);
+        }
+
+        .progress-actions a.secondary {
+            background: #ece7ff;
+            color: var(--purple-dark);
+        }
+
+        .progress-actions a.secondary:hover {
+            background: #ded5ff;
+        }
+
+        .empty-progress {
+            color: var(--muted);
+            font-size: 14px;
+            padding: 16px;
+            text-align: center;
+            background: var(--white);
+            border-radius: 12px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .progress-stat {
+                animation: none;
+                transition: none;
+                will-change: auto;
+            }
+
+            .progress-stat-icon {
+                animation: none;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .progress-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .progress-columns {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .progress-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 23px;
+            }
+
+            .hero-details {
+                align-items: flex-start;
+            }
+
+            .progress-hero .hero-avatar {
+                width: 62px;
+                height: 62px;
+                font-size: 34px;
+            }
+
+            .progress-hero h1 {
+                font-size: 23px;
+            }
+
+            .hero-level {
+                text-align: left;
+            }
+
+            .hero-level strong {
+                font-size: 32px;
+            }
+
+            .progress-stats {
+                gap: 12px;
+            }
+
+            .progress-stat {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .progress-stat-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 21px;
+            }
+
+            .progress-stat h2 {
+                font-size: 21px;
+            }
+
+            .progress-section {
+                padding: 19px;
+            }
+
+            .achievement-status {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .progress-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-details {
+                flex-direction: column;
+            }
+
+            .level-summary {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .level-xp {
+                text-align: left;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-heading > span {
+                text-align: left;
+            }
+
+            .achievement-item {
+                flex-wrap: wrap;
+            }
+
+            .achievement-status {
+                margin-left: 59px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h1 class="logo">Edu<span>Quest</span></h1>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">🏠 Dashboard</a>
+            <a href="profile.html" class="nav-item">🧑‍🎓 Profile</a>
+            <a href="quests.html" class="nav-item">🗺️ Quests</a>
+            <a href="rewards.html" class="nav-item">🏆 Rewards</a>
+            <a href="progress.html" class="nav-item active">📊 Progress</a>
+            <a href="settings.html" class="nav-item">⚙️ Settings</a>
+        </nav>
+        <div class="sidebar-player">
+            <span class="mini-avatar" data-avatar>👤</span>
+            <div>
+                <div class="mini-name" data-display="name">Player</div>
+                <div class="mini-level">Lv <span data-levelbadge>1</span></div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <h2>My Progress 📊</h2>
+                <p>Track your learning journey and celebrate every milestone.</p>
+            </div>
+            <a href="index.html" class="profile-chip">
+                <span data-avatar>👤</span>
+                <span>My Dashboard</span>
+            </a>
+        </header>
+
+        <div class="progress-page">
+            <section class="progress-hero">
+                <div class="hero-details">
+                    <div class="hero-avatar" data-avatar>👤</div>
+                    <div>
+                        <div class="hero-label">Your learning journey</div>
+                        <h1>Keep going, <span data-display="name">Player</span>!</h1>
+                        <p data-display="title">EduQuest Adventurer</p>
+                    </div>
+                </div>
+                <div class="hero-level">
+                    <strong>Lv <span id="heroLevel">1</span></strong>
+                    <span>Current level</span>
+                </div>
+            </section>
+
+            <section class="progress-stats">
+                <article class="progress-stat">
+                    <div class="progress-stat-icon">⭐</div>
+                    <div>
+                        <p>Total XP</p>
+                        <h2 data-display="xp">0</h2>
+                    </div>
+                </article>
+                <article class="progress-stat">
+                    <div class="progress-stat-icon">🪙</div>
+                    <div>
+                        <p>Total Points</p>
+                        <h2 data-display="points">0</h2>
+                    </div>
+                </article>
+                <article class="progress-stat">
+                    <div class="progress-stat-icon">🗺️</div>
+                    <div>
+                        <p>Quests Completed</p>
+                        <h2 data-display="quests">0</h2>
+                    </div>
+                </article>
+                <article class="progress-stat">
+                    <div class="progress-stat-icon">🏅</div>
+                    <div>
+                        <p>Achievements</p>
+                        <h2><span data-display="achievements">0</span>/3</h2>
+                    </div>
+                </article>
+            </section>
+
+            <div class="progress-columns">
+                <div class="progress-column">
+                    <section class="progress-section">
+                        <div class="section-heading">
+                            <h2>Level Progress 🚀</h2>
+                            <span id="levelPercent">0%</span>
+                        </div>
+                        <div class="level-summary">
+                            <span class="level-pill">✨ Level <span id="currentLevel">1</span></span>
+                            <div class="level-xp" id="levelXpText">0 / 100 XP</div>
+                        </div>
+                        <div
+                            class="level-progress-track"
+                            role="progressbar"
+                            aria-label="Progress to next level"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="0"
+                        >
+                            <div class="level-progress-fill" id="levelProgressFill"></div>
+                        </div>
+                        <div class="level-progress-caption">
+                            <span id="levelStartText">0 XP earned</span>
+                            <span id="levelRemainingText">100 XP to next level</span>
+                        </div>
+                        <div class="progress-message">
+                            <span class="progress-message-icon">💡</span>
+                            <div>
+                                <h3 id="progressTipTitle">Your adventure starts here!</h3>
+                                <p id="progressTip">Complete a quest to earn XP and begin leveling up.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="progress-section">
+                        <div class="section-heading">
+                            <h2>Subject Progress 📚</h2>
+                            <span id="subjectTotal">0 / 12 quests</span>
+                        </div>
+                        <div class="subject-list" id="subjectList"></div>
+                    </section>
+                </div>
+
+                <div class="progress-column">
+                    <section class="progress-section">
+                        <div class="section-heading">
+                            <h2>Achievements 🏆</h2>
+                            <span id="achievementSummary">0 of 3 unlocked</span>
+                        </div>
+                        <div class="achievement-list" id="achievementList"></div>
+                    </section>
+
+                    <section class="progress-section">
+                        <div class="section-heading">
+                            <h2>Your Next Step 🌟</h2>
+                        </div>
+                        <p id="nextStepText">Start a quest to begin tracking your progress.</p>
+                        <div class="progress-actions">
+                            <a href="quests.html">Explore Quests</a>
+                            <a href="profile.html" class="secondary">View Profile</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        const progressSubjects = [
+            { id: "math", name: "Mathematics", icon: "➗" },
+            { id: "english", name: "English", icon: "📖" },
+            { id: "science", name: "Science", icon: "🔬" },
+            { id: "programming", name: "Programming", icon: "💻" }
+        ];
+
+        const achievementDefinitions = [
+            {
+                id: "first-quest",
+                name: "First Quest",
+                icon: "🏅",
+                description: "Complete your first quest."
+            },
+            {
+                id: "xp-hunter",
+                name: "XP Hunter",
+                icon: "⭐",
+                description: "Earn 100 XP."
+            },
+            {
+                id: "rising-scholar",
+                name: "Rising Scholar",
+                icon: "🛡️",
+                description: "Reach Level 3."
+            }
+        ];
+
+        function getProgressPlayer() {
+            let source = {};
+
+            if (typeof getPlayerData === "function") {
+                try {
+                    source = getPlayerData() || {};
+                } catch (error) {
+                    source = {};
+                }
+            }
+
+            if (!source || typeof source !== "object") {
+                source = {};
+            }
+
+            return {
+                ...source,
+                name: source.name || "Player",
+                title: source.title || "EduQuest Adventurer",
+                avatar: source.avatar || "👤",
+                xp: Math.max(0, Number(source.xp) || 0),
+                points: Math.max(0, Number(source.points) || 0),
+                level: Math.min(10, Math.max(1, Number(source.level) || 1)),
+                completedQuests: Array.isArray(source.completedQuests)
+                    ? source.completedQuests
+                    : [],
+                achievements: Array.isArray(source.achievements)
+                    ? source.achievements
+                    : []
+            };
+        }
+
+        function getProgressLevelData(player) {
+            let progress = null;
+
+            if (typeof getLevelProgress === "function") {
+                try {
+                    progress = getLevelProgress(player.xp);
+                } catch (error) {
+                    progress = null;
+                }
+            }
+
+            const nextLevel = typeof nextLevelMinXp === "function"
+                ? nextLevelMinXp(player.level)
+                : player.level < 10
+                    ? player.level * 100
+                    : null;
+
+            const current = progress && Number.isFinite(Number(progress.current))
+                ? Math.max(0, Number(progress.current))
+                : player.level >= 10
+                    ? player.xp
+                    : player.xp % 100;
+
+            const required = progress && Number.isFinite(Number(progress.required))
+                ? Math.max(1, Number(progress.required))
+                : 100;
+
+            const percent = nextLevel === null
+                ? 100
+                : Math.min(100, Math.max(0,
+                    progress && Number.isFinite(Number(progress.percent))
+                        ? Number(progress.percent)
+                        : Math.round((current / required) * 100)
+                ));
+
+            return {
+                nextLevel: nextLevel,
+                current: current,
+                required: required,
+                percent: percent
+            };
+        }
+
+        function getSubjectProgress(player) {
+            const completed = new Set(player.completedQuests);
+
+            const subjects = progressSubjects.map(function (subject) {
+                const questIds = [0, 1, 2].map(function (index) {
+                    return "quest-" + subject.id + "-" + index;
+                });
+
+                const count = questIds.filter(function (id) {
+                    return completed.has(id);
+                }).length;
+
+                return {
+                    ...subject,
+                    count: count,
+                    total: questIds.length,
+                    percent: Math.round((count / questIds.length) * 100)
+                };
+            });
+
+            return {
+                subjects: subjects,
+                completed: subjects.reduce(function (total, subject) {
+                    return total + subject.count;
+                }, 0),
+                total: subjects.reduce(function (total, subject) {
+                    return total + subject.total;
+                }, 0)
+            };
+        }
+
+        function createElement(tag, className, text) {
+            const element = document.createElement(tag);
+
+            if (className) {
+                element.className = className;
+            }
+
+            if (text !== undefined) {
+                element.textContent = text;
+            }
+
+            return element;
+        }
+
+        function renderSubjectProgress(player) {
+            const progress = getSubjectProgress(player);
+            const container = document.getElementById("subjectList");
+
+            document.getElementById("subjectTotal").textContent =
+                progress.completed + " / " + progress.total + " quests";
+
+            container.replaceChildren();
+
+            progress.subjects.forEach(function (subject) {
+                const row = createElement("div", "subject-row");
+                const top = createElement("div", "subject-top");
+                const name = createElement("div", "subject-name");
+                const icon = createElement("span", "subject-icon", subject.icon);
+                const label = createElement("span", "", subject.name);
+                const count = createElement(
+                    "span",
+                    "subject-count",
+                    subject.count + "/" + subject.total
+                );
+                const track = createElement("div", "subject-track");
+                const fill = createElement("div", "subject-fill");
+                const note = createElement(
+                    "p",
+                    "subject-note",
+                    subject.percent + "% completed"
+                );
+
+                fill.style.width = subject.percent + "%";
+                track.setAttribute("role", "progressbar");
+                track.setAttribute("aria-label", subject.name + " progress");
+                track.setAttribute("aria-valuemin", "0");
+                track.setAttribute("aria-valuemax", String(subject.total));
+                track.setAttribute("aria-valuenow", String(subject.count));
+
+                name.append(icon, label);
+                top.append(name, count);
+                track.append(fill);
+                row.append(top, track, note);
+                container.append(row);
+            });
+        }
+
+        function renderLevelProgress(player) {
+            const progress = getProgressLevelData(player);
+            const isMaxLevel = progress.nextLevel === null;
+            const fill = document.getElementById("levelProgressFill");
+            const track = document.querySelector(".level-progress-track");
+
+            document.getElementById("heroLevel").textContent = player.level;
+            document.getElementById("currentLevel").textContent = player.level;
+            document.getElementById("levelPercent").textContent = progress.percent + "%";
+
+            document.getElementById("levelXpText").textContent = isMaxLevel
+                ? player.xp + " XP total"
+                : progress.current + " / " + progress.required + " XP";
+
+            document.getElementById("levelStartText").textContent = isMaxLevel
+                ? "Maximum level reached"
+                : progress.current + " XP earned this level";
+
+            document.getElementById("levelRemainingText").textContent = isMaxLevel
+                ? "You've reached the maximum level!"
+                : Math.max(0, progress.required - progress.current) +
+                    " XP to Level " + (player.level + 1);
+
+            fill.style.width = progress.percent + "%";
+            track.setAttribute("aria-valuenow", String(progress.percent));
+
+            if (isMaxLevel) {
+                document.getElementById("progressTipTitle").textContent =
+                    "Maximum level reached! 🎉";
+                document.getElementById("progressTip").textContent =
+                    "You've reached Level 10. Keep completing quests and collecting points.";
+            } else if (progress.percent >= 75) {
+                document.getElementById("progressTipTitle").textContent =
+                    "You're nearly there! 🔥";
+                document.getElementById("progressTip").textContent =
+                    "You're close to your next level. Complete another quest to earn more XP.";
+            } else if (player.xp > 0) {
+                document.getElementById("progressTipTitle").textContent =
+                    "Nice work, adventurer! ✨";
+                document.getElementById("progressTip").textContent =
+                    "Keep learning and completing quests to reach your next level.";
+            } else {
+                document.getElementById("progressTipTitle").textContent =
+                    "Your adventure starts here!";
+                document.getElementById("progressTip").textContent =
+                    "Complete a quest to earn XP and begin leveling up.";
+            }
+        }
+
+        function renderAchievements(player) {
+            const unlocked = new Set(player.achievements);
+            const container = document.getElementById("achievementList");
+            const count = achievementDefinitions.filter(function (achievement) {
+                return unlocked.has(achievement.id);
+            }).length;
+
+            document.getElementById("achievementSummary").textContent =
+                count + " of " + achievementDefinitions.length + " unlocked";
+
+            const achievementCount = document.querySelector(
+                '[data-display="achievements"]'
+            );
+
+            if (achievementCount) {
+                achievementCount.textContent = count;
+            }
+
+            container.replaceChildren();
+
+            achievementDefinitions.forEach(function (achievement) {
+                const isUnlocked = unlocked.has(achievement.id);
+                const item = createElement(
+                    "div",
+                    "achievement-item" + (isUnlocked ? "" : " locked")
+                );
+                const icon = createElement(
+                    "div",
+                    "achievement-icon",
+                    achievement.icon
+                );
+                const detail = createElement("div", "achievement-detail");
+                const name = createElement("h3", "", achievement.name);
+                const description = createElement(
+                    "p",
+                    "",
+                    achievement.description
+                );
+                const status = createElement(
+                    "span",
+                    "achievement-status",
+                    isUnlocked ? "Unlocked ✓" : "Locked"
+                );
+
+                detail.append(name, description);
+                item.append(icon, detail, status);
+                container.append(item);
+            });
+        }
+
+        function renderNextStep(player) {
+            const subjectProgress = getSubjectProgress(player);
+            const nextLevel = getProgressLevelData(player).nextLevel;
+            const incompleteSubject = subjectProgress.subjects.find(
+                function (subject) {
+                    return subject.count < subject.total;
+                }
+            );
+
+            const nextStep = document.getElementById("nextStepText");
+
+            if (subjectProgress.completed >= subjectProgress.total) {
+                nextStep.textContent =
+                    "Amazing work! You've completed all 12 listed quests. Keep practicing and collecting XP.";
+            } else if (player.completedQuests.length === 0) {
+                nextStep.textContent =
+                    "Choose a subject and complete your first quest. You'll earn XP and points for passing a challenge.";
+            } else if (nextLevel !== null) {
+                const remainingXP = Math.max(0, nextLevel - player.xp);
+                const subjectName = incompleteSubject
+                    ? incompleteSubject.name
+                    : "another subject";
+
+                nextStep.textContent =
+                    "You have " + remainingXP + " XP left before Level " +
+                    (player.level + 1) + ". Try " + subjectName + " next.";
+            } else {
+                nextStep.textContent =
+                    "You've reached the maximum level. Complete more quests to keep building your skills.";
+            }
+        }
+
+        function renderProgressPage() {
+            const player = getProgressPlayer();
+
+            if (typeof updatePlayerDisplays === "function") {
+                try {
+                    updatePlayerDisplays();
+                } catch (error) {
+                    console.error("Unable to update shared player displays.", error);
+                }
+            }
+
+            const xpDisplay = document.querySelector('[data-display="xp"]');
+            const pointsDisplay = document.querySelector('[data-display="points"]');
+            const questsDisplay = document.querySelector('[data-display="quests"]');
+
+            if (xpDisplay) {
+                xpDisplay.textContent = player.xp.toLocaleString();
+            }
+
+            if (pointsDisplay) {
+                pointsDisplay.textContent = player.points.toLocaleString();
+            }
+
+            if (questsDisplay) {
+                questsDisplay.textContent = player.completedQuests.length;
+            }
+
+            renderLevelProgress(player);
+            renderSubjectProgress(player);
+            renderAchievements(player);
+            renderNextStep(player);
+        }
+
+        document.addEventListener("DOMContentLoaded", renderProgressPage);
+        window.addEventListener("eduquest-data-changed", renderProgressPage);
+        window.addEventListener("storage", function (event) {
+            if (!event.key || event.key === "eduquestPlayer") {
+                renderProgressPage();
+            }
+        });
+    </script>
+</body>
+</html>
