@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuest | Create Account</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 30px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #f3f1ff;
+      color: #111;
+    }
+
+    .register-card {
+      width: 100%;
+      max-width: 525px;
+      padding: 42px 37px;
+      background: white;
+      border-radius: 22px;
+      box-shadow: 0 12px 40px rgba(70, 55, 150, 0.08);
+    }
+
+    h1 {
+      margin: 16px 0 24px;
+      color: #5b4bea;
+      font-size: 38px;
+    }
+
+    .subtitle {
+      margin-bottom: 34px;
+      font-size: 20px;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 55px;
+      margin-bottom: 14px;
+      padding: 13px 15px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background: white;
+      font-size: 18px;
+      color: #333;
+    }
+
+    select {
+      color: #666;
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      min-height: 53px;
+      margin-top: 1px;
+      border: none;
+      border-radius: 12px;
+      background: #5b4bea;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { background: #4938d5; }
+
+    .login-text {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .login-text a { color: #5b20a5; }
+
+    #message {
+      margin-top: 14px;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 480px) {
+      .register-card { padding: 30px 22px; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="register-card">
+    <h1>Create Account</h1>
+    <p class="subtitle">Join the EduQuest adventure!</p>
+
+    <form id="registerForm">
+      <input
+        type="text"
+        id="playerName"
+        placeholder="Player name"
+        autocomplete="name"
+        required
+      >
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Email address"
+        autocomplete="email"
+        required
+      >
+
+      <select id="category" required>
+        <option value="" disabled selected>Select your category</option>
+        <option value="Elementary">Elementary</option>
+        <option value="High School">High School</option>
+        <option value="College (IT)">College (IT)</option>
+      </select>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Password (8+ characters)"
+        autocomplete="new-password"
+        minlength="8"
+        required
+      >
+
+      <input
+        type="password"
+        id="confirmPassword"
+        placeholder="Confirm password"
+        autocomplete="new-password"
+        minlength="8"
+        required
+      >
+
+      <button type="submit" id="registerButton">Register</button>
+      <p id="message" role="status"></p>
+    </form>
+
+    <p class="login-text">
+      Already have an account?
+      <a href="login.html">Login here</a>
+    </p>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+    const registerButton = document.getElementById("registerButton");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("playerName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const category = document.getElementById("category").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      message.style.color = "#c62828";
+
+      if (!name || !email || !category || !password || !confirmPassword) {
+        message.textContent = "Please complete all fields.";
+        return;
+      }
+
+      if (password.length < 8) {
+        message.textContent = "Your password must be at least 8 characters.";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        message.textContent = "Passwords do not match.";
+        return;
+      }
+
+      if (!window.EduQuestAuth) {
+        message.textContent = "Authentication could not load. Check js/auth.js.";
+        return;
+      }
+
+      try {
+        registerButton.disabled = true;
+
+        // The fourth argument saves the selected category.
+        window.EduQuestAuth.registerUser(name, email, password, category);
+
+        message.style.color = "#16834a";
+        message.textContent = "Account created! Redirecting to your dashboard...";
+        window.location.href = "index.html";
+      } catch (error) {
+        message.textContent = error.message || "Unable to create account.";
+        registerButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

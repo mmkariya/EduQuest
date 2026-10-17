@@ -1,0 +1,1107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduQuest | Settings</title>
+
+  <style>
+    :root {
+      --purple: #4820b8;
+      --purple-light: #eee8ff;
+      --purple-bright: #5838ed;
+      --text: #191b3b;
+      --muted: #747894;
+      --border: #e1e2ed;
+      --background: #f5f4ff;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    button, input, select { font: inherit; }
+    button, a, select { -webkit-tap-highlight-color: transparent; }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 272px;
+      min-width: 272px;
+      min-height: 100vh;
+      padding: 25px 16px;
+      background: linear-gradient(165deg, #35139a, #4820b8 70%, #3d1a9d);
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      padding: 5px 12px 28px;
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -.8px;
+    }
+
+    .brand span { color: #ffd44f; }
+
+    .user-card {
+      text-align: center;
+      padding: 12px 5px 25px;
+      border-bottom: 1px solid #ffffff30;
+      margin-bottom: 19px;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: #e7ddff;
+      border: 4px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+
+    .user-name {
+      font-size: 22px;
+      font-weight: 750;
+      overflow-wrap: anywhere;
+    }
+
+    .user-level {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #e2d9ff;
+    }
+
+    .xp-pill {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 7px 15px;
+      background: #32127d;
+      border-radius: 30px;
+      font-size: 14px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 15px;
+      border-radius: 13px;
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      transition: .18s;
+    }
+
+    .nav a:hover { background: #ffffff18; }
+
+    .nav a.active {
+      background: #e8ddff;
+      color: #3914ae;
+      font-weight: 750;
+    }
+
+    .nav-icon {
+      width: 25px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .nav-bottom {
+      margin-top: auto;
+      padding-top: 22px;
+      border-top: 1px solid #ffffff30;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .topbar {
+      height: 100px;
+      background: white;
+      border-bottom: 1px solid #ecebf5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 34px;
+    }
+
+    .search {
+      width: min(500px, 60%);
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 15px 18px 15px 46px;
+      border: 1px solid #dcdde8;
+      border-radius: 12px;
+      outline: none;
+      background: white;
+    }
+
+    .search input:focus,
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--purple-bright);
+      box-shadow: 0 0 0 3px #5838ed18;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      font-size: 21px;
+      color: var(--muted);
+    }
+
+    .top-user {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-weight: 700;
+    }
+
+    .top-avatar {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      background: #e8ddff;
+      border-radius: 50%;
+      font-size: 25px;
+    }
+
+    .content { padding: 32px; }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin: 0 0 26px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 37px;
+      letter-spacing: -.8px;
+    }
+
+    .subtitle {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .heading-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 14px 22px;
+      border: 1px solid var(--purple-bright);
+      border-radius: 12px;
+      background: white;
+      color: #2e188e;
+      cursor: pointer;
+      font-weight: 650;
+      transition: .18s;
+    }
+
+    .btn:hover { background: var(--purple-light); }
+
+    .btn-primary {
+      background: var(--purple-bright);
+      color: white;
+    }
+
+    .btn-primary:hover { background: #4725d7; }
+
+    /* SETTINGS CARD */
+    .settings-card {
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr);
+      min-height: 640px;
+      padding: 30px 28px;
+      background: white;
+      border-radius: 19px;
+      box-shadow: 0 6px 20px #24115c0d;
+    }
+
+    .settings-nav {
+      padding-right: 25px;
+      border-right: 1px solid var(--border);
+    }
+
+    .settings-tab {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 17px 15px;
+      margin-bottom: 9px;
+      border: 0;
+      border-radius: 13px;
+      background: transparent;
+      color: #373850;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 550;
+    }
+
+    .settings-tab .tab-icon {
+      width: 25px;
+      font-size: 23px;
+      text-align: center;
+    }
+
+    .settings-tab:hover { background: #f7f4ff; }
+
+    .settings-tab.active {
+      background: var(--purple-light);
+      color: #4320d0;
+      font-weight: 750;
+    }
+
+    .settings-content {
+      min-width: 0;
+      padding: 0 8px 0 40px;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      margin: 0 0 26px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 22px;
+      max-width: 570px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 650;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 51px;
+      padding: 12px 15px;
+      border: 1px solid #d4d6e2;
+      border-radius: 11px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    .field input[readonly] {
+      background: #f4f4f7;
+      color: #6f7285;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    .learning-heading {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 23px;
+    }
+
+    .round-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      background: #f0eaff;
+      color: var(--purple-bright);
+      border-radius: 50%;
+      font-size: 24px;
+    }
+
+    .learning-heading h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+
+    .learning-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-row:last-child { border-bottom: 0; }
+
+    .setting-row-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .setting-row-info strong { display: block; }
+
+    .setting-row-info p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .switch {
+      position: relative;
+      width: 53px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #b6b9c8;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 4px;
+      top: 4px;
+      border-radius: 50%;
+      background: white;
+      transition: .2s;
+      box-shadow: 0 1px 4px #0002;
+    }
+
+    .switch input:checked + .slider {
+      background: var(--purple-bright);
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(23px);
+    }
+
+    .info-box {
+      padding: 17px;
+      border: 1px solid #e3dcff;
+      border-radius: 12px;
+      background: #f8f5ff;
+      color: #4b4380;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .message {
+      min-height: 24px;
+      margin-top: 18px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .mobile-menu { display: none; }
+
+    @media (max-width: 1050px) {
+      .sidebar {
+        width: 225px;
+        min-width: 225px;
+      }
+
+      .content { padding: 25px; }
+
+      .settings-card {
+        grid-template-columns: 205px minmax(0, 1fr);
+        padding: 23px 20px;
+      }
+
+      .settings-content { padding-left: 25px; }
+      .settings-nav { padding-right: 18px; }
+    }
+
+    @media (max-width: 760px) {
+      .app { display: block; }
+
+      .sidebar {
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        padding: 12px 15px;
+      }
+
+      .brand {
+        padding: 8px 5px 15px;
+        font-size: 24px;
+      }
+
+      .user-card { display: none; }
+
+      .nav {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .nav a {
+        justify-content: center;
+        padding: 10px 4px;
+        gap: 5px;
+        font-size: 12px;
+        flex-direction: column;
+      }
+
+      .nav-icon { font-size: 20px; }
+
+      .nav-bottom {
+        margin-top: 10px;
+        padding-top: 8px;
+      }
+
+      .nav-bottom a { flex-direction: row; }
+
+      .topbar {
+        height: auto;
+        padding: 15px;
+      }
+
+      .search { width: 65%; }
+      .top-user { gap: 6px; font-size: 13px; }
+      .top-avatar { width: 35px; height: 35px; }
+
+      .content { padding: 20px 13px; }
+
+      .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      h1 { font-size: 31px; }
+
+      .heading-actions { width: 100%; }
+      .heading-actions .btn { flex: 1; padding: 12px 8px; }
+
+      .settings-card {
+        display: block;
+        padding: 18px 14px;
+      }
+
+      .settings-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+        padding: 0 0 15px;
+        margin-bottom: 22px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .settings-tab {
+        margin: 0;
+        padding: 12px 8px;
+        gap: 7px;
+        font-size: 13px;
+      }
+
+      .settings-tab .tab-icon { font-size: 19px; }
+
+      .settings-content { padding: 0 4px; }
+
+      .setting-row { gap: 10px; }
+      .setting-row-info { gap: 10px; }
+      .round-icon { width: 40px; height: 40px; font-size: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">🎓 Edu<span>Quest</span></div>
+
+    <div class="user-card">
+      <div class="avatar" id="sideAvatar">👤</div>
+      <div class="user-name" id="sideName">Player</div>
+      <div class="user-level" id="sideLevel">Level 1 Adventurer</div>
+      <div class="xp-pill">⭐ <span id="sideXP">0</span> XP</div>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html"><span class="nav-icon">⌂</span>Dashboard</a>
+      <a href="quests.html"><span class="nav-icon">🗺</span>Quests</a>
+      <a href="rewards.html"><span class="nav-icon">🎁</span>Rewards</a>
+      <a href="profile.html"><span class="nav-icon">♙</span>Profile</a>
+      <a class="active" href="settings.html"><span class="nav-icon">⚙</span>Settings</a>
+    </nav>
+
+    <div class="nav nav-bottom">
+      <a href="#" id="logoutLink"><span class="nav-icon">⇥</span>Logout</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="search">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search" placeholder="Search quests, topics, or rewards...">
+      </div>
+
+      <div class="top-user">
+        <span style="font-size:22px" aria-hidden="true">♧</span>
+        <span class="top-avatar" id="topAvatar">👤</span>
+        <span id="topName">Player</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-heading">
+        <div>
+          <h1>Settings</h1>
+          <p class="subtitle">Manage your learning experience and account.</p>
+        </div>
+
+        <div class="heading-actions">
+          <button class="btn" type="button" id="cancelButton">Cancel</button>
+          <button class="btn btn-primary" type="button" id="saveButton">▣ &nbsp; Save Changes</button>
+        </div>
+      </div>
+
+      <section class="settings-card">
+        <nav class="settings-nav" aria-label="Settings sections">
+          <button class="settings-tab active" type="button" data-tab="general">
+            <span class="tab-icon">⚙</span>General
+          </button>
+          <button class="settings-tab" type="button" data-tab="preferences">
+            <span class="tab-icon">☷</span>Preferences
+          </button>
+          <button class="settings-tab" type="button" data-tab="notifications">
+            <span class="tab-icon">♧</span>Notifications
+          </button>
+          <button class="settings-tab" type="button" data-tab="security">
+            <span class="tab-icon">♢</span>Account &amp; Security
+          </button>
+        </nav>
+
+        <div class="settings-content">
+
+          <!-- GENERAL -->
+          <section class="tab-panel active" id="panel-general">
+            <h2 class="section-title">General Information</h2>
+            <p class="section-description">Update your EduQuest profile information.</p>
+
+            <div class="field">
+              <label for="playerName">Display Name</label>
+              <input id="playerName" type="text" maxlength="60" required>
+            </div>
+
+            <div class="field">
+              <label for="emailDisplay">Email Address</label>
+              <input id="emailDisplay" type="email" readonly>
+            </div>
+
+            <div class="field">
+              <label for="gradeLevel">Learning Category</label>
+              <select id="gradeLevel" required>
+                <option value="Elementary">Elementary</option>
+                <option value="High School">High School</option>
+                <option value="College (IT)">College (IT)</option>
+              </select>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="learning-heading">
+              <div class="round-icon">♧</div>
+              <div>
+                <h3>Learning Profile</h3>
+                <p>Personalize your learning journey.</p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="learningGoal">Learning Goal</label>
+              <select id="learningGoal">
+                <option value="Improve my coding skills">Improve my coding skills</option>
+                <option value="Complete daily quests">Complete daily quests</option>
+                <option value="Earn more XP and achievements">Earn more XP and achievements</option>
+                <option value="Build consistent study habits">Build consistent study habits</option>
+                <option value="Explore new topics">Explore new topics</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- PREFERENCES -->
+          <section class="tab-panel" id="panel-preferences">
+            <h2 class="section-title">Preferences</h2>
+            <p class="section-description">Choose how you want EduQuest to feel and work.</p>
+
+            <div class="field">
+              <label for="themePreference">Appearance</label>
+              <select id="themePreference">
+                <option value="light">Light mode</option>
+                <option value="dark">Dark mode (coming soon)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="languagePreference">Language</label>
+              <select id="languagePreference">
+                <option value="en">English</option>
+                <option value="ceb">Cebuano (coming soon)</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">📚</div>
+                <div>
+                  <strong>Learning tips</strong>
+                  <p>Show helpful tips while studying.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="learningTips" type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </section>
+
+          <!-- NOTIFICATIONS -->
+          <section class="tab-panel" id="panel-notifications">
+            <h2 class="section-title">Notifications</h2>
+            <p class="section-description">Choose which reminders you want to enable.</p>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">◷</div>
+                <div>
+                  <strong>Quest reminders</strong>
+                  <p>Keep track of your daily and upcoming quests.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="questReminders" type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">🏆</div>
+                <div>
+                  <strong>Achievement notifications</strong>
+                  <p>Know when you unlock an achievement.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="achievementAlerts" type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">⭐</div>
+                <div>
+                  <strong>XP and level updates</strong>
+                  <p>Show updates when you earn XP or level up.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="xpAlerts" type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">📅</div>
+                <div>
+                  <strong>Study reminders</strong>
+                  <p>Keep your learning routine on track.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="studyReminders" type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="info-box" style="margin-top:24px">
+              These switches save your preferences in this browser.
+              They do not send real push notifications or emails yet.
+            </div>
+          </section>
+
+          <!-- ACCOUNT & SECURITY -->
+          <section class="tab-panel" id="panel-security">
+            <h2 class="section-title">Account &amp; Security</h2>
+            <p class="section-description">Review the account currently signed in.</p>
+
+            <div class="field">
+              <label>Account Name</label>
+              <input id="accountName" type="text" readonly>
+            </div>
+
+            <div class="field">
+              <label>Registered Email</label>
+              <input id="accountEmail" type="email" readonly>
+            </div>
+
+            <div class="info-box">
+              <strong>Protect your account</strong><br>
+              Always use a unique password. This version of EduQuest stores its
+              demo account information in this browser, so it is not suitable
+              for real passwords or production authentication.
+            </div>
+
+            <div class="section-divider"></div>
+
+            <h3>Sign out</h3>
+            <p class="section-description">Sign out of your current EduQuest session on this browser.</p>
+            <button class="btn" type="button" id="securityLogout">Logout</button>
+          </section>
+
+          <p class="message" id="message" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const defaults = {
+    learningGoal: "Improve my coding skills",
+    themePreference: "light",
+    languagePreference: "en",
+    learningTips: true,
+    questReminders: true,
+    achievementAlerts: true,
+    xpAlerts: true,
+    studyReminders: false
+  };
+
+  let initialPlayer = {};
+  let initialSettings = {};
+  let settingsStorageKey = "eduquestSettings_guest";
+
+  function getCurrentUser() {
+    if (window.EduQuestAuth &&
+        typeof window.EduQuestAuth.getCurrentUser === "function") {
+      return window.EduQuestAuth.getCurrentUser();
+    }
+    return null;
+  }
+
+  function getPlayer() {
+    if (typeof window.getPlayerData === "function") {
+      return window.getPlayerData() || {};
+    }
+    return {};
+  }
+
+  function savePlayer(player) {
+    if (typeof window.savePlayerData === "function") {
+      window.savePlayerData(player);
+      return true;
+    }
+    return false;
+  }
+
+  function getSettingsKey(user) {
+    return user && user.id
+      ? "eduquestSettings_" + user.id
+      : "eduquestSettings_guest";
+  }
+
+  function readSettings() {
+    try {
+      return JSON.parse(localStorage.getItem(settingsStorageKey) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function currentName(player, user) {
+    return player.name || (user && user.name) || "Player";
+  }
+
+  function showMessage(text, error = false) {
+    $("message").textContent = text;
+    $("message").style.color = error ? "#c62828" : "#16834a";
+  }
+
+  function setText(id, text) {
+    $(id).textContent = text;
+  }
+
+  function loadPage() {
+    const user = getCurrentUser();
+
+    if (window.EduQuestAuth && !user) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const player = getPlayer();
+    settingsStorageKey = getSettingsKey(user);
+    const saved = readSettings();
+
+    initialPlayer = { ...player };
+    initialSettings = { ...defaults, ...saved };
+
+    const name = currentName(player, user);
+    const email = (user && user.email) || "";
+
+    $("playerName").value = name;
+    $("emailDisplay").value = email;
+    $("gradeLevel").value =
+      player.gradeLevel || (user && user.category) || "College (IT)";
+
+    $("learningGoal").value = initialSettings.learningGoal;
+    $("themePreference").value = initialSettings.themePreference;
+    $("languagePreference").value = initialSettings.languagePreference;
+
+    [
+      "learningTips",
+      "questReminders",
+      "achievementAlerts",
+      "xpAlerts",
+      "studyReminders"
+    ].forEach(id => {
+      $(id).checked = Boolean(initialSettings[id]);
+    });
+
+    $("accountName").value = name;
+    $("accountEmail").value = email;
+
+    setText("sideName", name);
+    setText("topName", name);
+    setText("sideLevel", "Level " + (player.level || 1) + " Adventurer");
+    setText("sideXP", player.xp || 0);
+
+    const avatar = player.avatar || "👤";
+    setText("sideAvatar", avatar);
+    setText("topAvatar", avatar);
+
+    showMessage("");
+  }
+
+  function collectSettings() {
+    return {
+      learningGoal: $("learningGoal").value,
+      themePreference: $("themePreference").value,
+      languagePreference: $("languagePreference").value,
+      learningTips: $("learningTips").checked,
+      questReminders: $("questReminders").checked,
+      achievementAlerts: $("achievementAlerts").checked,
+      xpAlerts: $("xpAlerts").checked,
+      studyReminders: $("studyReminders").checked
+    };
+  }
+
+  function saveChanges() {
+    const name = $("playerName").value.trim();
+
+    if (!name) {
+      showMessage("Please enter your display name.", true);
+      document.querySelector('[data-tab="general"]').click();
+      $("playerName").focus();
+      return;
+    }
+
+    const user = getCurrentUser();
+    const player = getPlayer();
+
+    // Update only the fields owned by Settings.
+    player.name = name;
+    player.gradeLevel = $("gradeLevel").value;
+
+    if (!savePlayer(player)) {
+      showMessage(
+        "Could not save player data. Please check js/app.js.",
+        true
+      );
+      return;
+    }
+
+    const settings = collectSettings();
+
+    try {
+      localStorage.setItem(settingsStorageKey, JSON.stringify(settings));
+
+      // Keep the local demo account name and category in sync.
+      if (user && user.id) {
+        const users = JSON.parse(
+          localStorage.getItem("eduquestDemoUsers") || "[]"
+        );
+
+        const updatedUsers = users.map(item => {
+          if (item.id === user.id) {
+            return {
+              ...item,
+              name: name,
+              category: $("gradeLevel").value
+            };
+          }
+          return item;
+        });
+
+        localStorage.setItem(
+          "eduquestDemoUsers",
+          JSON.stringify(updatedUsers)
+        );
+      }
+
+      initialPlayer = { ...player };
+      initialSettings = { ...settings };
+
+      setText("sideName", name);
+      setText("topName", name);
+      $("accountName").value = name;
+
+      showMessage("✓ Your settings have been saved successfully.");
+    } catch (error) {
+      showMessage(
+        "Player saved, but preferences could not be saved in this browser.",
+        true
+      );
+    }
+  }
+
+  function cancelChanges() {
+    $("playerName").value =
+      initialPlayer.name || (getCurrentUser() || {}).name || "Player";
+
+    $("gradeLevel").value =
+      initialPlayer.gradeLevel ||
+      (getCurrentUser() || {}).category ||
+      "College (IT)";
+
+    $("learningGoal").value = initialSettings.learningGoal;
+    $("themePreference").value = initialSettings.themePreference;
+    $("languagePreference").value = initialSettings.languagePreference;
+
+    [
+      "learningTips",
+      "questReminders",
+      "achievementAlerts",
+      "xpAlerts",
+      "studyReminders"
+    ].forEach(id => {
+      $(id).checked = Boolean(initialSettings[id]);
+    });
+
+    showMessage("Unsaved changes have been cancelled.");
+  }
+
+  function logout() {
+    if (window.EduQuestAuth &&
+        typeof window.EduQuestAuth.logoutUser === "function") {
+      window.EduQuestAuth.logoutUser();
+    } else {
+      window.location.href = "login.html";
+    }
+  }
+
+  document.querySelectorAll(".settings-tab").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".settings-tab").forEach(tab => {
+        tab.classList.toggle("active", tab === button);
+      });
+
+      document.querySelectorAll(".tab-panel").forEach(panel => {
+        panel.classList.remove("active");
+      });
+
+      $("panel-" + button.dataset.tab).classList.add("active");
+      showMessage("");
+    });
+  });
+
+  $("saveButton").addEventListener("click", saveChanges);
+  $("cancelButton").addEventListener("click", cancelChanges);
+  $("logoutLink").addEventListener("click", event => {
+    event.preventDefault();
+    logout();
+  });
+  $("securityLogout").addEventListener("click", logout);
+
+  // Keep the browser's default form/search behavior from reloading this page.
+  $("searchInput").addEventListener("keydown", event => {
+    if (event.key === "Enter") event.preventDefault();
+  });
+
+  loadPage();
+})();
+</script>
+</body>
+</html>
