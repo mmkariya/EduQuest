@@ -1,137 +1,275 @@
+
 /* =====================================================
-   EDUQUEST - PROFILE PAGE (js/profile.js)
-   =====================================================
-   Profile-specific UI only.
-
-   It does NOT manage its own player data. All data work
-   (XP, level, localStorage, saving) is handled by the
-   shared js/app.js system.
-
-     app.js       -> player data + localStorage + XP/level
-     profile.js   -> profile displays + Edit Profile form
-
-   The name / XP / level / points displays on this page
-   are updated automatically by app.js updatePlayerDisplays()
-   using data-display attributes.
+   EDUQUEST - PROFILE PAGE
+   Profile education level follows the logged-in account.
    ===================================================== */
 
-/* ---------- Get elements from the page ---------- */
+(function () {
+    "use strict";
 
-const editButton = document.getElementById("edit-profile-btn");
-const editForm = document.getElementById("edit-profile-form");
+    const editButton = document.getElementById("edit-profile-btn");
+    const editForm = document.getElementById("edit-profile-form");
+    const saveButton = document.getElementById("save-profile-btn");
+    const cancelButton = document.getElementById("cancel-profile-btn");
 
-const saveButton = document.getElementById("save-profile-btn");
-const cancelButton = document.getElementById("cancel-profile-btn");
+    const nameInput = document.getElementById("name-input");
+    const titleInput = document.getElementById("title-input");
+    const avatarInput = document.getElementById("avatar-input");
+    const gradeInput = document.getElementById("grade-input");
 
-const nameInput = document.getElementById("name-input");
-const titleInput = document.getElementById("title-input");
-const avatarInput = document.getElementById("avatar-input");
-const gradeInput = document.getElementById("grade-input");
-
-
-/* ---------- Render the achievements list ---------- */
-
-function renderAchievements() {
-    const container = document.getElementById("profile-achievements");
-    if (!container) {
-        return;
+    function getCurrentUser() {
+        return window.EduQuestAuth?.getCurrentUser?.() || null;
     }
 
-    const player = getPlayerData();
+    function getPlayer() {
+        return window.getPlayerData?.() || {};
+    }
 
-    container.innerHTML = "";
+    function savePlayer(player) {
+        if (typeof window.savePlayerData !== "function") {
+            console.error("EduQuest: savePlayerData() is missing from app.js.");
+            return false;
+        }
 
-    // Show every known achievement (locked ones are greyed out)
-    ACHIEVEMENT_INFO.forEach(function (info) {
-        const unlocked = player.achievements.includes(info.id);
-        const lockClass = unlocked ? "" : "locked";
-        const icon = unlocked ? info.icon : "🔒";
+        window.savePlayerData(player);
+        return true;
+    }
 
-        container.innerHTML +=
-            '<div class="achievement-slot ' + lockClass + '">' +
-            '<span class="a-icon">' + icon + "</span>" +
-            '<div class="a-detail"><strong>' + info.name + "</strong>" +
-            "<span>" + info.description + "</span></div>" +
-            "</div>";
+    // Convert registration categories to consistent display labels.
+    function formatCategory(category) {
+        const value = String(category || "").trim().toLowerCase();
+
+        if (value === "college (it)" || value === "college it" ||
+            value === "college") {
+            return "College IT";
+        }
+
+        if (value === "jhs/shs" || value === "high school" ||
+            value === "junior high school" ||
+            value === "senior high school") {
+            return "High School";
+        }
+
+        if (value === "elementary") {
+            return "Elementary";
+        }
+
+        return category || "Elementary";
+    }
+
+    function updateAccountRecord(name, category) {
+        const currentUser = getCurrentUser();
+        if (!currentUser?.id) return;
+
+        try {
+            const users = JSON.parse(
+                localStorage.getItem("eduquestDemoUsers") || "[]"
+            );
+
+            const updatedUsers = users.map(function (user) {
+                if (user.id !== currentUser.id) return user;
+
+                return {
+                    ...user,
+                    name: name,
+                    category: category
+                };
+            });
+
+            localStorage.setItem(
+                "eduquestDemoUsers",
+                JSON.stringify(updatedUsers)
+            );
+        } catch (error) {
+            console.error("Could not update account record:", error);
+        }
+    }
+
+    function renderAchievements() {
+        const container = document.getElementById("profile-achievements");
+        if (!container) return;
+
+        const player = getPlayer();
+        const achievements = Array.isArray(player.achievements)
+            ? player.achievements
+            : [];
+        const achievementInfo = window.ACHIEVEMENT_INFO || [];
+
+        container.innerHTML = "";
+
+        achievementInfo.forEach(function (info) {
+            const unlocked = achievements.includes(info.id);
+            const slot = document.createElement("div");
+            slot.className = "achievement-slot" +
+                (unlocked ? "" : " locked");
+
+            const icon = document.createElement("span");
+            icon.className = "a-icon";
+            icon.textContent = unlocked ? info.icon : "🔒";
+
+            const detail = document.createElement("div");
+            detail.className = "a-detail";
+
+            const title = document.createElement("strong");
+            title.textContent = info.name;
+
+            const description = document.createElement("span");
+            description.textContent = info.description;
+
+            detail.append(title, description);
+            slot.append(icon, detail);
+            container.appendChild(slot);
+        });
+
+        if (achievements.length === 0) {
+            const slot = document.createElement("div");
+            slot.className = "achievement-slot locked";
+            slot.innerHTML =
+                '<span class="a-icon">🗺️</span>' +
+                '<div class="a-detail">' +
+                '<strong>No achievements yet</strong>' +
+                '<span>Complete quests to unlock your first reward!</span>' +
+                '</div>';
+            container.appendChild(slot);
+        }
+    }
+
+    function renderProfile() {
+        const player = getPlayer();
+        const user = getCurrentUser();
+
+        // Account category takes priority over stale saved player data.
+        const grade = formatCategory(user?.category || player.gradeLevel);
+
+        const gradeElement =
+            document.querySelector('[data-display="gradeLevel"]');
+
+        if (gradeElement) {
+            gradeElement.textContent = grade;
+        }
+
+        // Update other profile fields if matching elements exist.
+        const nameElement = document.querySelector('[data-display="name"]');
+        if (nameElement) {
+            nameElement.textContent = player.name || user?.name || "";
+        }
+
+        const titleElement = document.querySelector('[data-display="title"]');
+        if (titleElement) {
+            titleElement.textContent =
+                player.title || "EduQuest Adventurer";
+        }
+
+        const avatarElement = document.querySelector('[data-display="avatar"]');
+        if (avatarElement) {
+            avatarElement.textContent = player.avatar || "👤";
+        }
+    }
+
+    // Open edit form.
+    if (editButton && editForm) {
+        editButton.addEventListener("click", function () {
+            const player = getPlayer();
+            const user = getCurrentUser();
+
+            if (nameInput) {
+                nameInput.value = player.name || user?.name || "";
+            }
+
+            if (titleInput) {
+                titleInput.value = player.title || "EduQuest Adventurer";
+            }
+
+            if (avatarInput) {
+                avatarInput.value = player.avatar || "👤";
+            }
+
+            if (gradeInput) {
+                gradeInput.value = formatCategory(user?.category);
+            }
+
+            editForm.style.display = "block";
+            nameInput?.focus();
+        });
+    }
+
+    // Save profile.
+    if (saveButton) {
+        saveButton.addEventListener("click", function () {
+            const user = getCurrentUser();
+            const player = getPlayer();
+
+            const newName = nameInput?.value.trim() || "";
+            const newTitle =
+                titleInput?.value.trim() || "EduQuest Adventurer";
+            const newAvatar = avatarInput?.value || "👤";
+
+            // Keep the education category associated with this account.
+            const newGrade = formatCategory(
+                user?.category || gradeInput?.value
+            );
+
+            if (!newName) {
+                alert("Please enter a player name.");
+                nameInput?.focus();
+                return;
+            }
+
+            player.name = newName;
+            player.title = newTitle;
+            player.avatar = newAvatar;
+            player.gradeLevel = newGrade;
+
+            if (!savePlayer(player)) {
+                alert("Could not save your profile. Please try again.");
+                return;
+            }
+
+            updateAccountRecord(newName, newGrade);
+
+            if (typeof window.updatePlayerDisplays === "function") {
+                window.updatePlayerDisplays();
+            }
+
+            renderProfile();
+            renderAchievements();
+
+            if (editForm) editForm.style.display = "none";
+        });
+    }
+
+    if (cancelButton && editForm) {
+        cancelButton.addEventListener("click", function () {
+            editForm.style.display = "none";
+        });
+    }
+
+    function initProfile() {
+        const player = getPlayer();
+        const user = getCurrentUser();
+
+        if (user?.name && !player.name) {
+            player.name = user.name;
+        }
+
+        // Synchronize stale saved grade with this account's category.
+        if (user?.category) {
+            player.gradeLevel = formatCategory(user.category);
+        }
+
+        savePlayer(player);
+        renderProfile();
+        renderAchievements();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initProfile);
+    } else {
+        initProfile();
+    }
+
+    window.addEventListener("eduquest-data-changed", function () {
+        renderProfile();
+        renderAchievements();
     });
-
-    // Friendly hint when nothing is unlocked yet
-    if (player.achievements.length === 0) {
-        container.innerHTML +=
-            '<div class="achievement-slot locked">' +
-            '<span class="a-icon">🗺️</span>' +
-            '<div class="a-detail"><strong>No achievements yet</strong>' +
-            "<span>Complete quests to unlock your first reward!</span></div>" +
-            "</div>";
-    }
-}
-
-
-/* ---------- Open Edit Profile ---------- */
-
-editButton.addEventListener("click", function () {
-    const player = getPlayerData();
-
-    // Put the current information into the form
-    nameInput.value = player.name;
-    titleInput.value = player.title;
-    avatarInput.value = player.avatar;
-    gradeInput.value = player.gradeLevel || "College";
-
-    // Show the form
-    editForm.style.display = "block";
-
-    nameInput.focus();
-});
-
-
-/* ---------- Save Profile ---------- */
-
-saveButton.addEventListener("click", function () {
-    const newName = nameInput.value.trim();
-    const newTitle = titleInput.value.trim();
-    const newAvatar = avatarInput.value;
-    const newGrade = gradeInput.value;
-
-    // Validate: the name cannot be empty
-    if (newName === "") {
-        alert("Please enter a player name.");
-        nameInput.focus();
-        return;
-    }
-
-    // Update the shared player data (single source of truth)
-    const player = getPlayerData();
-    player.name = newName;
-    player.title = newTitle === "" ? "EduQuest Adventurer" : newTitle;
-    player.avatar = newAvatar;
-    player.gradeLevel = newGrade;
-
-    // Save to localStorage through app.js
-    savePlayerData(player);
-
-    // Refresh every display on the page immediately
-    updatePlayerDisplays();
-
-    // Hide the form
-    editForm.style.display = "none";
-});
-
-
-/* ---------- Cancel editing ---------- */
-
-cancelButton.addEventListener("click", function () {
-    // Just close the form - do not change any saved data
-    editForm.style.display = "none";
-});
-
-
-/* ---------- Run on page load ---------- */
-
-document.addEventListener("DOMContentLoaded", function () {
-    renderAchievements();
-
-    // Re-render achievements when data changes elsewhere
-    // (e.g. a groupmate's feature calls unlockAchievement)
-    window.addEventListener("eduquest-data-changed", renderAchievements);
-});
+})();
