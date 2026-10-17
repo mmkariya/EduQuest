@@ -79,8 +79,6 @@ button {
     z-index: 50;
     display: flex;
     flex-direction: column;
-    isolation: isolate;
-    pointer-events: auto;
 }
 
 .logo {
@@ -90,16 +88,6 @@ button {
     font-weight: 800;
     letter-spacing: 1px;
     text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-    color: white;
-    white-space: nowrap;
-}
-
-.logo-text {
-    color: white;
-}
-
-.logo-highlight {
-    color: var(--yellow);
 }
 
 .logo span {
@@ -111,13 +99,9 @@ button {
     flex-direction: column;
     gap: 6px;
     flex: 1;
-    position: relative;
-    z-index: 51;
-    pointer-events: auto;
 }
 
 .nav-item {
-    position: relative;
     text-decoration: none;
     color: white;
     padding: 13px 16px;
@@ -127,8 +111,6 @@ button {
     align-items: center;
     gap: 12px;
     transition: background 0.2s, transform 0.2s;
-    pointer-events: auto;
-    cursor: pointer;
 }
 
 .nav-item:hover {
@@ -337,12 +319,15 @@ button {
 
 .xp-to-next {
     font-size: 13px;
-    color: #ffffff !important;
+    color: var(--purple);
     font-weight: 600;
     margin-top: 2px;
 }
 
-.adventure-panel .xp-label,
+.adventure-panel .xp-label {
+    color: white !important;
+}
+
 .adventure-panel .xp-to-next {
     color: white !important;
 }
@@ -1013,10 +998,14 @@ button {
     }
 }
 
-.welcome-card {
-    margin-bottom: 20px !important;
+.xp-to-next {
+    color: #ffffff !important;
 }
 
-.quest-card p {
+.adventure-panel .xp-to-next {
     color: #ffffff !important;
+}
+
+.welcome-card {
+    margin-bottom: 20px !important;
 }

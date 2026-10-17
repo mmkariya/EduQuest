@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +9,102 @@
     <title>EduQuest - Profile</title>
 
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Educational Level Section */
+        .education-level-section {
+            margin-top: 24px;
+            padding: 22px;
+            background: #ffffff;
+            border: 1px solid #e5defa;
+            border-radius: 16px;
+        }
+
+        .education-level-section h2 {
+            margin-top: 0;
+            color: #48268b;
+        }
+
+        .education-level-section p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .education-level-section label {
+            display: block;
+            margin: 14px 0 8px;
+            font-weight: 600;
+        }
+
+        .education-level-section select {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7c9f5;
+            border-radius: 9px;
+            background: #fff;
+            font: inherit;
+        }
+
+        .subject-preview {
+            margin-top: 16px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f5f1ff;
+        }
+
+        .subject-preview h3 {
+            margin: 0 0 10px;
+            color: #48268b;
+        }
+
+        .subject-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .subject-tag {
+            display: inline-block;
+            padding: 7px 11px;
+            border-radius: 20px;
+            background: #e4dcff;
+            color: #432184;
+            font-size: 0.9rem;
+        }
+
+        .education-note {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        #education-level-message {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+
+        .education-save-btn {
+            margin-top: 14px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 9px;
+            background: #6038cf;
+            color: white;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .education-save-btn:hover {
+            background: #4825a8;
+        }
+
+        .education-save-btn:focus-visible,
+        .education-level-section select:focus-visible {
+            outline: 3px solid #a995f5;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,21 +114,24 @@
 
         <h1 class="logo">Edu<span>Quest</span></h1>
 
-    <nav>
-    <a href="index.html" class="nav-item">🏠 Dashboard</a>
-    <a href="profile.html" class="nav-item active">🧙 Profile</a>
-    <a href="quests.html" class="nav-item">🗺️ Quests</a>
-    <a href="rewards.html" class="nav-item">🏆 Rewards</a>
-    <a href="progress.html" class="nav-item">📊 Progress</a>
-    <a href="settings.html" class="nav-item">⚙️ Settings</a>
-    </nav>
+        <nav>
+            <a href="index.html" class="nav-item">🏠 Dashboard</a>
+            <a href="profile.html" class="nav-item active">🧙 Profile</a>
+            <a href="quests.html" class="nav-item">🗺️ Quests</a>
+            <a href="#" class="nav-item">🏆 Rewards</a>
+            <a href="#" class="nav-item">📊 Progress</a>
+            <a href="#" class="nav-item">⚙️ Settings</a>
+        </nav>
 
-        <!-- Mini player widget (uses the shared player data) -->
+        <!-- Mini Player -->
         <div class="sidebar-player">
             <span class="mini-avatar" data-avatar>👤</span>
+
             <div>
                 <div class="mini-name" data-display="name">Player</div>
-                <div class="mini-level">Lv <span data-display="level">1</span></div>
+                <div class="mini-level">
+                    Lv <span data-display="level">1</span>
+                </div>
             </div>
         </div>
 
@@ -53,31 +153,60 @@
             </a>
         </header>
 
-        <!-- Profile / RPG Character Sheet -->
+        <!-- Profile Page -->
         <section class="profile-page">
 
             <div class="character-sheet">
 
                 <!-- Profile Header -->
                 <div class="profile-header">
+
                     <div class="avatar" data-avatar>👤</div>
 
                     <div>
                         <h1 data-display="name">Player</h1>
-                        <div class="profile-title" data-display="title">EduQuest Adventurer</div>
-                        <span class="level-badge" data-levelbadge>Lv 1</span>
-                        <span class="grade-badge">🎓 <span data-display="gradeLevel">College</span></span>
+
+                        <div class="profile-title" data-display="title">
+                            EduQuest Adventurer
+                        </div>
+
+                        <span class="level-badge" data-levelbadge>
+                            Lv 1
+                        </span>
+
+                        <span class="grade-badge">
+                            🎓
+                            <span data-display="gradeLevel">Elementary</span>
+                        </span>
                     </div>
+
                 </div>
 
-                <!-- Level & XP Progress -->
+                <!-- XP Progress -->
                 <div class="profile-level-block">
+
                     <h3>🛡️ Adventure XP</h3>
+
                     <div class="xp-bar-track">
-                        <div class="xp-bar-fill" data-progressbar></div>
+                        <div
+                            class="xp-bar-fill"
+                            data-progressbar
+                            role="progressbar"
+                            aria-label="Experience progress"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="0">
+                        </div>
                     </div>
-                    <div class="xp-label" data-xptext>0 / 100 XP</div>
-                    <div class="xp-to-next" data-xptonext>100 XP to Level 2</div>
+
+                    <div class="xp-label" data-xptext>
+                        0 / 100 XP
+                    </div>
+
+                    <div class="xp-to-next" data-xptonext>
+                        100 XP to Level 2
+                    </div>
+
                 </div>
 
                 <!-- Player Statistics -->
@@ -109,26 +238,84 @@
 
                 </div>
 
-                <!-- Achievements -->
-                <div class="achievement-section">
-                    <h2>🎖️ Achievements</h2>
-                    <p class="achievement-count">
-                        <strong data-display="achievements">0</strong> unlocked
-                        so far
+                <!-- Educational Level -->
+                <div class="education-level-section">
+
+                    <h2>🎓 Educational Level</h2>
+
+                    <p>
+                        Choose your educational level to see the subjects
+                        designed for you in EduQuest.
                     </p>
 
-                    <div class="achievement-list" id="profile-achievements">
-                        <!-- Filled by js/profile.js -->
+                    <label for="education-level-select">
+                        Select your level
+                    </label>
+
+                    <select id="education-level-select">
+                        <option value="Elementary">Elementary</option>
+                        <option value="JHS/SHS">
+                            Junior/Senior High School (JHS/SHS)
+                        </option>
+                        <option value="College IT">College IT</option>
+                    </select>
+
+                    <div class="subject-preview">
+                        <h3>📚 Your Subjects</h3>
+                        <div id="education-subject-list" class="subject-tags">
+                            <span class="subject-tag">Math</span>
+                            <span class="subject-tag">English</span>
+                            <span class="subject-tag">Science</span>
+                            <span class="subject-tag">History</span>
+                        </div>
                     </div>
+
+                    <p class="education-note">
+                        Your selected level is saved in your EduQuest player
+                        profile and can be used to determine which subjects
+                        and quests are displayed.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="education-save-btn"
+                        id="save-education-level">
+                        💾 Save Educational Level
+                    </button>
+
+                    <p id="education-level-message" role="status"></p>
+
                 </div>
 
-                <!-- Edit Profile Button -->
-                <button class="edit-profile-btn" id="edit-profile-btn">
+                <!-- Achievements -->
+                <div class="achievement-section">
+
+                    <h2>🎖️ Achievements</h2>
+
+                    <p class="achievement-count">
+                        <strong data-display="achievements">0</strong>
+                        unlocked so far
+                    </p>
+
+                    <div
+                        class="achievement-list"
+                        id="profile-achievements">
+                        <!-- Filled by js/profile.js -->
+                    </div>
+
+                </div>
+
+                <!-- Edit Profile -->
+                <button
+                    type="button"
+                    class="edit-profile-btn"
+                    id="edit-profile-btn">
                     ✏️ Edit Profile
                 </button>
 
-                <!-- Edit Profile Form -->
-                <div class="edit-profile-form" id="edit-profile-form">
+                <div
+                    class="edit-profile-form"
+                    id="edit-profile-form">
 
                     <h2>Edit Profile</h2>
 
@@ -136,15 +323,13 @@
                     <input
                         type="text"
                         id="name-input"
-                        placeholder="Enter your name"
-                    >
+                        placeholder="Enter your name">
 
                     <label for="title-input">Profile Title</label>
                     <input
                         type="text"
                         id="title-input"
-                        placeholder="Enter your profile title"
-                    >
+                        placeholder="Enter your profile title">
 
                     <label for="avatar-input">Avatar</label>
 
@@ -161,9 +346,10 @@
 
                     <select id="grade-input">
                         <option value="Elementary">Elementary</option>
-                        <option value="Junior High School">Junior High School</option>
-                        <option value="Senior High School">Senior High School</option>
-                        <option value="College">College</option>
+                        <option value="JHS/SHS">
+                            Junior/Senior High School (JHS/SHS)
+                        </option>
+                        <option value="College IT">College IT</option>
                     </select>
 
                     <div class="edit-buttons">
@@ -192,10 +378,155 @@
 
     </main>
 
-    <!-- JavaScript (shared player data first) -->
+    <!-- JavaScript -->
+    <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
     <script src="js/profile.js"></script>
 
-</body>
+    <script>
+        (function () {
+            const levelSelect = document.getElementById("education-level-select");
+            const gradeInput = document.getElementById("grade-input");
+            const saveButton = document.getElementById("save-education-level");
+            const subjectList = document.getElementById("education-subject-list");
+            const message = document.getElementById("education-level-message");
 
+            const subjectsByLevel = {
+                "Elementary": [
+                    "Math",
+                    "English",
+                    "Science",
+                    "History"
+                ],
+                "JHS/SHS": [
+                    "Math",
+                    "English",
+                    "Science",
+                    "Literature",
+                    "History"
+                ],
+                "College IT": [
+                    "Programming",
+                    "Algorithms",
+                    "Logic",
+                    "HTML/CSS/JS"
+                ]
+            };
+
+            function normalizeLevel(level) {
+                if (!level) return "Elementary";
+
+                const value = String(level).trim().toLowerCase();
+
+                if (value === "elementary") {
+                    return "Elementary";
+                }
+
+                if (
+                    value === "jhs/shs" ||
+                    value === "junior high school" ||
+                    value === "senior high school" ||
+                    value === "junior/senior high school" ||
+                    value === "high school"
+                ) {
+                    return "JHS/SHS";
+                }
+
+                if (
+                    value === "college it" ||
+                    value === "college (it)" ||
+                    value === "college"
+                ) {
+                    return "College IT";
+                }
+
+                return "College IT";
+            }
+
+            function renderSubjects(level) {
+                const normalizedLevel = normalizeLevel(level);
+                const subjects = subjectsByLevel[normalizedLevel];
+
+                subjectList.replaceChildren();
+
+                subjects.forEach(function (subject) {
+                    const tag = document.createElement("span");
+                    tag.className = "subject-tag";
+                    tag.textContent = subject;
+                    subjectList.appendChild(tag);
+                });
+            }
+
+            function selectLevel(level) {
+                const normalizedLevel = normalizeLevel(level);
+
+                levelSelect.value = normalizedLevel;
+
+                if (gradeInput) {
+                    gradeInput.value = normalizedLevel;
+                }
+
+                renderSubjects(normalizedLevel);
+            }
+
+            levelSelect.addEventListener("change", function () {
+                renderSubjects(levelSelect.value);
+                message.textContent = "";
+            });
+
+            // Load the saved level from the shared player data.
+            function loadSavedLevel() {
+                if (typeof getPlayerData === "function") {
+                    const player = getPlayerData();
+                    selectLevel(player.gradeLevel);
+                } else {
+                    selectLevel(levelSelect.value);
+                }
+            }
+
+            saveButton.addEventListener("click", function () {
+                if (
+                    typeof getPlayerData !== "function" ||
+                    typeof savePlayerData !== "function"
+                ) {
+                    message.textContent =
+                        "Player data system was not found. Check js/app.js.";
+                    return;
+                }
+
+                const player = getPlayerData();
+                player.gradeLevel = levelSelect.value;
+
+                if (savePlayerData(player)) {
+                    selectLevel(player.gradeLevel);
+                    message.textContent =
+                        "Educational level saved successfully!";
+
+                    if (typeof updatePlayerDisplays === "function") {
+                        updatePlayerDisplays();
+                    }
+                } else {
+                    message.textContent =
+                        "Unable to save. Please try again.";
+                }
+            });
+
+            // Keep the Edit Profile grade selector in sync.
+            if (gradeInput) {
+                gradeInput.addEventListener("change", function () {
+                    selectLevel(gradeInput.value);
+                });
+            }
+
+            // Wait until profile.js has had a chance to initialize its form.
+            document.addEventListener("DOMContentLoaded", function () {
+                loadSavedLevel();
+
+                // Sync again after other page initialization.
+                window.setTimeout(loadSavedLevel, 0);
+            });
+        })();
+    </script>
+
+</body>
 </html>
