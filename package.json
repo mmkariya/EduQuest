@@ -1,0 +1,16 @@
+{
+  "name": "eduquest",
+  "version": "1.0.0",
+  "description": "EduQuest learning platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^18.0.9",
+    "express": "^4.21.2",
+    "web-push": "^3.6.7"
+  }
+}
