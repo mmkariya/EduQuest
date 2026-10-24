@@ -1,0 +1,183 @@
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --white: #201d2d;
+    --ink: #f3efff;
+    --muted: #b8b1cc;
+    --line: #3b354e;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.24);
+    --text: #f3efff;
+    --border: #3b354e;
+    --background: #15131e;
+}
+
+html[data-theme="dark"] body {
+    background: #15131e !important;
+    color: #f3efff !important;
+}
+
+html[data-theme="dark"] .main-content,
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .content,
+html[data-theme="dark"] .settings-content {
+    color: #f3efff !important;
+}
+
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .profile-chip,
+html[data-theme="dark"] .character-sheet,
+html[data-theme="dark"] .profile-level-block,
+html[data-theme="dark"] .profile-stat,
+html[data-theme="dark"] .achievement-slot,
+html[data-theme="dark"] .progress-section,
+html[data-theme="dark"] .progress-stat,
+html[data-theme="dark"] .subject-selection,
+html[data-theme="dark"] .subject-card,
+html[data-theme="dark"] .topic-card,
+html[data-theme="dark"] .quiz-card,
+html[data-theme="dark"] .reward-card,
+html[data-theme="dark"] .badge-card,
+html[data-theme="dark"] .settings-card,
+html[data-theme="dark"] .edit-profile-form,
+html[data-theme="dark"] .welcome-card,
+html[data-theme="dark"] .quests-page .quest-card,
+html[data-theme="dark"] .quest-game-card,
+html[data-theme="dark"] .login-card,
+html[data-theme="dark"] .register-card,
+html[data-theme="dark"] main.card {
+    background-color: #211e30 !important;
+    color: #f3efff !important;
+    border-color: #3b354e !important;
+}
+
+html[data-theme="dark"] .welcome-card,
+html[data-theme="dark"] .subject-selection {
+    background-image: linear-gradient(135deg, #242035, #211e30) !important;
+}
+
+html[data-theme="dark"] .main-content .adventure-panel h2,
+html[data-theme="dark"] .main-content .adventure-panel p,
+html[data-theme="dark"] .main-content .adventure-panel .small-title,
+html[data-theme="dark"] .main-content > .quest-card h2,
+html[data-theme="dark"] .main-content > .quest-card p {
+    color: #fff !important;
+}
+
+html[data-theme="dark"] .main-content p,
+html[data-theme="dark"] .main-content label,
+html[data-theme="dark"] .main-content h1,
+html[data-theme="dark"] .main-content h2,
+html[data-theme="dark"] .main-content h3,
+html[data-theme="dark"] .main-content h4,
+html[data-theme="dark"] .main-content .quest-content,
+html[data-theme="dark"] .main-content .section-heading,
+html[data-theme="dark"] .content p,
+html[data-theme="dark"] .content label,
+html[data-theme="dark"] .content h1,
+html[data-theme="dark"] .content h2,
+html[data-theme="dark"] .content h3,
+html[data-theme="dark"] .content h4 {
+    color: #f3efff !important;
+}
+
+html[data-theme="dark"] .main-content p,
+html[data-theme="dark"] .content p,
+html[data-theme="dark"] .main-content .muted,
+html[data-theme="dark"] .content .muted {
+    color: #b8b1cc !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] .subject-select-fallback,
+html[data-theme="dark"] .answer-option {
+    background-color: #191724 !important;
+    color: #f3efff !important;
+    border-color: #4b4362 !important;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+    color: #aaa2bd !important;
+}
+
+html[data-theme="dark"] .xp-bar-track,
+html[data-theme="dark"] .subject-track,
+html[data-theme="dark"] .level-progress-track {
+    background-color: #3a344b !important;
+}
+
+html[data-theme="dark"] .welcome-card .light-label {
+    color: #f3efff !important;
+}
+
+html[data-theme="dark"] .field input[readonly],
+html[data-theme="dark"] .info-box,
+html[data-theme="dark"] .progress-message,
+html[data-theme="dark"] .subject-preview,
+html[data-theme="dark"] .result-stat {
+    background-color: #2a263b !important;
+    color: #e7e1f5 !important;
+    border-color: #45405a !important;
+}
+
+html[data-theme="dark"] .nav-item,
+html[data-theme="dark"] .sidebar {
+    color: #fff !important;
+}
+
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .topic-card.locked {
+    background-color: #252232 !important;
+    color: #c1bbd0 !important;
+}
+
+html[data-theme="dark"] .settings-nav {
+    background-color: #1b1927 !important;
+    border-color: #3b354e !important;
+}
+
+html[data-theme="dark"] .settings-tab {
+    color: #c8c1d8 !important;
+}
+
+html[data-theme="dark"] .settings-tab.active {
+    background-color: #302a47 !important;
+    color: #fff !important;
+}
+
+html[data-theme="dark"] .setting-row {
+    border-color: #3b354e !important;
+}
+
+html[data-theme="dark"] .setting-row-info p,
+html[data-theme="dark"] .section-description,
+html[data-theme="dark"] .subtitle,
+html[data-theme="dark"] .field-hint {
+    color: #b8b1cc !important;
+}
+
+html[data-theme="dark"] .nav a.active {
+    background-color: #302a47 !important;
+    color: #fff !important;
+}
+
+html[data-theme="dark"] .notification-status {
+    color: #d8d1e8 !important;
+}
+
+html[data-theme="dark"] .notification-status[data-state="error"] {
+    color: #ff9aa8 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-theme="dark"] *,
+    html[data-theme="dark"] *::before,
+    html[data-theme="dark"] *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduQuest - Quests</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <script src="js/theme.js"></script>
 
     <style>
         :root {
@@ -46,6 +48,32 @@
             margin: 0 0 7px;
             font-size: clamp(24px,3vw,34px);
             font-weight: 800;
+        }
+
+        .icon-heading {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .heading-art {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 auto;
+            overflow: visible;
+            filter: drop-shadow(0 4px 2px rgba(43, 34, 91, 0.2));
+            transform: perspective(180px) rotateY(-8deg) rotateX(5deg);
+            transition: transform 180ms ease, filter 180ms ease;
+        }
+
+        .icon-heading:hover .heading-art {
+            transform: perspective(180px) rotateY(0) rotateX(0) translateY(-2px);
+            filter: drop-shadow(0 7px 3px rgba(43, 34, 91, 0.22));
+        }
+
+        .page-heading .heading-art {
+            width: 42px;
+            height: 42px;
         }
 
         .topbar p, .page-heading p {
@@ -710,9 +738,10 @@
             <a href="quests.html" class="nav-item active">🗺️ Quests</a>
             <a href="rewards.html" class="nav-item">🏆 Rewards</a>
             <a href="progress.html" class="nav-item">📊 Progress</a>
+            <a href="leaderboard.html" class="nav-item">🏅 Leaderboard</a>
+            <a href="badges.html" class="nav-item">🎖️ Badges</a>
             <a href="settings.html" class="nav-item">⚙️ Settings</a>
         </nav>
-
         <div class="sidebar-player">
             <span class="mini-avatar" data-avatar>👤</span>
             <div>
@@ -724,10 +753,6 @@
 
     <main class="main-content">
         <header class="topbar">
-            <div>
-                <h2>Quest Center 🗺️</h2>
-                <p>Learn new skills, complete challenges, and earn rewards.</p>
-            </div>
             <a href="index.html" class="profile-chip">
                 <span data-avatar>👤</span>
                 <span>My Dashboard</span>
@@ -736,7 +761,27 @@
 
         <section id="questsPage">
             <div class="page-heading">
-                <h1>Available Quests 🚀</h1>
+                <h1 class="icon-heading">
+                    <span>Available Quests</span>
+                    <svg class="heading-art" viewBox="0 0 48 48" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="rocket-body" x1="0" y1="0" x2="1" y2="1">
+                                <stop stop-color="#fff"/>
+                                <stop offset="1" stop-color="#dce8ff"/>
+                            </linearGradient>
+                            <linearGradient id="rocket-flame" x1="0" y1="0" x2="0" y2="1">
+                                <stop stop-color="#ffe36e"/>
+                                <stop offset="1" stop-color="#ff8b52"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M18 31c-5 1-8 5-9 11 6-1 10-4 11-9" fill="url(#rocket-flame)" stroke="#a74832" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M18 29 11 30l-4 7 10-1m8-8 1 8 7 4-1-10" fill="#ffb64f" stroke="#a74832" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M17 27C21 14 32 6 43 5c-1 11-9 22-22 26z" fill="url(#rocket-body)" stroke="#32246c" stroke-width="2.5" stroke-linejoin="round"/>
+                        <path d="m22 30 9 2 6-7-8-2" fill="#6c4dff" stroke="#32246c" stroke-width="2" stroke-linejoin="round"/>
+                        <circle cx="33" cy="16" r="4" fill="#73d9ed" stroke="#32246c" stroke-width="2"/>
+                        <path d="m10 37 4-2m-1 7 4-3" stroke="#ff8754" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </h1>
                 <p>Choose a subject and complete topics in order to unlock the next challenge.</p>
             </div>
 
@@ -757,56 +802,12 @@
 
             <div class="subject-selection">
                 <h2>📚 Choose Your Subject</h2>
-                <p>Select a learning adventure below to explore its topics and earn rewards.</p>
+                <p><span id="curriculumName">Your learning level</span> curriculum: choose a subject to explore level-appropriate topics and earn rewards.</p>
 
-                <div class="subject-grid" id="subjectGrid">
-                    <button type="button" class="subject-card" data-subject="math">
-                        <span class="subject-check">✓</span>
-                        <span class="subject-icon">🧮</span>
-                        <span class="subject-text">
-                            <strong>Mathematics</strong>
-                            <small>Numbers, calculations and problem-solving</small>
-                            <span class="subject-progress"><span></span></span>
-                        </span>
-                    </button>
-
-                    <button type="button" class="subject-card" data-subject="english">
-                        <span class="subject-check">✓</span>
-                        <span class="subject-icon">📖</span>
-                        <span class="subject-text">
-                            <strong>English</strong>
-                            <small>Grammar, vocabulary and reading</small>
-                            <span class="subject-progress"><span></span></span>
-                        </span>
-                    </button>
-
-                    <button type="button" class="subject-card" data-subject="science">
-                        <span class="subject-check">✓</span>
-                        <span class="subject-icon">🔬</span>
-                        <span class="subject-text">
-                            <strong>Science</strong>
-                            <small>Discover nature, plants and Earth</small>
-                            <span class="subject-progress"><span></span></span>
-                        </span>
-                    </button>
-
-                    <button type="button" class="subject-card" data-subject="programming">
-                        <span class="subject-check">✓</span>
-                        <span class="subject-icon">💻</span>
-                        <span class="subject-text">
-                            <strong>Programming</strong>
-                            <small>HTML, CSS and JavaScript basics</small>
-                            <span class="subject-progress"><span></span></span>
-                        </span>
-                    </button>
-                </div>
+                <div class="subject-grid" id="subjectGrid"></div>
 
                 <select id="subjectSelect" class="subject-select-fallback" aria-label="Choose a subject">
                     <option value="">Choose a subject</option>
-                    <option value="math">Mathematics</option>
-                    <option value="english">English</option>
-                    <option value="science">Science</option>
-                    <option value="programming">Programming</option>
                 </select>
             </div>
 
@@ -871,33 +872,12 @@
     </main>
 
     <!-- Keep app.js before the quest script. -->
+    <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/curriculum.js"></script>
 
     <script>
-        const topics = {
-            math: [
-                { name: "Addition", icon: "➕" },
-                { name: "Subtraction", icon: "➖" },
-                { name: "Multiplication", icon: "✖️" }
-            ],
-            english: [
-                { name: "Grammar", icon: "📚" },
-                { name: "Vocabulary", icon: "🔤" },
-                { name: "Reading", icon: "📖" }
-            ],
-            science: [
-                { name: "Animals", icon: "🐾" },
-                { name: "Plants", icon: "🌱" },
-                { name: "Earth", icon: "🌎" }
-            ],
-            programming: [
-                { name: "HTML", icon: "🌐" },
-                { name: "CSS", icon: "🎨" },
-                { name: "JavaScript", icon: "💻" }
-            ]
-        };
-
-        const questionBank = {
+        const legacyQuestionBank = {
             Addition: [
                 ["What is 5 + 3?", ["6","8","9","10"], 1],
                 ["What is 7 + 4?", ["10","11","12","13"], 1],
@@ -985,13 +965,73 @@
         };
 
         const $ = id => document.getElementById(id);
+        const savedPlayer = typeof getPlayerData === "function" ? getPlayerData() : {};
+        const currentUser = window.EduQuestAuth?.getCurrentUser?.();
+        const hasSavedPlayer = currentUser?.id &&
+            localStorage.getItem("eduquestPlayer_" + currentUser.id);
+        const gradeLevel = String(
+            hasSavedPlayer ? savedPlayer.gradeLevel : currentUser?.category || savedPlayer.gradeLevel || ""
+        ).toLowerCase();
+        const educationLevel = String(savedPlayer.educationLevel || "").toLowerCase();
+        const curriculumKey = educationLevel === "college" || gradeLevel.includes("college")
+            ? "college"
+            : educationLevel === "jhs" || educationLevel === "shs" ||
+                gradeLevel.includes("high school") || gradeLevel.includes("jhs") || gradeLevel.includes("shs")
+                ? "jhs"
+                : "elementary";
+        const curriculum = window.EDUQUEST_CURRICULA[curriculumKey];
+        const topics = curriculum.topics;
+        const questionBank = { ...legacyQuestionBank, ...curriculum.questions };
+        const subjectNames = Object.fromEntries(
+            curriculum.subjects.map(subject => [subject.id, subject.name])
+        );
+        const subjectGrid = $("subjectGrid");
+        const subjectSelect = $("subjectSelect");
+        const totalTopicCount = Object.values(topics).reduce((total, list) => total + list.length, 0);
+        const rewards = curriculumKey === "college"
+            ? { xp: 30, points: 20 }
+            : curriculumKey === "jhs"
+                ? { xp: 25, points: 15 }
+                : { xp: 20, points: 10 };
 
-        const subjectNames = {
-            math: "Mathematics",
-            english: "English",
-            science: "Science",
-            programming: "Programming"
-        };
+        $("curriculumName").textContent = curriculum.label;
+
+        function renderSubjectChoices() {
+            subjectGrid.replaceChildren();
+            subjectSelect.replaceChildren(new Option("Choose a subject", ""));
+
+            curriculum.subjects.forEach(subject => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "subject-card";
+                button.dataset.subject = subject.id;
+                button.setAttribute("aria-pressed", "false");
+
+                const check = document.createElement("span");
+                check.className = "subject-check";
+                check.textContent = "✓";
+
+                const icon = document.createElement("span");
+                icon.className = "subject-icon";
+                icon.textContent = subject.icon;
+
+                const text = document.createElement("span");
+                text.className = "subject-text";
+                const name = document.createElement("strong");
+                name.textContent = subject.name;
+                const description = document.createElement("small");
+                description.textContent = subject.description;
+                const progress = document.createElement("span");
+                progress.className = "subject-progress";
+                progress.appendChild(document.createElement("span"));
+                text.append(name, description, progress);
+                button.append(check, icon, text);
+                subjectGrid.appendChild(button);
+                subjectSelect.add(new Option(subject.name, subject.id));
+            });
+        }
+
+        renderSubjectChoices();
 
         let currentSubject = "";
         let currentTopicIndex = 0;
@@ -1015,7 +1055,7 @@
         }
 
         function topicId(subject, index) {
-            return "quest-" + subject + "-" + index;
+            return "quest-" + curriculumKey + "-" + subject + "-" + index;
         }
 
         function isCompleted(subject, index) {
@@ -1035,7 +1075,7 @@
 
             $("totalXP").textContent = Number(player.xp) || 0;
             $("totalPoints").textContent = Number(player.points) || 0;
-            $("completedCount").textContent = getCompletedCount() + "/12";
+            $("completedCount").textContent = getCompletedCount() + "/" + totalTopicCount;
 
             document.querySelectorAll(".subject-card").forEach(card => {
                 const subject = card.dataset.subject;
@@ -1053,7 +1093,7 @@
             if (!topics[subject]) return;
 
             currentSubject = subject;
-            $("subjectSelect").value = subject;
+            subjectSelect.value = subject;
 
             document.querySelectorAll(".subject-card").forEach(card => {
                 const active = card.dataset.subject === subject;
@@ -1069,7 +1109,7 @@
             card.addEventListener("click", () => selectSubject(card.dataset.subject));
         });
 
-        $("subjectSelect").addEventListener("change", event => {
+        subjectSelect.addEventListener("change", event => {
             if (event.target.value) {
                 selectSubject(event.target.value);
             } else {
@@ -1154,8 +1194,8 @@
                 meta.className = "topic-meta";
                 meta.innerHTML =
                     "<span>📝 5 Questions</span>" +
-                    "<span>⭐ 20 XP</span>" +
-                    "<span>🎯 10 Points</span>";
+                    "<span>⭐ " + rewards.xp + " XP</span>" +
+                    "<span>🎯 " + rewards.points + " Points</span>";
 
                 const button = document.createElement("button");
                 button.type = "button";
@@ -1259,8 +1299,8 @@
 
             $("actionBtn").disabled = true;
             $("actionBtn").textContent = "Check Answer";
-            $("xpDisplay").textContent = "20";
-            $("pointsDisplay").textContent = "10";
+            $("xpDisplay").textContent = String(rewards.xp);
+            $("pointsDisplay").textContent = String(rewards.points);
             $("actionBtn").onclick = submitAnswer;
         }
 
@@ -1326,8 +1366,19 @@
 
             if (passed && !alreadyCompleted) {
                 if (typeof completeQuest === "function") {
-                    completeQuest(id, 20, 10);
-                    rewardMessage = "🎉 You earned 20 XP and 10 points!";
+                    const awarded = completeQuest(id, rewards.xp, rewards.points);
+                    rewardMessage = awarded
+                        ? "🎉 You earned " + rewards.xp + " XP and " + rewards.points + " points!"
+                        : "You passed, but your progress could not be saved. Please try again.";
+
+                    if (awarded && typeof unlockAchievement === "function") {
+                        const player = getPlayer();
+                        unlockAchievement("first-quest");
+                        if (player.xp >= 100) unlockAchievement("xp-hunter");
+                        if (Math.floor(player.xp / 100) + 1 >= 3) unlockAchievement("rising-scholar");
+                        if (player.completedQuests.length >= 5) unlockAchievement("quest-starter");
+                        if (player.completedQuests.length >= 10) unlockAchievement("quest-master");
+                    }
                 } else {
                     rewardMessage = "You passed, but the shared reward function was not found in js/app.js.";
                 }
@@ -1338,6 +1389,9 @@
             }
 
             updateStats();
+            if (typeof window.updatePlayerDisplays === "function") {
+                window.updatePlayerDisplays();
+            }
 
             const card = $("quizCard");
             card.replaceChildren();
@@ -1439,8 +1493,8 @@
                 <div class="quiz-top">
                     <div class="question-counter" id="questionCount">Question 1 of 5</div>
                     <div class="quiz-rewards">
-                        <div class="reward-chip">⭐ <span id="xpDisplay">20</span> XP</div>
-                        <div class="reward-chip">🎯 <span id="pointsDisplay">10</span> Points</div>
+                        <div class="reward-chip">⭐ <span id="xpDisplay">${rewards.xp}</span> XP</div>
+                        <div class="reward-chip">🎯 <span id="pointsDisplay">${rewards.points}</span> Points</div>
                     </div>
                 </div>
                 <div class="progress-info">
@@ -1493,5 +1547,6 @@
         updateStats();
         renderTopics();
     </script>
+    <script src="js/audio.js"></script>
 </body>
 </html>

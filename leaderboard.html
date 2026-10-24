@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuest | Leaderboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <script src="js/theme.js"></script>
+    <style>
+        .leaderboard-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .leaderboard-hero {
+            background: linear-gradient(135deg, rgba(108,77,255,0.96), rgba(77,139,255,0.9));
+            color: #fff;
+            border-radius: 28px;
+            padding: 28px 30px;
+            box-shadow: 0 22px 42px rgba(83, 52, 180, 0.18);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .leaderboard-hero h2 {
+            color: #fff;
+            font-size: clamp(1.9rem, 3vw, 2.6rem);
+            margin-bottom: 8px;
+        }
+
+        .leaderboard-hero p {
+            color: rgba(255,255,255,0.82);
+        }
+
+        .leaderboard-panel {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(120, 95, 255, 0.12);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 60px minmax(0, 2fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr);
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(247,245,255,0.85), rgba(241,247,255,0.82));
+            border: 1px solid rgba(111, 93, 207, 0.08);
+        }
+
+        .leaderboard-rank {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: var(--purple-dark);
+            background: rgba(108, 77, 255, 0.08);
+        }
+
+        .leaderboard-name {
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .leaderboard-meta {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-value {
+            font-weight: 800;
+            color: var(--purple-dark);
+            text-align: right;
+        }
+
+        .leaderboard-row.top-1 {
+            background: linear-gradient(135deg, rgba(255, 217, 61, 0.12), rgba(108, 77, 255, 0.07));
+            border-color: rgba(255, 217, 61, 0.35);
+        }
+
+        .leaderboard-row.top-2 {
+            background: linear-gradient(135deg, rgba(101, 115, 255, 0.08), rgba(255,255,255,0.62));
+        }
+
+        .leaderboard-row.top-3 {
+            background: linear-gradient(135deg, rgba(77, 139, 255, 0.08), rgba(255,255,255,0.62));
+        }
+
+        @media (max-width: 760px) {
+            .leaderboard-row {
+                grid-template-columns: 48px minmax(0, 1fr) 1fr;
+            }
+
+            .leaderboard-row > *:nth-child(3),
+            .leaderboard-row > *:nth-child(4),
+            .leaderboard-row > *:nth-child(5) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h1 class="logo">Edu<span>Quest</span></h1>
+        <nav>
+            <a href="index.html" class="nav-item">🏠 Dashboard</a>
+            <a href="profile.html" class="nav-item">🧙 Profile</a>
+            <a href="quests.html" class="nav-item">🗺️ Quests</a>
+            <a href="rewards.html" class="nav-item">🏆 Rewards</a>
+            <a href="progress.html" class="nav-item">📊 Progress</a>
+            <a href="leaderboard.html" class="nav-item active">🏅 Leaderboard</a>
+            <a href="badges.html" class="nav-item">🎖️ Badges</a>
+            <a href="settings.html" class="nav-item">⚙️ Settings</a>
+        </nav>
+
+        <div class="sidebar-player">
+            <span class="mini-avatar" data-avatar>👤</span>
+            <div>
+                <div class="mini-name" data-display="name">Player</div>
+                <div class="mini-level">Lv <span data-display="level">1</span></div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <h2>Leaderboard</h2>
+                <p>Track the top learners in your quest world.</p>
+            </div>
+            <a href="profile.html" class="profile-chip">
+                <span class="chip-avatar" data-avatar>👤</span>
+                <span data-display="name">Player</span>
+            </a>
+        </header>
+
+        <section class="leaderboard-shell">
+            <div class="leaderboard-hero">
+                <div>
+                    <h2>Top Adventurers</h2>
+                    <p>Battle for the richest XP, streaks, and completed quests.</p>
+                </div>
+                <div class="level-badge">Live Rankings</div>
+            </div>
+
+            <div class="leaderboard-panel">
+                <div class="leaderboard-list" id="leaderboardList"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/audio.js"></script>
+    <script>
+        const list = document.getElementById('leaderboardList');
+
+        function renderLeaderboard(entries) {
+            if (!entries.length) {
+                list.innerHTML = '<div class="leaderboard-row"><div class="leaderboard-name">No leaderboard data yet. Complete a quest to appear.</div></div>';
+                return;
+            }
+
+            list.innerHTML = entries.map((entry, index) => {
+                const rank = index + 1;
+                const badge = rank === 1 ? 'top-1' : rank === 2 ? 'top-2' : rank === 3 ? 'top-3' : '';
+                return `
+                    <div class="leaderboard-row ${badge}">
+                        <div class="leaderboard-rank">#${rank}</div>
+                        <div>
+                            <div class="leaderboard-name">${entry.name || 'Player'}</div>
+                            <div class="leaderboard-meta">${entry.completedQuests || 0} quests complete</div>
+                        </div>
+                        <div class="leaderboard-value">${Number(entry.xp || 0).toLocaleString()} XP</div>
+                        <div class="leaderboard-value">${Number(entry.streak || 0)} streak</div>
+                        <div class="leaderboard-value">${Number(entry.points || 0).toLocaleString()} pts</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch('/api/leaderboard', { credentials: 'same-origin' });
+                const data = await response.json();
+                renderLeaderboard(Array.isArray(data.leaderboard) ? data.leaderboard : []);
+            } catch (error) {
+                list.innerHTML = '<div class="leaderboard-row"><div class="leaderboard-name">Unable to load the leaderboard right now.</div></div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadLeaderboard);
+    </script>
+</body>
+</html>

@@ -31,8 +31,7 @@
             return false;
         }
 
-        window.savePlayerData(player);
-        return true;
+        return window.savePlayerData(player);
     }
 
     // Convert registration categories to consistent display labels.
@@ -47,7 +46,7 @@
         if (value === "jhs/shs" || value === "high school" ||
             value === "junior high school" ||
             value === "senior high school") {
-            return "High School";
+            return "JHS/SHS";
         }
 
         if (value === "elementary") {
@@ -55,34 +54,6 @@
         }
 
         return category || "Elementary";
-    }
-
-    function updateAccountRecord(name, category) {
-        const currentUser = getCurrentUser();
-        if (!currentUser?.id) return;
-
-        try {
-            const users = JSON.parse(
-                localStorage.getItem("eduquestDemoUsers") || "[]"
-            );
-
-            const updatedUsers = users.map(function (user) {
-                if (user.id !== currentUser.id) return user;
-
-                return {
-                    ...user,
-                    name: name,
-                    category: category
-                };
-            });
-
-            localStorage.setItem(
-                "eduquestDemoUsers",
-                JSON.stringify(updatedUsers)
-            );
-        } catch (error) {
-            console.error("Could not update account record:", error);
-        }
     }
 
     function renderAchievements() {
@@ -139,7 +110,7 @@
         const user = getCurrentUser();
 
         // Account category takes priority over stale saved player data.
-        const grade = formatCategory(user?.category || player.gradeLevel);
+        const grade = formatCategory(player.gradeLevel || user?.category);
 
         const gradeElement =
             document.querySelector('[data-display="gradeLevel"]');
@@ -185,7 +156,7 @@
             }
 
             if (gradeInput) {
-                gradeInput.value = formatCategory(user?.category);
+                gradeInput.value = formatCategory(player.gradeLevel || user?.category);
             }
 
             editForm.style.display = "block";
@@ -204,9 +175,8 @@
                 titleInput?.value.trim() || "EduQuest Adventurer";
             const newAvatar = avatarInput?.value || "👤";
 
-            // Keep the education category associated with this account.
             const newGrade = formatCategory(
-                user?.category || gradeInput?.value
+                gradeInput?.value || player.gradeLevel || user?.category
             );
 
             if (!newName) {
@@ -224,8 +194,6 @@
                 alert("Could not save your profile. Please try again.");
                 return;
             }
-
-            updateAccountRecord(newName, newGrade);
 
             if (typeof window.updatePlayerDisplays === "function") {
                 window.updatePlayerDisplays();
@@ -252,8 +220,7 @@
             player.name = user.name;
         }
 
-        // Synchronize stale saved grade with this account's category.
-        if (user?.category) {
+        if (!player.gradeLevel && user?.category) {
             player.gradeLevel = formatCategory(user.category);
         }
 

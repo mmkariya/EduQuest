@@ -1,442 +1,193 @@
-// ==========================================
-// EDUQUEST - REWARDS SYSTEM
-// ==========================================
+"use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    // ----------------------------------------
-    // REWARDS
-    // ----------------------------------------
-
     const rewards = [
         {
-            id: "bronze",
-            name: "Bronze Reward",
-            description: "A reward for starting your EduQuest journey.",
+            id: "bronze-frame",
+            name: "Bronze Adventurer Frame",
+            description: "A warm bronze keepsake for your profile collection.",
             icon: "🥉",
+            cost: 30
+        },
+        {
+            id: "silver-scholar",
+            name: "Silver Scholar Badge",
+            description: "Celebrate your steady progress with a silver badge.",
+            icon: "🎓",
+            cost: 60
+        },
+        {
+            id: "gold-trophy",
+            name: "Golden Quest Trophy",
+            description: "A golden trophy for a dedicated learner.",
+            icon: "🏆",
             cost: 100
         },
-
         {
-            id: "silver",
-            name: "Silver Reward",
-            description: "Keep learning and earn this special reward.",
-            icon: "🥈",
-            cost: 250
-        },
-
-        {
-            id: "gold",
-            name: "Gold Reward",
-            description: "A reward for dedicated EduQuest learners.",
-            icon: "🥇",
-            cost: 500
-        },
-
-        {
-            id: "scholar",
-            name: "Scholar Reward",
-            description: "For students who continue to improve their knowledge.",
-            icon: "🎓",
-            cost: 750
-        },
-
-        {
-            id: "champion",
-            name: "Champion Reward",
-            description: "The ultimate reward for EduQuest champions.",
-            icon: "🏆",
-            cost: 1000
+            id: "cosmic-compass",
+            name: "Cosmic Explorer Compass",
+            description: "A rare keepsake for your EduQuest collection.",
+            icon: "🧭",
+            cost: 150
         }
     ];
 
+    const pointsDisplay = document.getElementById("points-value");
+    const rewardsContainer = document.getElementById("rewards-container");
+    const historyContainer = document.getElementById("reward-history");
+    const notification = document.getElementById("notification");
+    let notificationTimeout;
 
-    // ----------------------------------------
-    // GET XP
-    // ----------------------------------------
-
-    let xp = parseInt(
-        localStorage.getItem("eduquestXP")
-    );
-
-    if (isNaN(xp)) {
-        xp = 0;
+    function getPlayer() {
+        return typeof window.getPlayerData === "function"
+            ? window.getPlayerData()
+            : null;
     }
 
-
-    // ----------------------------------------
-    // ELEMENTS
-    // ----------------------------------------
-
-    const xpDisplay =
-        document.getElementById("xp-value");
-
-    const rewardsContainer =
-        document.getElementById("rewards-container");
-
-    const historyContainer =
-        document.getElementById("reward-history");
-
-    const notification =
-        document.getElementById("notification");
-
-
-    // ----------------------------------------
-    // UPDATE XP
-    // ----------------------------------------
-
-    function updateXP() {
-
-        xpDisplay.textContent = xp;
-
-        localStorage.setItem(
-            "eduquestXP",
-            xp
-        );
+    function getHistory(player) {
+        return Array.isArray(player.rewardHistory) ? player.rewardHistory : [];
     }
 
+    function savePlayer(player) {
+        if (typeof window.savePlayerData !== "function" || !window.savePlayerData(player)) {
+            showNotification("Your reward could not be saved. Please try again.");
+            return false;
+        }
+        return true;
+    }
 
-    // ----------------------------------------
-    // DISPLAY REWARDS
-    // ----------------------------------------
+    function renderRewards() {
+        const player = getPlayer();
+        if (!player) {
+            rewardsContainer.textContent = "Player data is unavailable. Refresh the page and try again.";
+            return;
+        }
 
-    function displayRewards() {
-
-        rewardsContainer.innerHTML = "";
+        const history = getHistory(player);
+        const redeemedIds = new Set(history.map(item => item.id));
+        pointsDisplay.textContent = Number(player.points || 0).toLocaleString();
+        rewardsContainer.replaceChildren();
 
         rewards.forEach(reward => {
-
-            const canRedeem =
-                xp >= reward.cost;
-
-
-            const card =
-                document.createElement("div");
-
+            const redeemed = redeemedIds.has(reward.id);
+            const canRedeem = Number(player.points || 0) >= reward.cost;
+            const card = document.createElement("article");
             card.className = "reward-card";
 
+            const icon = document.createElement("div");
+            icon.className = "reward-icon";
+            icon.setAttribute("aria-hidden", "true");
+            icon.textContent = reward.icon;
 
-            card.innerHTML = `
+            const title = document.createElement("h3");
+            title.textContent = reward.name;
 
-                <div class="reward-icon">
-                    ${reward.icon}
-                </div>
+            const description = document.createElement("p");
+            description.textContent = reward.description;
 
-                <h3>
-                    ${reward.name}
-                </h3>
+            const cost = document.createElement("div");
+            cost.className = "reward-cost";
+            cost.textContent = `⭐ ${reward.cost} points`;
 
-                <p>
-                    ${reward.description}
-                </p>
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "redeem-btn";
+            button.disabled = redeemed || !canRedeem;
+            button.textContent = redeemed ? "In your collection" : canRedeem ? "Redeem reward" : "Not enough points";
+            button.addEventListener("click", () => redeemReward(reward));
 
-                <div class="reward-cost">
-                    ⭐ ${reward.cost} XP
-                </div>
-
-                <button
-                    class="redeem-btn"
-                    data-reward="${reward.id}"
-                    ${canRedeem ? "" : "disabled"}
-                >
-                    ${
-                        canRedeem
-                        ? "Redeem Reward"
-                        : "Not Enough XP"
-                    }
-                </button>
-
-            `;
-
-
+            card.append(icon, title, description, cost, button);
             rewardsContainer.appendChild(card);
         });
 
-
-        addButtonEvents();
+        renderHistory(history);
     }
 
+    function renderHistory(history) {
+        historyContainer.replaceChildren();
+        if (!history.length) {
+            const empty = document.createElement("p");
+            empty.className = "empty-history";
+            empty.textContent = "No rewards redeemed yet. Complete quests to earn points.";
+            historyContainer.appendChild(empty);
+            return;
+        }
 
-    // ----------------------------------------
-    // BUTTON EVENTS
-    // ----------------------------------------
+        history.slice().reverse().forEach(item => {
+            const row = document.createElement("div");
+            row.className = "history-item";
 
-    function addButtonEvents() {
+            const details = document.createElement("div");
+            const name = document.createElement("div");
+            name.className = "history-name";
+            name.textContent = `🎁 ${item.name}`;
+            const date = document.createElement("span");
+            date.className = "history-date";
+            const redeemedAt = new Date(item.redeemedAt);
+            date.textContent = Number.isNaN(redeemedAt.getTime())
+                ? "Redeemed"
+                : `Redeemed ${redeemedAt.toLocaleString()}`;
+            details.append(name, date);
 
-        const buttons =
-            document.querySelectorAll(
-                ".redeem-btn"
-            );
+            const cost = document.createElement("div");
+            cost.className = "history-cost";
+            cost.textContent = `−${Number(item.cost || 0)} points`;
+            row.append(details, cost);
+            historyContainer.appendChild(row);
+        });
+    }
 
+    function redeemReward(reward) {
+        const player = getPlayer();
+        if (!player) {
+            showNotification("Player data is unavailable. Refresh the page and try again.");
+            return;
+        }
 
-        buttons.forEach(button => {
+        const history = getHistory(player);
+        if (history.some(item => item.id === reward.id)) {
+            showNotification("This reward is already in your collection.");
+            return;
+        }
 
-            button.addEventListener(
-                "click",
-                () => {
+        if (Number(player.points || 0) < reward.cost) {
+            showNotification("You need more points to redeem this reward.");
+            return;
+        }
 
-                    const rewardId =
-                        button.dataset.reward;
+        if (!window.confirm(`Redeem ${reward.name} for ${reward.cost} points?`)) {
+            return;
+        }
 
-                    redeemReward(
-                        rewardId
-                    );
+        const updatedPlayer = {
+            ...player,
+            points: Number(player.points || 0) - reward.cost,
+            rewardHistory: [
+                ...history,
+                {
+                    id: reward.id,
+                    name: reward.name,
+                    cost: reward.cost,
+                    redeemedAt: new Date().toISOString()
                 }
-            );
+            ]
+        };
 
-        });
+        if (savePlayer(updatedPlayer)) {
+            renderRewards();
+            showNotification(`${reward.name} was added to your collection.`);
+        }
     }
-
-
-    // ----------------------------------------
-    // REDEEM REWARD
-    // ----------------------------------------
-
-    function redeemReward(rewardId) {
-
-        const reward =
-            rewards.find(
-                item => item.id === rewardId
-            );
-
-
-        if (!reward) {
-            return;
-        }
-
-
-        // Check XP
-
-        if (xp < reward.cost) {
-
-            showNotification(
-                "❌ You don't have enough XP."
-            );
-
-            return;
-        }
-
-
-        // Confirmation
-
-        const confirmed =
-            confirm(
-                `Redeem ${reward.name} for ${reward.cost} XP?`
-            );
-
-
-        if (!confirmed) {
-            return;
-        }
-
-
-        // Remove XP
-
-        xp -= reward.cost;
-
-
-        // Save XP
-
-        localStorage.setItem(
-            "eduquestXP",
-            xp
-        );
-
-
-        // Save history
-
-        saveHistory(reward);
-
-
-        // Update page
-
-        updateXP();
-
-        displayRewards();
-
-        displayHistory();
-
-
-        // Message
-
-        showNotification(
-            `🎉 ${reward.name} redeemed successfully!`
-        );
-    }
-
-
-    // ----------------------------------------
-    // SAVE HISTORY
-    // ----------------------------------------
-
-    function saveHistory(reward) {
-
-        let history =
-            JSON.parse(
-                localStorage.getItem(
-                    "eduquestRewardHistory"
-                )
-            );
-
-
-        if (!Array.isArray(history)) {
-            history = [];
-        }
-
-
-        history.push({
-
-            id: reward.id,
-
-            name: reward.name,
-
-            cost: reward.cost,
-
-            date:
-                new Date()
-                .toLocaleString()
-
-        });
-
-
-        localStorage.setItem(
-            "eduquestRewardHistory",
-            JSON.stringify(history)
-        );
-    }
-
-
-    // ----------------------------------------
-    // DISPLAY HISTORY
-    // ----------------------------------------
-
-    function displayHistory() {
-
-        const history =
-            JSON.parse(
-                localStorage.getItem(
-                    "eduquestRewardHistory"
-                )
-            );
-
-
-        if (
-            !Array.isArray(history) ||
-            history.length === 0
-        ) {
-
-            historyContainer.innerHTML = `
-                <div class="empty">
-                    You have not redeemed any rewards yet.
-                </div>
-            `;
-
-            return;
-        }
-
-
-        historyContainer.innerHTML = "";
-
-
-        history
-            .slice()
-            .reverse()
-            .forEach(item => {
-
-                const historyItem =
-                    document.createElement("div");
-
-                historyItem.className =
-                    "history-item";
-
-
-                historyItem.innerHTML = `
-
-                    <div>
-
-                        <div class="history-name">
-                            🎁 ${item.name}
-                        </div>
-
-                        <span class="history-date">
-                            ${item.date}
-                        </span>
-
-                    </div>
-
-                    <div class="history-xp">
-                        -${item.cost} XP
-                    </div>
-
-                `;
-
-
-                historyContainer.appendChild(
-                    historyItem
-                );
-            });
-    }
-
-
-    // ----------------------------------------
-    // NOTIFICATION
-    // ----------------------------------------
 
     function showNotification(message) {
-
-        notification.textContent =
-            message;
-
-        notification.classList.add(
-            "show"
-        );
-
-
-        setTimeout(() => {
-
-            notification.classList.remove(
-                "show"
-            );
-
-        }, 2500);
+        notification.textContent = message;
+        notification.classList.add("show");
+        window.clearTimeout(notificationTimeout);
+        notificationTimeout = window.setTimeout(() => {
+            notification.classList.remove("show");
+        }, 2800);
     }
 
-
-    // ----------------------------------------
-    // LISTEN FOR XP CHANGES
-    // ----------------------------------------
-
-    window.addEventListener(
-        "storage",
-        event => {
-
-            if (
-                event.key ===
-                "eduquestXP"
-            ) {
-
-                xp =
-                    parseInt(
-                        event.newValue
-                    ) || 0;
-
-
-                updateXP();
-
-                displayRewards();
-            }
-        }
-    );
-
-
-    // ----------------------------------------
-    // START
-    // ----------------------------------------
-
-    updateXP();
-
-    displayRewards();
-
-    displayHistory();
-
+    window.addEventListener("eduquest-data-changed", renderRewards);
+    renderRewards();
 });

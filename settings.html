@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduQuest | Settings</title>
+  <link rel="stylesheet" href="css/dark-mode.css">
+  <script src="js/theme.js"></script>
 
   <style>
     :root {
@@ -333,6 +335,36 @@
       outline: none;
     }
 
+    .field-hint {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .notification-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .notification-status {
+      min-height: 24px;
+      margin-top: 12px;
+      color: #16834a;
+      font-size: 14px;
+    }
+
+    .notification-status[data-state="error"] {
+      color: #c62828;
+    }
+
+    .notification-actions button:disabled {
+      cursor: wait;
+      opacity: .65;
+    }
+
     .field input[readonly] {
       background: #f4f4f7;
       color: #6f7285;
@@ -591,11 +623,14 @@
       <a href="quests.html"><span class="nav-icon">🗺</span>Quests</a>
       <a href="rewards.html"><span class="nav-icon">🎁</span>Rewards</a>
       <a href="profile.html"><span class="nav-icon">♙</span>Profile</a>
+      <a href="progress.html"><span class="nav-icon">📊</span>Progress</a>
+      <a href="leaderboard.html"><span class="nav-icon">🏅</span>Leaderboard</a>
       <a class="active" href="settings.html"><span class="nav-icon">⚙</span>Settings</a>
+      <a href="badges.html"><span class="nav-icon">🎖️</span>Badges</a>
     </nav>
 
     <div class="nav nav-bottom">
-      <a href="#" id="logoutLink"><span class="nav-icon">⇥</span>Logout</a>
+      <a href="login.html" id="logoutLink"><span class="nav-icon">⇥</span>Logout</a>
     </div>
   </aside>
 
@@ -603,7 +638,7 @@
     <header class="topbar">
       <div class="search">
         <span class="search-icon">⌕</span>
-        <input id="searchInput" type="search" placeholder="Search quests, topics, or rewards...">
+        <input id="searchInput" type="search" aria-label="Find a setting" placeholder="Find a setting...">
       </div>
 
       <div class="top-user">
@@ -627,17 +662,17 @@
       </div>
 
       <section class="settings-card">
-        <nav class="settings-nav" aria-label="Settings sections">
-          <button class="settings-tab active" type="button" data-tab="general">
+        <nav class="settings-nav" role="tablist" aria-label="Settings sections">
+          <button class="settings-tab active" id="tab-general" type="button" role="tab" aria-selected="true" aria-controls="panel-general" tabindex="0" data-tab="general">
             <span class="tab-icon">⚙</span>General
           </button>
-          <button class="settings-tab" type="button" data-tab="preferences">
+          <button class="settings-tab" id="tab-preferences" type="button" role="tab" aria-selected="false" aria-controls="panel-preferences" tabindex="-1" data-tab="preferences">
             <span class="tab-icon">☷</span>Preferences
           </button>
-          <button class="settings-tab" type="button" data-tab="notifications">
+          <button class="settings-tab" id="tab-notifications" type="button" role="tab" aria-selected="false" aria-controls="panel-notifications" tabindex="-1" data-tab="notifications">
             <span class="tab-icon">♧</span>Notifications
           </button>
-          <button class="settings-tab" type="button" data-tab="security">
+          <button class="settings-tab" id="tab-security" type="button" role="tab" aria-selected="false" aria-controls="panel-security" tabindex="-1" data-tab="security">
             <span class="tab-icon">♢</span>Account &amp; Security
           </button>
         </nav>
@@ -645,7 +680,7 @@
         <div class="settings-content">
 
           <!-- GENERAL -->
-          <section class="tab-panel active" id="panel-general">
+          <section class="tab-panel active" id="panel-general" role="tabpanel" aria-labelledby="tab-general" tabindex="0">
             <h2 class="section-title">General Information</h2>
             <p class="section-description">Update your EduQuest profile information.</p>
 
@@ -663,7 +698,7 @@
               <label for="gradeLevel">Learning Category</label>
               <select id="gradeLevel" required>
                 <option value="Elementary">Elementary</option>
-                <option value="High School">High School</option>
+                <option value="JHS/SHS">Junior/Senior High School (JHS/SHS)</option>
                 <option value="College (IT)">College (IT)</option>
               </select>
             </div>
@@ -691,56 +726,121 @@
           </section>
 
           <!-- PREFERENCES -->
-          <section class="tab-panel" id="panel-preferences">
+          <section class="tab-panel" id="panel-preferences" role="tabpanel" aria-labelledby="tab-preferences" tabindex="0" hidden>
             <h2 class="section-title">Preferences</h2>
             <p class="section-description">Choose how you want EduQuest to feel and work.</p>
+
+            <div class="learning-heading">
+              <div class="round-icon">♫</div>
+              <div>
+                <h3>Game audio</h3>
+                <p>Optional, original background music and quest-complete sounds.</p>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">🎵</div>
+                <div>
+                  <strong id="backgroundMusicLabel">Background music</strong>
+                  <p id="backgroundMusicDescription">Play gentle, looping adventure music. Music is off by default.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="musicEnabled" type="checkbox" aria-labelledby="backgroundMusicLabel" aria-describedby="backgroundMusicDescription">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">✨</div>
+                <div>
+                  <strong id="soundEffectsLabel">Sound effects</strong>
+                  <p id="soundEffectsDescription">Play a short celebratory sound when you complete a quest.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="soundEffectsEnabled" type="checkbox" aria-labelledby="soundEffectsLabel" aria-describedby="soundEffectsDescription" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="field audio-volume-field">
+              <label for="musicVolume">Music volume <output id="musicVolumeValue" for="musicVolume">65%</output></label>
+              <input id="musicVolume" type="range" min="0" max="100" step="5" value="65" aria-describedby="musicVolumeHint">
+              <small class="field-hint" id="musicVolumeHint">Adjust the background music independently.</small>
+            </div>
+
+            <div class="field audio-volume-field">
+              <label for="soundEffectsVolume">Sound effects volume <output id="soundEffectsVolumeValue" for="soundEffectsVolume">75%</output></label>
+              <input id="soundEffectsVolume" type="range" min="0" max="100" step="5" value="75" aria-describedby="soundEffectsVolumeHint">
+              <small class="field-hint" id="soundEffectsVolumeHint">Adjust quest-completion sounds independently.</small>
+            </div>
+
+            <div class="section-divider"></div>
 
             <div class="field">
               <label for="themePreference">Appearance</label>
               <select id="themePreference">
                 <option value="light">Light mode</option>
-                <option value="dark">Dark mode (coming soon)</option>
+                <option value="dark">Dark mode</option>
               </select>
+              <small class="field-hint">Choose a light or dark appearance across EduQuest.</small>
             </div>
 
             <div class="field">
               <label for="languagePreference">Language</label>
               <select id="languagePreference">
                 <option value="en">English</option>
-                <option value="ceb">Cebuano (coming soon)</option>
               </select>
+              <small class="field-hint">English is currently the available language.</small>
             </div>
 
             <div class="setting-row">
               <div class="setting-row-info">
                 <div class="round-icon">📚</div>
                 <div>
-                  <strong>Learning tips</strong>
-                  <p>Show helpful tips while studying.</p>
+                  <strong id="learningTipsLabel">Learning tips</strong>
+                  <p id="learningTipsDescription">Show helpful tips while studying.</p>
                 </div>
               </div>
               <label class="switch">
-                <input id="learningTips" type="checkbox" checked>
+                <input id="learningTips" type="checkbox" aria-labelledby="learningTipsLabel" aria-describedby="learningTipsDescription" checked>
                 <span class="slider"></span>
               </label>
             </div>
           </section>
 
           <!-- NOTIFICATIONS -->
-          <section class="tab-panel" id="panel-notifications">
+          <section class="tab-panel" id="panel-notifications" role="tabpanel" aria-labelledby="tab-notifications" tabindex="0" hidden>
             <h2 class="section-title">Notifications</h2>
-            <p class="section-description">Choose which reminders you want to enable.</p>
+            <p class="section-description">Choose browser delivery and which learning events should send an alert.</p>
+
+            <div class="setting-row">
+              <div class="setting-row-info">
+                <div class="round-icon">🔔</div>
+                <div>
+                  <strong id="browserPushLabel">Browser push notifications</strong>
+                  <p id="browserPushDescription">Receive alerts on this device, including when EduQuest is not open.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="browserPush" type="checkbox" aria-labelledby="browserPushLabel" aria-describedby="browserPushDescription">
+                <span class="slider"></span>
+              </label>
+            </div>
 
             <div class="setting-row">
               <div class="setting-row-info">
                 <div class="round-icon">◷</div>
                 <div>
-                  <strong>Quest reminders</strong>
-                  <p>Keep track of your daily and upcoming quests.</p>
+                  <strong id="questRemindersLabel">Quest reminders</strong>
+                  <p id="questRemindersDescription">Get a daily reminder to continue your quests.</p>
                 </div>
               </div>
               <label class="switch">
-                <input id="questReminders" type="checkbox" checked>
+                <input id="questReminders" type="checkbox" aria-labelledby="questRemindersLabel" aria-describedby="questRemindersDescription" checked>
                 <span class="slider"></span>
               </label>
             </div>
@@ -749,12 +849,12 @@
               <div class="setting-row-info">
                 <div class="round-icon">🏆</div>
                 <div>
-                  <strong>Achievement notifications</strong>
-                  <p>Know when you unlock an achievement.</p>
+                  <strong id="achievementAlertsLabel">Achievement notifications</strong>
+                  <p id="achievementAlertsDescription">Know when you unlock an achievement.</p>
                 </div>
               </div>
               <label class="switch">
-                <input id="achievementAlerts" type="checkbox" checked>
+                <input id="achievementAlerts" type="checkbox" aria-labelledby="achievementAlertsLabel" aria-describedby="achievementAlertsDescription" checked>
                 <span class="slider"></span>
               </label>
             </div>
@@ -763,12 +863,12 @@
               <div class="setting-row-info">
                 <div class="round-icon">⭐</div>
                 <div>
-                  <strong>XP and level updates</strong>
-                  <p>Show updates when you earn XP or level up.</p>
+                  <strong id="xpAlertsLabel">XP and level updates</strong>
+                  <p id="xpAlertsDescription">Show updates when you earn XP or level up.</p>
                 </div>
               </div>
               <label class="switch">
-                <input id="xpAlerts" type="checkbox" checked>
+                <input id="xpAlerts" type="checkbox" aria-labelledby="xpAlertsLabel" aria-describedby="xpAlertsDescription" checked>
                 <span class="slider"></span>
               </label>
             </div>
@@ -777,42 +877,49 @@
               <div class="setting-row-info">
                 <div class="round-icon">📅</div>
                 <div>
-                  <strong>Study reminders</strong>
-                  <p>Keep your learning routine on track.</p>
+                  <strong id="studyRemindersLabel">Study reminders</strong>
+                  <p id="studyRemindersDescription">Keep your learning routine on track.</p>
                 </div>
               </div>
               <label class="switch">
-                <input id="studyReminders" type="checkbox">
+                <input id="studyReminders" type="checkbox" aria-labelledby="studyRemindersLabel" aria-describedby="studyRemindersDescription">
                 <span class="slider"></span>
               </label>
             </div>
 
-            <div class="info-box" style="margin-top:24px">
-              These switches save your preferences in this browser.
-              They do not send real push notifications or emails yet.
+            <div class="field">
+              <label for="studyReminderTime">Daily reminder time</label>
+              <input id="studyReminderTime" type="time" value="18:00">
+              <small class="field-hint">Uses the server's configured time zone.</small>
             </div>
+
+            <div class="notification-actions">
+              <button class="btn btn-primary" type="button" id="enablePushButton">Enable browser push</button>
+            </div>
+            <p class="notification-status" id="notificationStatus" role="status" aria-live="polite">Checking notification delivery setup…</p>
+
           </section>
 
           <!-- ACCOUNT & SECURITY -->
-          <section class="tab-panel" id="panel-security">
+          <section class="tab-panel" id="panel-security" role="tabpanel" aria-labelledby="tab-security" tabindex="0" hidden>
             <h2 class="section-title">Account &amp; Security</h2>
             <p class="section-description">Review the account currently signed in.</p>
 
             <div class="field">
-              <label>Account Name</label>
+              <label for="accountName">Account Name</label>
               <input id="accountName" type="text" readonly>
             </div>
 
             <div class="field">
-              <label>Registered Email</label>
+              <label for="accountEmail">Registered Email</label>
               <input id="accountEmail" type="email" readonly>
             </div>
 
             <div class="info-box">
               <strong>Protect your account</strong><br>
-              Always use a unique password. This version of EduQuest stores its
-              demo account information in this browser, so it is not suitable
-              for real passwords or production authentication.
+              Use a unique password and keep your study profile current. This
+              browser-based account keeps your data saved on this device for a
+              smoother learning experience.
             </div>
 
             <div class="section-divider"></div>
@@ -831,6 +938,7 @@
 
 <script src="js/auth.js"></script>
 <script src="js/app.js"></script>
+<script src="js/audio.js"></script>
 
 <script>
 (function () {
@@ -846,8 +954,24 @@
     questReminders: true,
     achievementAlerts: true,
     xpAlerts: true,
-    studyReminders: false
+    studyReminders: false,
+    browserPush: false,
+    studyReminderTime: "18:00",
+    musicEnabled: false,
+    soundEffectsEnabled: true,
+    musicVolume: 65,
+    soundEffectsVolume: 75
   };
+
+  function normalizeCategory(value) {
+    const text = String(value || "").trim();
+    if (!text) return "Elementary";
+    const lowered = text.toLowerCase();
+    if (lowered === "elementary") return "Elementary";
+    if (lowered.includes("jhs") || lowered.includes("junior") || lowered.includes("senior high") || lowered.includes("high school")) return "JHS/SHS";
+    if (lowered.includes("college")) return "College IT";
+    return "Elementary";
+  }
 
   let initialPlayer = {};
   let initialSettings = {};
@@ -870,8 +994,7 @@
 
   function savePlayer(player) {
     if (typeof window.savePlayerData === "function") {
-      window.savePlayerData(player);
-      return true;
+      return window.savePlayerData(player);
     }
     return false;
   }
@@ -899,15 +1022,30 @@
     $("message").style.color = error ? "#c62828" : "#16834a";
   }
 
+  function setNotificationStatus(text, error = false) {
+    const status = $("notificationStatus");
+    status.textContent = text;
+    status.dataset.state = error ? "error" : "normal";
+  }
+
   function setText(id, text) {
     $(id).textContent = text;
+  }
+
+  function ensureAuthenticatedResponse(response) {
+    if (response.status !== 401) return;
+
+    window.location.replace("login.html?returnTo=settings.html");
+    const error = new Error("Your login session expired. Please sign in again.");
+    error.status = 401;
+    throw error;
   }
 
   function loadPage() {
     const user = getCurrentUser();
 
     if (window.EduQuestAuth && !user) {
-      window.location.href = "login.html";
+      window.location.replace("login.html?returnTo=settings.html");
       return;
     }
 
@@ -924,18 +1062,29 @@
     $("playerName").value = name;
     $("emailDisplay").value = email;
     $("gradeLevel").value =
-      player.gradeLevel || (user && user.category) || "College (IT)";
+      normalizeCategory(player.gradeLevel || (user && user.category) || "Elementary");
 
     $("learningGoal").value = initialSettings.learningGoal;
     $("themePreference").value = initialSettings.themePreference;
     $("languagePreference").value = initialSettings.languagePreference;
+    $("studyReminderTime").value = initialSettings.studyReminderTime || "18:00";
+    $("musicEnabled").checked = Boolean(initialSettings.musicEnabled);
+    $("soundEffectsEnabled").checked = initialSettings.soundEffectsEnabled !== false;
+    $("musicVolume").value = initialSettings.musicVolume;
+    $("soundEffectsVolume").value = initialSettings.soundEffectsVolume;
+    $("musicVolumeValue").value = initialSettings.musicVolume + "%";
+    $("soundEffectsVolumeValue").value = initialSettings.soundEffectsVolume + "%";
+    if (typeof window.applyEduQuestTheme === "function") {
+      window.applyEduQuestTheme(initialSettings.themePreference);
+    }
 
     [
       "learningTips",
       "questReminders",
       "achievementAlerts",
       "xpAlerts",
-      "studyReminders"
+      "studyReminders",
+      "browserPush"
     ].forEach(id => {
       $(id).checked = Boolean(initialSettings[id]);
     });
@@ -964,11 +1113,17 @@
       questReminders: $("questReminders").checked,
       achievementAlerts: $("achievementAlerts").checked,
       xpAlerts: $("xpAlerts").checked,
-      studyReminders: $("studyReminders").checked
+      studyReminders: $("studyReminders").checked,
+      browserPush: $("browserPush").checked,
+      studyReminderTime: $("studyReminderTime").value || "18:00",
+      musicEnabled: $("musicEnabled").checked,
+      soundEffectsEnabled: $("soundEffectsEnabled").checked,
+      musicVolume: Number($("musicVolume").value),
+      soundEffectsVolume: Number($("soundEffectsVolume").value)
     };
   }
 
-  function saveChanges() {
+  async function saveChanges() {
     const name = $("playerName").value.trim();
 
     if (!name) {
@@ -978,12 +1133,11 @@
       return;
     }
 
-    const user = getCurrentUser();
     const player = getPlayer();
 
     // Update only the fields owned by Settings.
     player.name = name;
-    player.gradeLevel = $("gradeLevel").value;
+    player.gradeLevel = normalizeCategory($("gradeLevel").value);
 
     if (!savePlayer(player)) {
       showMessage(
@@ -997,43 +1151,42 @@
 
     try {
       localStorage.setItem(settingsStorageKey, JSON.stringify(settings));
-
-      // Keep the local demo account name and category in sync.
-      if (user && user.id) {
-        const users = JSON.parse(
-          localStorage.getItem("eduquestDemoUsers") || "[]"
-        );
-
-        const updatedUsers = users.map(item => {
-          if (item.id === user.id) {
-            return {
-              ...item,
-              name: name,
-              category: $("gradeLevel").value
-            };
-          }
-          return item;
-        });
-
-        localStorage.setItem(
-          "eduquestDemoUsers",
-          JSON.stringify(updatedUsers)
-        );
+      const response = await fetch("/api/notifications/settings", {
+        method: "PUT",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings)
+      });
+      const result = await response.json();
+      ensureAuthenticatedResponse(response);
+      if (!response.ok) {
+        throw new Error(result.message || "Notification settings could not be saved on the server.");
       }
 
       initialPlayer = { ...player };
       initialSettings = { ...settings };
+      window.EduQuestAudio?.setPreferences({
+        musicEnabled: settings.musicEnabled,
+        soundEffectsEnabled: settings.soundEffectsEnabled,
+        musicVolume: settings.musicVolume,
+        soundEffectsVolume: settings.soundEffectsVolume
+      });
 
       setText("sideName", name);
       setText("topName", name);
       $("accountName").value = name;
 
-      showMessage("✓ Your settings have been saved successfully.");
+      if (!settings.browserPush) {
+        await disableBrowserPush();
+      }
+      if (typeof window.applyEduQuestTheme === "function") {
+        window.applyEduQuestTheme(settings.themePreference);
+      }
+      showMessage("✓ Your settings and notification preferences have been saved.");
     } catch (error) {
-      showMessage(
-        "Player saved, but preferences could not be saved in this browser.",
-        true
-      );
+      if (error.status === 401) return;
+      console.error("EduQuest: Unable to save notification preferences.", error);
+      showMessage("Profile saved, but server notification settings could not be saved: " + error.message, true);
     }
   }
 
@@ -1042,28 +1195,53 @@
       initialPlayer.name || (getCurrentUser() || {}).name || "Player";
 
     $("gradeLevel").value =
-      initialPlayer.gradeLevel ||
-      (getCurrentUser() || {}).category ||
-      "College (IT)";
+      normalizeCategory(
+        initialPlayer.gradeLevel ||
+        (getCurrentUser() || {}).category ||
+        "Elementary"
+      );
 
     $("learningGoal").value = initialSettings.learningGoal;
     $("themePreference").value = initialSettings.themePreference;
     $("languagePreference").value = initialSettings.languagePreference;
+    $("studyReminderTime").value = initialSettings.studyReminderTime || "18:00";
+    $("musicEnabled").checked = Boolean(initialSettings.musicEnabled);
+    $("soundEffectsEnabled").checked = initialSettings.soundEffectsEnabled !== false;
+    $("musicVolume").value = initialSettings.musicVolume;
+    $("soundEffectsVolume").value = initialSettings.soundEffectsVolume;
+    $("musicVolumeValue").value = initialSettings.musicVolume + "%";
+    $("soundEffectsVolumeValue").value = initialSettings.soundEffectsVolume + "%";
 
     [
       "learningTips",
       "questReminders",
       "achievementAlerts",
       "xpAlerts",
-      "studyReminders"
+      "studyReminders",
+      "browserPush"
     ].forEach(id => {
       $(id).checked = Boolean(initialSettings[id]);
     });
 
+    if (typeof window.applyEduQuestTheme === "function") {
+      window.applyEduQuestTheme(initialSettings.themePreference);
+    }
+    window.EduQuestAudio?.setPreferences({
+      musicEnabled: $("musicEnabled").checked,
+      soundEffectsEnabled: $("soundEffectsEnabled").checked,
+      musicVolume: Number($("musicVolume").value),
+      soundEffectsVolume: Number($("soundEffectsVolume").value)
+    });
     showMessage("Unsaved changes have been cancelled.");
   }
 
-  function logout() {
+  async function logout() {
+    try {
+      await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+    } catch (error) {
+      console.warn('Logout request failed:', error);
+    }
+
     if (window.EduQuestAuth &&
         typeof window.EduQuestAuth.logoutUser === "function") {
       window.EduQuestAuth.logoutUser();
@@ -1072,21 +1250,6 @@
     }
   }
 
-  document.querySelectorAll(".settings-tab").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".settings-tab").forEach(tab => {
-        tab.classList.toggle("active", tab === button);
-      });
-
-      document.querySelectorAll(".tab-panel").forEach(panel => {
-        panel.classList.remove("active");
-      });
-
-      $("panel-" + button.dataset.tab).classList.add("active");
-      showMessage("");
-    });
-  });
-
   $("saveButton").addEventListener("click", saveChanges);
   $("cancelButton").addEventListener("click", cancelChanges);
   $("logoutLink").addEventListener("click", event => {
@@ -1094,13 +1257,234 @@
     logout();
   });
   $("securityLogout").addEventListener("click", logout);
+  $("enablePushButton").addEventListener("click", enableBrowserPush);
+  $("themePreference").addEventListener("change", event => {
+    if (typeof window.applyEduQuestTheme === "function") {
+      window.applyEduQuestTheme(event.target.value);
+    }
+  });
+  ["musicEnabled", "soundEffectsEnabled", "musicVolume", "soundEffectsVolume"].forEach(id => {
+    $(id).addEventListener("change", () => {
+      $("musicVolumeValue").value = $("musicVolume").value + "%";
+      $("soundEffectsVolumeValue").value = $("soundEffectsVolume").value + "%";
+      window.EduQuestAudio?.setPreferences({
+        musicEnabled: $("musicEnabled").checked,
+        soundEffectsEnabled: $("soundEffectsEnabled").checked,
+        musicVolume: Number($("musicVolume").value),
+        soundEffectsVolume: Number($("soundEffectsVolume").value)
+      });
+    });
+  });
 
-  // Keep the browser's default form/search behavior from reloading this page.
-  $("searchInput").addEventListener("keydown", event => {
-    if (event.key === "Enter") event.preventDefault();
+  function activateTab(button, moveFocus = false) {
+    document.querySelectorAll(".settings-tab").forEach(tab => {
+      const selected = tab === button;
+      tab.classList.toggle("active", selected);
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+
+    document.querySelectorAll(".tab-panel").forEach(panel => {
+      const selected = panel.id === button.getAttribute("aria-controls");
+      panel.classList.toggle("active", selected);
+      panel.hidden = !selected;
+    });
+
+    if (moveFocus) button.focus();
+    showMessage("");
+  }
+
+  function decodeVapidKey(encodedKey) {
+    const padding = "=".repeat((4 - encodedKey.length % 4) % 4);
+    const base64 = (encodedKey + padding).replace(/-/g, "+").replace(/_/g, "/");
+    const raw = atob(base64);
+    return Uint8Array.from(raw, character => character.charCodeAt(0));
+  }
+
+  async function getNotificationConfig() {
+    const response = await fetch("/api/notifications/config", {
+      credentials: "same-origin"
+    });
+    const result = await response.json();
+    ensureAuthenticatedResponse(response);
+    if (!response.ok) {
+      throw new Error(result.message || "Unable to load notification setup.");
+    }
+    return result;
+  }
+
+  async function loadNotificationConfig() {
+    try {
+      const config = await getNotificationConfig();
+      initialSettings = { ...initialSettings, ...config.settings };
+      [
+        "questReminders",
+        "achievementAlerts",
+        "xpAlerts",
+        "studyReminders",
+        "browserPush"
+      ].forEach(id => {
+        $(id).checked = Boolean(config.settings[id]);
+      });
+      $("studyReminderTime").value = config.settings.studyReminderTime || "18:00";
+
+      const pushStatus = config.pushConfigured
+        ? (config.hasPushSubscription ? "Push is enabled on this device." : "Push is ready; enable it on this device.")
+        : "Push needs VAPID keys in the server configuration.";
+      setNotificationStatus(pushStatus, !config.pushConfigured);
+    } catch (error) {
+      if (error.status === 401) return;
+      console.error("EduQuest: Notification setup could not be loaded.", error);
+      setNotificationStatus("Could not load notification setup: " + error.message, true);
+    }
+  }
+
+  async function enableBrowserPush() {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) {
+      setNotificationStatus("This browser does not support push notifications.", true);
+      return;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        throw new Error(permission === "denied"
+          ? "Notifications are blocked in browser settings. Allow them for this site, then try again."
+          : "Allow browser notifications to enable push.");
+      }
+
+      const config = await getNotificationConfig();
+      if (!config.pushConfigured || !config.publicKey) {
+        throw new Error("The server needs VAPID keys before browser push can be enabled.");
+      }
+
+      await navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
+      let activationTimeout;
+      const registration = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise((_, reject) => {
+          activationTimeout = window.setTimeout(() => {
+            reject(new Error("The service worker did not become active. Reload the page and try again."));
+          }, 15000);
+        })
+      ]).finally(() => window.clearTimeout(activationTimeout));
+
+      if (!registration.active) {
+        throw new Error("The service worker is not active yet. Reload the page and try again.");
+      }
+
+      const pushManager = registration.pushManager;
+      let subscription = await pushManager.getSubscription();
+      const applicationServerKey = decodeVapidKey(config.publicKey);
+
+      if (subscription) {
+        const existingKey = subscription.options.applicationServerKey;
+        const existingKeyBytes = existingKey && new Uint8Array(existingKey);
+        const sameKey = existingKeyBytes &&
+          existingKeyBytes.length === applicationServerKey.length &&
+          existingKeyBytes.every((byte, index) => byte === applicationServerKey[index]);
+        if (!sameKey) {
+          await subscription.unsubscribe();
+          subscription = null;
+        }
+      }
+
+      if (!subscription) {
+        subscription = await pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey
+        });
+      }
+
+      const response = await fetch("/api/notifications/subscribe", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subscription: subscription.toJSON() })
+      });
+      const result = await response.json();
+      ensureAuthenticatedResponse(response);
+      if (!response.ok) throw new Error(result.message || "Push subscription could not be saved.");
+
+      $("browserPush").checked = true;
+      setNotificationStatus("Browser push is enabled on this device. Save Changes to keep your preferences.");
+    } catch (error) {
+      console.error("EduQuest: Could not enable browser push.", error);
+      const message = error.name === "AbortError" &&
+        Notification.permission === "granted" &&
+        /permission denied/i.test(error.message)
+        ? "Chrome refused push registration. Push subscriptions are not supported in Incognito mode; open EduQuest in a regular Chrome window and try again. If you are already in a regular window, check that site notifications are allowed."
+        : error.message;
+      setNotificationStatus(message, true);
+    }
+  }
+
+  async function disableBrowserPush() {
+    if (!("serviceWorker" in navigator)) return;
+    const registration = await navigator.serviceWorker.getRegistration("/");
+    const subscription = registration && await registration.pushManager.getSubscription();
+    if (!subscription) return;
+
+    const response = await fetch("/api/notifications/subscribe", {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ endpoint: subscription.endpoint })
+    });
+    const result = await response.json();
+    ensureAuthenticatedResponse(response);
+    if (!response.ok) throw new Error(result.message || "Push subscription could not be removed.");
+    await subscription.unsubscribe();
+  }
+
+  document.querySelectorAll(".settings-tab").forEach(button => {
+    button.addEventListener("click", () => activateTab(button));
+    button.addEventListener("keydown", event => {
+      const tabs = [...document.querySelectorAll(".settings-tab")];
+      const index = tabs.indexOf(button);
+      let nextIndex = index;
+
+      if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
+      else if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabs.length) % tabs.length;
+      else if (event.key === "Home") nextIndex = 0;
+      else if (event.key === "End") nextIndex = tabs.length - 1;
+      else return;
+
+      event.preventDefault();
+      activateTab(tabs[nextIndex], true);
+    });
+  });
+
+  $("searchInput").addEventListener("input", event => {
+    const query = event.target.value.trim().toLocaleLowerCase();
+    const panels = [...document.querySelectorAll(".tab-panel")];
+    let firstMatch = null;
+
+    panels.forEach(panel => {
+      const rows = [...panel.querySelectorAll(".field, .setting-row")];
+      rows.forEach(row => {
+        const matches = !query || row.textContent.toLocaleLowerCase().includes(query);
+        row.hidden = !matches;
+        if (query && matches && !firstMatch) firstMatch = panel;
+      });
+    });
+
+    if (firstMatch) {
+      const tab = document.querySelector(
+        `[aria-controls="${firstMatch.id}"]`
+      );
+      if (tab) activateTab(tab);
+    }
+
+    if (query && !firstMatch) {
+      showMessage("No settings match “" + event.target.value.trim() + "”.");
+    } else if (!query) {
+      showMessage("");
+    }
   });
 
   loadPage();
+  loadNotificationConfig();
 })();
 </script>
 </body>
